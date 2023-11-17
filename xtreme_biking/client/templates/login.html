@@ -1,0 +1,208 @@
+{% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login page</title>
+        <style>
+            nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            nav li {
+                display: inline-block;
+                margin-right: 20px;
+            }
+            nav li a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 1.2rem; /* increased font size */
+            }
+            main {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            .products {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            .product {
+                width: 30%;
+                margin-bottom: 20px;
+                text-align: center;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            }
+            .product img {
+                max-width: 100%;
+                height: 200px; /* added height */
+                object-fit: cover; /* added object-fit */
+                border-radius: 5px;
+            }
+            .btn {
+                display: inline-block;
+                background-color: #333;
+                color: #fff;
+                padding: 10px 20px;
+                text-decoration: none;
+                margin-top: 10px;
+                border-radius: 5px;
+            }
+            .btn:hover {
+                background-color: #555;
+            }
+            footer {
+                background-color: #333;
+                color: #fff;
+                padding: 10px;
+                text-align: center;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+            header {
+                background-color: #333; /* changed from background-image to background-color */
+                height: 300px; /* changed height to 300px */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 5rem;
+                color: #fff;
+                text-shadow: 2px 2px #333;
+                margin-bottom: 0;
+            }
+            p {
+                font-size: 2rem;
+                color: #fff;
+                text-shadow: 2px 2px #333;
+                margin-top: 0;
+            }
+            .price {
+                color: black;
+                text-shadow: none; /* remove the shadow */
+            }
+            /* New color palette */
+            body {
+                background-color: #f2f2f2;
+            }
+            header {
+                background-color: #1c1c1c;
+            }
+            nav li a {
+                color: #f2f2f2;
+            }
+            .btn {
+                background-color: #1c1c1c;
+                color: #f2f2f2;
+            }
+            .btn:hover {
+                background-color: #333;
+            }
+            footer {
+                background-color: #1c1c1c;
+            }
+            .cart-icon {
+                display: inline-block;
+                margin-left: 20px;
+                font-size: 2rem;
+                color: #fff;
+            }
+            .cart-link {
+                color: #fff;
+                text-decoration: none;
+            }
+            /* Added margin to header */
+            header {
+                margin-bottom: 20px;
+            }
+            /* Login form styles */
+            .login {
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 5px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            }
+            .login h2 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .login label {
+                display: block;
+                margin-bottom: 5px;
+            }
+            .login input[type="email"],
+            .login input[type="password"] {
+                width: 100%;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid black; /* added border */
+                margin-bottom: 20px;
+            }
+            .login button[type="submit"] {
+                background-color: #333;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .login button[type="submit"]:hover {
+                background-color: #555;
+            }
+            /* Footer styles */
+            footer {
+                background-color: #333;
+                color: #fff;
+                padding: 10px;
+                text-align: center;
+            }
+            footer p {
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="/#">Inicio</a></li>
+                    <li><a href="/#">Bicicletas</a></li>
+                    <li><a href="/#">Accesorios</a></li>
+                    <li><a href="/#">Sobre nosotros</a></li>
+                    <li><a href="/#">Contactar</a></li>
+                    <li><a href="/register">Registrarse</a></li>
+                    <li><a href="/cart/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
+                </ul>
+            </nav>
+            <h1>Bienvenido a Xtreme Biking</h1>
+            <p>Prepárate para pedalear con nuestras bicicletas y accesorios de alta calidad.</p>
+        </header>
+        <main>
+            <section class="login">
+                <h2>Iniciar sesión</h2>
+                <form action="/login" method="POST">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                    <a href="/../../" class="btn">Iniciar sesión</a>
+                    <a href="/../../register" class="btn">Registrarse</a>
+                </form>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2023 Xtreme Biking</p>
+        </footer>
+    </body>
+</html>
