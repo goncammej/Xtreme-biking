@@ -22,6 +22,7 @@ from store import views as store_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', store_views.home, name='home'),
+    path('cart/', include('cart.urls')),
     path('product_details/', store_views.product_details, name='product_details'),
     path('login/', client_views.login, name='login'),
     path('register/', client_views.register, name='register'),
@@ -29,6 +30,5 @@ urlpatterns = [
     path('logout/', client_views.logout, name='logout'),
     path('orders_details/', client_views.order_details, name='orders_details'),
     path('incident/', client_views.incident, name='incident'),
-
 ]
 
