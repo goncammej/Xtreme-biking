@@ -1,0 +1,305 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <style>
+            nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            nav li {
+                display: inline-block;
+                margin-right: 20px;
+            }
+            nav li a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 1.2rem; /* increased font size */
+            }
+            main {
+                max-width: 1200px;
+                margin: 0 auto 30px; /* added margin-bottom */
+                padding: 20px;
+            }
+
+            .buy_section {
+                width: 30%;
+                margin-bottom: 20px;
+                text-align: center;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            }
+            .info img {
+                width: 500px; /* added width */
+                height: 300px;
+                object-fit: cover;
+                border-radius: 5px;
+            }
+            .btn {
+                display: inline-block;
+                background-color: #333;
+                color: #fff;
+                padding: 5px 10px; /* reduced padding */
+                text-decoration: none;
+                margin-top: 10px;
+                border-radius: 5px;
+            }
+            .btn:hover {
+                background-color: #555;
+            }
+            footer {
+                background-color: #333;
+                color: #fff;
+                padding: 10px;
+                text-align: center;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                height: 30px;
+            }
+            header {
+                background-color: #333; /* changed from background-image to background-color */
+                height: 90px; /* changed height to 200px */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                margin-bottom: 1px;
+            }
+            h1 {
+                font-size: 5rem;
+                color: #fff;
+                text-shadow: 2px 2px #333;
+                margin-bottom: 0;
+            }
+            p {
+                font-size: 1.2rem; /* reduced font size */
+                color: #000; /* changed to black */
+                margin-top: 0;
+            }
+            .price {
+                color: black;
+                text-shadow: none; /* remove the shadow */
+                font-size: 3rem;
+                margin-top: 20px;
+            }
+            /* New color palette */
+            body {
+                background-color: #f2f2f2;
+                margin-bottom: 30px; /* added margin-bottom */
+            }
+            header {
+                background-color: #1c1c1c;
+            }
+            nav li a {
+                color: #f2f2f2;
+            }
+            /* New section */
+            .center_section {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 30px;
+            }
+            .title {
+                font-size: 3rem;
+                margin-bottom: 10px;
+                color: #1c1c1c;
+            }
+            .description {
+                font-size: 1rem; /* reduced font size */
+                margin-bottom: 10px;
+                color: #1c1c1c;
+            }
+            .availability {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+                color: black; /* changed to black */
+            }
+            .in_stock {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                background-color: green;
+                margin-right: 10px;
+                border-radius: 5px;
+            }
+            .stars {
+                display: flex;
+                margin-top: 10px;
+            }
+            .stars {
+                color: gold;
+                font-size: 2rem;
+                margin-right: 5px;
+            }
+            .btn {
+                background-color: #1c1c1c;
+                color: #f2f2f2;
+                margin-top: 20px;
+                font-size: 1.5rem;
+                padding: 5px 10px; /* reduced padding */
+                border-radius: 5px;
+            }
+            .btn:hover {
+                background-color: #333;
+            }
+            footer {
+                background-color: #1c1c1c;
+            }
+            .cart-icon {
+                display: inline-block;
+                margin-left: 20px;
+                font-size: 2rem;
+                color: #fff;
+            }
+            .cart-link {
+                color: #fff;
+                text-decoration: none;
+            }
+            .info {
+                background-color: #f2f2f2;
+                padding: 20px;
+                margin-top: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                margin-right: 25px;
+            }
+            .featured h2 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .view-all {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .view-all a {
+                display: inline-block;
+                background-color: #333;
+                color: #fff;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+            .view-all a:hover {
+                background-color: #555;
+            }
+            .bike-image {
+                margin-right: px;
+                width: 85%;
+                height: 85%;
+                object-fit: cover;
+                border-radius: 10px; 
+            }
+            /* New section */
+            .amount_section {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 30px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                height: 70px;
+            }
+            .amount_section h3 {
+                margin-top: 6px;
+                font-size: 1.5rem;
+                margin-bottom: 1px;
+                color: #1c1c1c;
+            }
+            .amount_section button {
+                background-color: #1c1c1c;
+                color: #fff; /* changed to white */
+                margin-top: 5px;
+                font-size: 1.2rem; /* reduced font size */
+                padding: 3px 8px; /* reduced padding */
+                border-radius: 5px;
+                margin-right: 10px;
+                margin-left: 10px; /* added margin */
+            }
+            .amount_section button:hover {
+                background-color: #333;
+            }
+            .cart-btn {
+                background-color: #1c1c1c;
+                color: #fff;
+                margin-top: 20px;
+                font-size: 1.5rem;
+                padding: 5px 10px; /* reduced padding */
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+            }
+            .cart-btn:hover {
+                background-color: #333;
+            }
+            .cart-btn i {
+                margin-right: 5px;
+            }
+            .in-stock-btn {
+                background-color: green;
+                color: #fff;
+                margin-top: 20px;
+                font-size: 1.5rem;
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+            }
+            h4 {
+                font-size: 2rem;
+                color: #fff;
+                text-shadow: 2px 2px #333;
+                margin-top: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="/#">Inicio</a></li>
+                    <li><a href="/#">Bicicletas</a></li>
+                    <li><a href="/#">Accesorios</a></li>
+                    <li><a href="/#">Sobre nosotros</a></li>
+                    <li><a href="/#">Contactar</a></li>
+                    <li><a href="/login">Iniciar sesión</a></li>
+                    <li><a href="/cart/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
+                </ul>
+            </nav>
+        </header>
+        <main style="display: flex; align-items: center;">
+            <div style="flex: 2;" class="info">
+                <img src="{% static 'img/bike1.jpg' %}" alt="Bike 1">
+            </div>
+            <div style="flex: 2;" class="info">
+                <h2 class="title">Mountain Bike</h2>
+                <p class="description">Experimenta la libertad de explorar terrenos desafiantes con esta mountain bike de alto rendimiento. Diseñada para aventuras fuera de la carretera, esta bicicleta cuenta con un cuadro resistente y una suspensión adaptable que garantiza un paseo suave incluso en los senderos más exigentes. ¡Prepárate para conquistar montañas y senderos con esta confiable compañera de aventuras!</p>
+                <p>Disponibilidad: 50 artículos <button class="in-stock-btn" disabled>En stock</button></p>
+
+                <div class="reviews">
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+                    <span class="num_reviews">(0 opiniones)</span>
+                </div>
+            </div>
+            <div style="flex: 1;" class="buy_section">
+                <h3>Precio:</h3>
+                <h2 class="price">$500</h2>
+                <div class="amount_section">
+                    <h3>Cantidad:</h3>
+                    <p><button>-</button><span style="color: black;">1</span><button>+</button></p>
+                </div>
+                <button class="cart-btn"><i class="fa fa-shopping-cart"></i>Agregar al carrito</button>
+            </div>
+        </main>
+        <footer>
+            <h4>&copy; 2023 Xtreme Biking</h4>
+        </footer> 
+    </body>
+         
+    </html>
