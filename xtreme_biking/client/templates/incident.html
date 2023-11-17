@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Logout</title>
+    <title>Register</title>
     <style>
         nav ul {
             list-style: none;
@@ -104,7 +104,7 @@
             margin-bottom: 20px;
         }
         /* Login form styles */
-        .container {
+        .register {
             max-width: 500px;
             margin: 0 auto;
             padding: 20px;
@@ -112,23 +112,37 @@
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
-        .container h2 {
-            font-size: 2.5rem;
+        .register h2 {
             text-align: center;
-            margin-bottom: 25px;
-            margin-top: 5px;
+            margin-bottom: 20px;
         }
-        .container div {
+        .register label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
-        .container a {
-            margin: 10px;
-            margin-bottom: 25px;
-            font-size: 20px;
-            color: #333;
+        .register input[type="text"], .register input[type="email"], .register input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid black; /* added border */
+            margin-bottom: 20px;
         }
-        .container button[type="submit"] {
+        .register textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid black; /* added border */
+            margin-bottom: 20px;
+        }
+        .register select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid black; /* added border */
+            margin-bottom: 20px;
+        }
+        .register button[type="submit"] {
             display: block;
             width: 100%;
             padding: 10px;
@@ -137,10 +151,10 @@
             color: #fff;
             font-size: 1.2rem;
         }
-        .container button[type="submit"]:hover {
+        .register button[type="submit"]:hover {
             background-color: #555;
         } 
-        .container .btn {
+        .register .btn {
             text-align: center;
             display: block;
             width: 96%;
@@ -149,7 +163,6 @@
             border: none;
             color: #fff;
             font-size: 1.2rem;
-            margin-top: 15px;
         }
         /* Footer styles */
         footer {
@@ -171,6 +184,7 @@
                 <li><a href="/#">Accesorios</a></li>
                 <li><a href="/#">Sobre nosotros</a></li>
                 <li><a href="/#">Contactar</a></li>
+                <li><a href="/login">Iniciar sesión</a></li>
                 <li><a href="/cart/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
             </ul>
         </nav>
@@ -178,16 +192,24 @@
         <p>Prepárate para pedalear con nuestras bicicletas y accesorios de alta calidad.</p>
     </header>
     <main>
-        <section class="container">
-            <h2>Cerrar sesión</h2>
-            <form action="/logout" method="post">
-                <div class="form-group">
-                    <a>Estás seguro de que quieres cerrar sesión?</a>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <a href="/" class="btn">Cerrar sesión</a>
-                    <a href="/" class="btn">Cancelar</a>
-                </div>              
+        <section class="register">
+            <h2>Crear incidencia</h2>
+            <form action="/incident" method="POST">
+                {% csrf_token %}
+                <label for="title">Título incidencia:</label>
+                <input type="text" id="title" name="title" required><br>
+                <label for="product">Producto:</label>
+                    <select id="product" name="product">
+                        <option value="bicicleta">Bicicleta</option>
+                        <option value="casco">Casco</option>
+                        <option value="luces">Luces</option>
+                        <option value="candado">Candado</option>
+                    </select><br>
+                <label for="description">Descripción:</label>
+                <textarea type="description" id="description" name="description" required></textarea><br>
+                <label for="email">Correo electrónico de contacto:</label>
+                <input type="email" id="email" name="email" required><br>
+                <a href="/orders_details" class="btn">Registrar incidencia</a>
             </form>
         </section>
     </main>

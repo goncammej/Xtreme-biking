@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Logout</title>
+    <title>Orders</title>
     <style>
         nav ul {
             list-style: none;
@@ -54,7 +54,7 @@
             flex-direction: column;
         }
         h1 {
-            font-size: 5rem;
+            font-size: 5rem; /* changed font size */
             color: #fff;
             text-shadow: 2px 2px #333;
             margin-bottom: 0;
@@ -115,12 +115,16 @@
         .container h2 {
             font-size: 2.5rem;
             text-align: center;
-            margin-bottom: 25px;
-            margin-top: 5px;
+            color: #333;
+            margin-bottom: 20px;
+            margin-top: 5;
         }
-        .container div {
-            display: block;
-            margin-bottom: 10px;
+        .container h3 {
+            font-size: 1.5rem;
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            margin-top: 5;
         }
         .container a {
             margin: 10px;
@@ -128,7 +132,18 @@
             font-size: 20px;
             color: #333;
         }
-        .container button[type="submit"] {
+        .container table {
+            display: block;
+            margin-bottom: 25px;
+        }
+        .container thead, .container tbody, .container tr, .container th, .container td {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid black; /* added border */
+            margin-bottom: 20px;
+        }
+        .register button[type="submit"] {
             display: block;
             width: 100%;
             padding: 10px;
@@ -137,7 +152,7 @@
             color: #fff;
             font-size: 1.2rem;
         }
-        .container button[type="submit"]:hover {
+        .register button[type="submit"]:hover {
             background-color: #555;
         } 
         .container .btn {
@@ -149,7 +164,6 @@
             border: none;
             color: #fff;
             font-size: 1.2rem;
-            margin-top: 15px;
         }
         /* Footer styles */
         footer {
@@ -171,25 +185,54 @@
                 <li><a href="/#">Accesorios</a></li>
                 <li><a href="/#">Sobre nosotros</a></li>
                 <li><a href="/#">Contactar</a></li>
+                <li><a href="/../../logout">Cerrar sesión</a></li>
                 <li><a href="/cart/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
             </ul>
         </nav>
         <h1>Bienvenido a Xtreme Biking</h1>
         <p>Prepárate para pedalear con nuestras bicicletas y accesorios de alta calidad.</p>
     </header>
+
     <main>
-        <section class="container">
-            <h2>Cerrar sesión</h2>
-            <form action="/logout" method="post">
-                <div class="form-group">
-                    <a>Estás seguro de que quieres cerrar sesión?</a>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <a href="/" class="btn">Cerrar sesión</a>
-                    <a href="/" class="btn">Cancelar</a>
-                </div>              
-            </form>
-        </section>
+        <div class="container">
+            <h2>Detalles del Pedido</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bicicleta de montaña</td>
+                        <td>2</td>
+                        <td>$500</td>
+                        <td>$1000</td>
+                    </tr>
+                    <tr>
+                        <td>Casco de ciclismo</td>
+                        <td>3</td>
+                        <td>$50</td>
+                        <td>$150</td>
+                    </tr>
+                    <tr>
+                        <td>Guantes de ciclismo</td>
+                        <td>4</td>
+                        <td>$20</td>
+                        <td>$80</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Estado del pedido: Entregado</h3>
+            <h3>Total del pedido: $1230</h3>
+            <div style="display: flex; justify-content: space-between;">
+                <a href="/orders" class="btn">Cancelar pedido</a>
+                <a href="/incident" class="btn">Registrar incidencia</a>
+            </div>  
+        </div>
     </main>
     <footer>
         <p>&copy; 2023 Xtreme Biking</p>
