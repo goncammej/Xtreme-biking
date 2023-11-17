@@ -21,5 +21,7 @@ from client import views
 urlpatterns = [
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
+    path('orders/', views.orders, name='orders'),
+    path('logout/', views.logout, name='logout'),
 ]
 
