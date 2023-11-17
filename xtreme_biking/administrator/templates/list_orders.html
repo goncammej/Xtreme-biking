@@ -1,4 +1,3 @@
-{% load static %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <!DOCTYPE html>
 <html>
@@ -47,14 +46,14 @@
         }
         header {
             background-color: #333; /* changed from background-image to background-color */
-            height: 300px; /* changed height to 300px */
+            height: 200px; /* changed height to 300px */
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
         }
         h1 {
-            font-size: 5rem;
+            font-size: 5rem; /* changed font size */
             color: #fff;
             text-shadow: 2px 2px #333;
             margin-bottom: 0;
@@ -115,20 +114,22 @@
         .container h2 {
             font-size: 2.5rem;
             text-align: center;
-            margin-bottom: 25px;
-            margin-top: 5px;
-        }
-        .container div {
-            display: block;
-            margin-bottom: 10px;
-        }
-        .container a {
-            margin: 10px;
-            margin-bottom: 25px;
-            font-size: 20px;
             color: #333;
+            margin-bottom: 20px;
+            margin-top: 5;
         }
-        .container button[type="submit"] {
+        .container table {
+            display: block;
+            margin-bottom: 25px;
+        }
+        .container thead, .container tbody, .container tr, .container th, .container td {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid black; /* added border */
+            margin-bottom: 20px;
+        }
+        .register button[type="submit"] {
             display: block;
             width: 100%;
             padding: 10px;
@@ -137,10 +138,10 @@
             color: #fff;
             font-size: 1.2rem;
         }
-        .container button[type="submit"]:hover {
+        .register button[type="submit"]:hover {
             background-color: #555;
         } 
-        .container .btn {
+        .register .btn {
             text-align: center;
             display: block;
             width: 96%;
@@ -149,7 +150,6 @@
             border: none;
             color: #fff;
             font-size: 1.2rem;
-            margin-top: 15px;
         }
         /* Footer styles */
         footer {
@@ -171,25 +171,47 @@
                 <li><a href="/">Accesorios</a></li>
                 <li><a href="/">Sobre nosotros</a></li>
                 <li><a href="/">Contactar</a></li>
+                <li><a href="/client/logout">Cerrar sesión</a></li>
                 <li><a href="/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
             </ul>
         </nav>
-        <h1>Bienvenido a Xtreme Biking</h1>
-        <p>Prepárate para pedalear con nuestras bicicletas y accesorios de alta calidad.</p>
+        <h1>Xtreme Biking</h1>
     </header>
+
     <main>
-        <section class="container">
-            <h2>Cerrar sesión</h2>
-            <form action="/logout" method="post">
-                <div class="form-group">
-                    <a>Estás seguro de que quieres cerrar sesión?</a>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <a href="/" class="btn">Cerrar sesión</a>
-                    <a href="/" class="btn">Cancelar</a>
-                </div>              
-            </form>
-        </section>
+        <div class="container">
+            <h2>Lista de Pedidos</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Total</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="/client/orders_details">Pedido 1</a></td>
+                        <td>$1000</td>
+                        <td>01/01/2021</td>
+                        <td>Entregado</td>
+                    </tr>
+                    <tr>
+                        <td><a href="/client/orders_details">Pedido 2</a></td>
+                        <td>$150</td>
+                        <td>15/11/2023</td>
+                        <td>Enviado</td>
+                    </tr>
+                    <tr>
+                        <td><a href="/client/orders_details">Pedido 3</a></td>
+                        <td>$80</td>
+                        <td>17/11/2023</td>
+                        <td>Procesando</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </main>
     <footer>
         <p>&copy; 2023 Xtreme Biking</p>
