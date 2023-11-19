@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #555;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            flex: 1;
+            text-align: center;
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 15px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .dashboard {
+            background-color: #eee;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+        }
+
+        .count {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .stat1{
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            margin: 0 10px;
+            background-color: #ff0000;
+            border-radius: 10px;
+        }
+        .stat2{
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            margin: 0 10px;
+            background-color: green ;
+            border-radius: 10px;
+        }
+        .stat3{
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            margin: 0 10px;
+            background-color: rgb(255, 255, 0);
+            border-radius: 10px;
+        }
+
+        .incidents table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .incidents th, .incidents td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+    <title>Panel de Administración de Incidencias</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Panel de Administración</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Incidencias</a></li>
+                <li><a href="#">Usuarios</a></li>
+            </ul>
+        </nav>
+        <main>
+            <section class="dashboard">
+                <h2>Resumen de Incidencias</h2>
+                <div class="stats">
+                    <div class="stat1">
+                        <span class="count">24</span>
+                        <span class="label1">Incidencias Pendientes</span>
+                    </div>
+                    <div class="stat3">
+                        <span class="count">6</span>
+                        <span class="label3">Incidencias En Progreso</span>
+                    </div>
+                    <div class="stat2">
+                        <span class="count">18</span>
+                        <span class="label2">Incidencias Resueltas</span>
+                    </div>
+                </div>
+            </section>
+            <section class="incidents">
+                <h2>Listado de Incidencias</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>2023-11-19</td>
+                            <td>Error en el sistema</td>
+                            <td>Pendiente</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>2023-11-20</td>
+                            <td>Problema de red</td>
+                            <td>En Progreso</td>
+                        </tr>
+                        <!-- Agrega más filas según sea necesario -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        </section>
+            <footer style="position: fixed; bottom: 0; left: 0; width: 100%;">
+                <p>&copy; 2023 Xtreme Biking</p>
+            </footer>
+        </div>
+        </body>
+        </html>
+    </div>
+</body>
+</html>
