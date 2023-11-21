@@ -1,304 +1,22 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Xtreme Biking</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        <style>
-            nav ul {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-            }
-            nav li {
-                display: inline-block;
-                margin-right: 20px;
-            }
-            nav li a {
-                color: #fff;
-                text-decoration: none;
-                font-size: 1.2rem; /* increased font size */
-            }
-            main {
-                max-width: 1200px;
-                margin: 0 auto 30px; /* added margin-bottom */
-                padding: 20px;
-            }
+{% extends 'base.html' %}
+{% load static %} 
+{% block content %}
+<div class="max-w-6xl mx-auto py-6 px-6 xl:px-0 items-center flex flex-wrap justify-center">
+    <div class="images w-full mb-6 lg:mb-0 lg:w-3/5">
+        <img class="rounded-xl" src="{% static 'img/bike1.jpg' %}">
+    </div>
 
-            .buy_section {
-                width: 30%;
-                margin-bottom: 20px;
-                text-align: center;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                padding: 10px;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            }
-            .info img {
-                width: 500px; /* added width */
-                height: 300px;
-                object-fit: cover;
-                border-radius: 5px;
-            }
-            .btn {
-                display: inline-block;
-                background-color: #333;
-                color: #fff;
-                padding: 5px 10px; /* reduced padding */
-                text-decoration: none;
-                margin-top: 10px;
-                border-radius: 5px;
-            }
-            .btn:hover {
-                background-color: #555;
-            }
-            footer {
-                background-color: #333;
-                color: #fff;
-                padding: 10px;
-                text-align: center;
-                position: fixed;
-                bottom: 0;
-                width: 100%;
-                height: 30px;
-            }
-            header {
-                background-color: #333; /* changed from background-image to background-color */
-                height: 90px; /* changed height to 200px */
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                margin-bottom: 1px;
-            }
-            h1 {
-                font-size: 5rem;
-                color: #fff;
-                text-shadow: 2px 2px #333;
-                margin-bottom: 0;
-            }
-            p {
-                font-size: 1.2rem; /* reduced font size */
-                color: #000; /* changed to black */
-                margin-top: 0;
-            }
-            .price {
-                color: black;
-                text-shadow: none; /* remove the shadow */
-                font-size: 3rem;
-                margin-top: 20px;
-            }
-            /* New color palette */
-            body {
-                background-color: #f2f2f2;
-                margin-bottom: 30px; /* added margin-bottom */
-            }
-            header {
-                background-color: #1c1c1c;
-            }
-            nav li a {
-                color: #f2f2f2;
-            }
-            /* New section */
-            .center_section {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-top: 30px;
-            }
-            .title {
-                font-size: 3rem;
-                margin-bottom: 10px;
-                color: #1c1c1c;
-            }
-            .description {
-                font-size: 1rem; /* reduced font size */
-                margin-bottom: 10px;
-                color: #1c1c1c;
-            }
-            .availability {
-                font-size: 1.2rem;
-                margin-bottom: 10px;
-                color: black; /* changed to black */
-            }
-            .in_stock {
-                display: inline-block;
-                width: 20px;
-                height: 20px;
-                background-color: green;
-                margin-right: 10px;
-                border-radius: 5px;
-            }
-            .stars {
-                display: flex;
-                margin-top: 10px;
-            }
-            .stars {
-                color: gold;
-                font-size: 2rem;
-                margin-right: 5px;
-            }
-            .btn {
-                background-color: #1c1c1c;
-                color: #f2f2f2;
-                margin-top: 20px;
-                font-size: 1.5rem;
-                padding: 5px 10px; /* reduced padding */
-                border-radius: 5px;
-            }
-            .btn:hover {
-                background-color: #333;
-            }
-            footer {
-                background-color: #1c1c1c;
-            }
-            .cart-icon {
-                display: inline-block;
-                margin-left: 20px;
-                font-size: 2rem;
-                color: #fff;
-            }
-            .cart-link {
-                color: #fff;
-                text-decoration: none;
-            }
-            .info {
-                background-color: #f2f2f2;
-                padding: 20px;
-                margin-top: 20px;
-                border-radius: 5px;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-                margin-right: 25px;
-            }
-            .featured h2 {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            .view-all {
-                text-align: center;
-                margin-top: 20px;
-            }
-            .view-all a {
-                display: inline-block;
-                background-color: #333;
-                color: #fff;
-                padding: 10px 20px;
-                text-decoration: none;
-                border-radius: 5px;
-            }
-            .view-all a:hover {
-                background-color: #555;
-            }
-            .bike-image {
-                margin-right: px;
-                width: 85%;
-                height: 85%;
-                object-fit: cover;
-                border-radius: 10px; 
-            }
-            /* New section */
-            .amount_section {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-top: 30px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                padding: 10px;
-                height: 70px;
-            }
-            .amount_section h3 {
-                margin-top: 6px;
-                font-size: 1.5rem;
-                margin-bottom: 1px;
-                color: #1c1c1c;
-            }
-            .amount_section button {
-                background-color: #1c1c1c;
-                color: #fff; /* changed to white */
-                margin-top: 5px;
-                font-size: 1.2rem; /* reduced font size */
-                padding: 3px 8px; /* reduced padding */
-                border-radius: 5px;
-                margin-right: 10px;
-                margin-left: 10px; /* added margin */
-            }
-            .amount_section button:hover {
-                background-color: #333;
-            }
-            .cart-btn {
-                background-color: #1c1c1c;
-                color: #fff;
-                margin-top: 20px;
-                font-size: 1.5rem;
-                padding: 5px 10px; /* reduced padding */
-                border-radius: 5px;
-                display: flex;
-                align-items: center;
-            }
-            .cart-btn:hover {
-                background-color: #333;
-            }
-            .cart-btn i {
-                margin-right: 5px;
-            }
-            .in-stock-btn {
-                background-color: green;
-                color: #fff;
-                margin-top: 20px;
-                font-size: 1.5rem;
-                border-radius: 5px;
-                display: flex;
-                align-items: center;
-            }
-            .spnt-btn {
-                background-color: red;
-                color: #fff;
-                margin-top: 20px;
-                font-size: 1.5rem;
-                border-radius: 5px;
-                display: flex;
-                align-items: center;
-            }
-            h4 {
-                font-size: 2rem;
-                color: #fff;
-                text-shadow: 2px 2px #333;
-                margin-top: 0;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="/">Inicio</a></li>
-                    <li><a href="/store/bike_catalogue">Bicicletas</a></li>
-                    <li><a href="/store/accessories_catalogue">Accesorios</a></li>
-                    <li><a href="/#">Sobre nosotros</a></li>
-                    <li><a href="/#">Contactar</a></li>
-                    <li><a href="/login.html">Iniciar sesión</a></li>
-                    <li><a href="/cart/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
-                </ul>
-            </nav>
-        </header>
-        <main style="display: flex; align-items: center;">
-            <div style="flex: 2;" class="info">
-                <img src="{{ product.image_url }}" alt="{{product.title}}">
-            </div>
-            <div style="flex: 2;" class="info">
-                <h2 class="title">{{product.title}}</h2>
-                <p class="description">{{product.description}}</p>
-                <p> Categoria: {{product.category}} <br>
-                    Disponibilidad: {{product.availability}} artículos 
-                    {% if product.availability == 0 %}
-                    <button class="spnt-btn" disabled>Agotado</button></p>
-                    {% else %}
-                    <button class="in-stock-btn" disabled>En stock</button></p>
-                    {% endif %}
-                </p>
-                <div class="reviews">
-                    <span class="stars" id="ratingStars"></span>
+    <div class="information w-full lg:w-2/5 lg:p-6">
+        <h1 class="text-2xl">Product Name</h1>
+
+        <p class="mt-1 text-gray-400">$9.99</p>
+
+        <p class="mt-6 text-gray-700">Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+
+        <a href="#" style="background-color: #a3cb64;" class="mt-6 inline-block px-8 py-4 rounded-xl text-white">
+            Add to cart
+        </a>
+        <span class="stars" id="ratingStars"></span>
                     <script>
                         var averageRating = '{{ ratings_mean }}';
                         var ratings = '{{ ratings_count }}';
@@ -319,48 +37,66 @@
                         }
                         document.getElementById('ratingStars').innerHTML = starsHTML;
                     </script>
-                    <span class="num_reviews">(<a href="/store/product_details/{{product.id}}/ratings/">{{ ratings_count }} opiniones</a>)</span>
-                </div>
+        {% if product.availability == 0 %}
+        <h3>Este producto se encuentra agotado</h3>
+        {% else %}
+        <div class="amount_section">
+            <h3>Cantidad:</h3>
+            <p>
+                <button onclick="decreaseQuantity()">-</button>
+                <span id="quantity" style="color: black;">1</span>
+                <button onclick="increaseQuantity()">+</button>
+            </p>
+            <script>
+                function decreaseQuantity() {
+                    var quantityElement = document.getElementById('quantity');
+                    var quantity = parseInt(quantityElement.innerText);
+                    if (quantity > 1) {
+                        quantity--;
+                        quantityElement.innerText = quantity;
+                    }
+                }
+                function increaseQuantity() {
+                    var quantityElement = document.getElementById('quantity');
+                    var quantity = parseInt(quantityElement.innerText);
+                    if (quantity < '{{ product.availability }}'){
+                        quantity++;
+                        quantityElement.innerText = quantity;
+                    }                    
+                }
+            </script>
+        </div>
+    </div>
+
+    <ul class="mt-12">
+        <li class="py-8 text-left border px-4 mt-2">
+          <div class="flex items-start">
+            <img class="block h-10 w-10 max-w-full flex-shrink-0 rounded-full align-middle" src="/images/Ju6-1negUEjTnBKw_ZP4r.png" alt="" />
+      
+            <div class="ml-6">
+              <div class="flex items-center">
+                <svg class="block h-6 w-6 align-middle text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" class=""></path>
+                </svg>
+                <svg class="block h-6 w-6 align-middle text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" class=""></path>
+                </svg>
+                <svg class="block h-6 w-6 align-middle text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" class=""></path>
+                </svg>
+                <svg class="block h-6 w-6 align-middle text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" class=""></path>
+                </svg>
+                <svg class="block h-6 w-6 align-middle text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" class=""></path>
+                </svg>
+              </div>
+              <p class="mt-5 text-base text-gray-900">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro blanditiis sapiente ab dolores, ad dignissimos perspiciatis.</p>
+              <p class="mt-5 text-sm font-bold text-gray-900">John Lester</p>
+              <p class="mt-1 text-sm text-gray-600">March 01, 2022</p>
             </div>
-            <div style="flex: 1;" class="buy_section">
-                <h3>Precio:</h3>
-                <h2 class="price">{{product.price}} €</h2>
-                {% if product.availability == 0 %}
-                <h3>Este producto se encuentra agotado</h3>
-                {% else %}
-                <div class="amount_section">
-                    <h3>Cantidad:</h3>
-                    <p>
-                        <button onclick="decreaseQuantity()">-</button>
-                        <span id="quantity" style="color: black;">1</span>
-                        <button onclick="increaseQuantity()">+</button>
-                    </p>
-                    <script>
-                        function decreaseQuantity() {
-                            var quantityElement = document.getElementById('quantity');
-                            var quantity = parseInt(quantityElement.innerText);
-                            if (quantity > 1) {
-                                quantity--;
-                                quantityElement.innerText = quantity;
-                            }
-                        }
-                        function increaseQuantity() {
-                            var quantityElement = document.getElementById('quantity');
-                            var quantity = parseInt(quantityElement.innerText);
-                            if (quantity < '{{ product.availability }}'){
-                                quantity++;
-                                quantityElement.innerText = quantity;
-                            }                    
-                        }
-                    </script>
-                </div>
-                <button class="cart-btn"><i class="fa fa-shopping-cart"></i>Agregar al carrito</button>
-                {% endif %}
-            </div>
-        </main>
-        <footer>
-            <h4>&copy; 2023 Xtreme Biking</h4>
-        </footer> 
-    </body>
-         
-    </html>
+          </div>
+        </li>
+    </ul>
+</div>
+{% endblock %}
