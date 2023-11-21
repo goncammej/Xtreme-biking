@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html>
@@ -252,6 +251,15 @@
                 display: flex;
                 align-items: center;
             }
+            .spnt-btn {
+                background-color: red;
+                color: #fff;
+                margin-top: 20px;
+                font-size: 1.5rem;
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+            }
             h4 {
                 font-size: 2rem;
                 color: #fff;
@@ -265,37 +273,89 @@
             <nav>
                 <ul>
                     <li><a href="/">Inicio</a></li>
-                    <li><a href="/">Bicicletas</a></li>
-                    <li><a href="/">Accesorios</a></li>
-                    <li><a href="/">Sobre nosotros</a></li>
-                    <li><a href="/">Contactar</a></li>
-                    <li><a href="/client/login">Iniciar sesión</a></li>
-                    <li><a href="/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
+                    <li><a href="/store/bike_catalogue">Bicicletas</a></li>
+                    <li><a href="/store/accessories_catalogue">Accesorios</a></li>
+                    <li><a href="/#">Sobre nosotros</a></li>
+                    <li><a href="/#">Contactar</a></li>
+                    <li><a href="/login.html">Iniciar sesión</a></li>
+                    <li><a href="/cart/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
                 </ul>
             </nav>
         </header>
         <main style="display: flex; align-items: center;">
             <div style="flex: 2;" class="info">
-                <img src="{% static 'img/bike1.jpg' %}" alt="Bike 1">
+                <img src="{{ product.image_url }}" alt="{{product.title}}">
             </div>
             <div style="flex: 2;" class="info">
-                <h2 class="title">Mountain Bike</h2>
-                <p class="description">Experimenta la libertad de explorar terrenos desafiantes con esta mountain bike de alto rendimiento. Diseñada para aventuras fuera de la carretera, esta bicicleta cuenta con un cuadro resistente y una suspensión adaptable que garantiza un paseo suave incluso en los senderos más exigentes. ¡Prepárate para conquistar montañas y senderos con esta confiable compañera de aventuras!</p>
-                <p>Disponibilidad: 50 artículos <button class="in-stock-btn" disabled>En stock</button></p>
-
+                <h2 class="title">{{product.title}}</h2>
+                <p class="description">{{product.description}}</p>
+                <p> Categoria: {{product.category}} <br>
+                    Disponibilidad: {{product.availability}} artículos 
+                    {% if product.availability == 0 %}
+                    <button class="spnt-btn" disabled>Agotado</button></p>
+                    {% else %}
+                    <button class="in-stock-btn" disabled>En stock</button></p>
+                    {% endif %}
+                </p>
                 <div class="reviews">
-                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
-                    <span class="num_reviews">(0 opiniones)</span>
+                    <span class="stars" id="ratingStars"></span>
+                    <script>
+                        var averageRating = '{{ ratings_mean }}';
+                        var ratings = '{{ ratings_count }}';
+                        var filledStars = Math.round(averageRating);
+                        var emptyStars = 5 - filledStars;
+                        var starsHTML = '';
+                        if (ratings == 0){
+                            starsHTML = '&#9734;&#9734;&#9734;&#9734;&#9734;';
+                        }
+                        else{
+                            for (var i = 0; i < filledStars; i++) {
+                                starsHTML += '&#9733;';
+                             }
+                        
+                            for (var i = 0; i < emptyStars; i++) {
+                                starsHTML += '&#9734;';
+                             }
+                        }
+                        document.getElementById('ratingStars').innerHTML = starsHTML;
+                    </script>
+                    <span class="num_reviews">(<a href="/store/product_details/{{product.id}}/ratings/">{{ ratings_count }} opiniones</a>)</span>
                 </div>
             </div>
             <div style="flex: 1;" class="buy_section">
                 <h3>Precio:</h3>
-                <h2 class="price">$500</h2>
+                <h2 class="price">{{product.price}} €</h2>
+                {% if product.availability == 0 %}
+                <h3>Este producto se encuentra agotado</h3>
+                {% else %}
                 <div class="amount_section">
                     <h3>Cantidad:</h3>
-                    <p><button>-</button><span style="color: black;">1</span><button>+</button></p>
+                    <p>
+                        <button onclick="decreaseQuantity()">-</button>
+                        <span id="quantity" style="color: black;">1</span>
+                        <button onclick="increaseQuantity()">+</button>
+                    </p>
+                    <script>
+                        function decreaseQuantity() {
+                            var quantityElement = document.getElementById('quantity');
+                            var quantity = parseInt(quantityElement.innerText);
+                            if (quantity > 1) {
+                                quantity--;
+                                quantityElement.innerText = quantity;
+                            }
+                        }
+                        function increaseQuantity() {
+                            var quantityElement = document.getElementById('quantity');
+                            var quantity = parseInt(quantityElement.innerText);
+                            if (quantity < '{{ product.availability }}'){
+                                quantity++;
+                                quantityElement.innerText = quantity;
+                            }                    
+                        }
+                    </script>
                 </div>
                 <button class="cart-btn"><i class="fa fa-shopping-cart"></i>Agregar al carrito</button>
+                {% endif %}
             </div>
         </main>
         <footer>

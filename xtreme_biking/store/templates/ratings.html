@@ -1,5 +1,6 @@
 {% load static %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,7 +33,7 @@
             .product {
                 width: 30%;
                 margin-bottom: 20px;
-                text-align: center;
+                text-align: left;
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 padding: 10px;
@@ -58,11 +59,12 @@
             }
             header {
                 background-color: #333; /* changed from background-image to background-color */
-                height: 300px; /* changed height to 300px */
+                height: 90px; /* changed height to 200px */
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
+                margin-bottom: 1px;
             }
             h1 {
                 font-size: 5rem;
@@ -71,10 +73,9 @@
                 margin-bottom: 0;
             }
             p {
-                font-size: 2rem;
-                color: #fff;
-                text-shadow: 2px 2px #333;
-                margin-top: 0;
+                font-size: 1.5rem;
+                color: black;
+                margin-top: 10px;
             }
             .price {
                 color: black;
@@ -157,7 +158,35 @@
                 text-align: center;
             }
             footer p {
+                color: white;
                 margin: 0;
+            }
+            .stars {
+                display: flex;
+                margin-top: 0px;
+            }
+            .stars {
+                color: gold;
+                font-size: 2rem;
+                margin-right: 5px;
+            }
+            .rating-info {
+                display: flex;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+            .rating-info i {
+                margin-bottom: 15px;
+                margin-right: 5px;
+            }
+            .date {
+                color: gray;
+            }
+            .description {
+                margin-top: 10px;
+            }
+            .email {
+                color: #1c1c1c;
             }
         </style>
     </head>
@@ -174,47 +203,46 @@
                     <li><a href="/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
                 </ul>
             </nav>
-            <h1>Bienvenido a Xtreme Biking</h1>
-            <p>Prepárate para pedalear con nuestras bicicletas y accesorios de alta calidad.</p>
         </header>
         <main>
             <section class="featured">
-                <h2>Bicicletas destacadas</h2>
+                <h2>Valoraciones del producto: {{product.title}}</h2>
                 <div class="products">
-                    {% for product in products_mountain %}
+                    {% for rating in ratings %}
                     <div class="product">
-                        <img src="{{ product.image_url }}" alt="{{ products.title }}">
-                        <h2>{{ product.title }}</h2>
-                        <h3>{{ product.category }}</h3>
-                        <p class="price">{{ product.price }} €</p>
-                        <a href="/store/product_details/{{ product.id }}" class="btn">Comprar</a>
+                        <div class="rating-info">
+                            <i class="far fa-user-circle fa-2x"></i>
+                            <p class="email">{{ rating.email }}</p>
+                        </div>
+                        <div class="rating-details">
+                            <span class="stars" id="ratingStars{{ forloop.counter }}"></span>
+                            <script>
+                                var rating = '{{ rating.rating }}';
+                                var starsHTML = '';
+                                var filledStars = Number(rating);
+                                var emptyStars = 5 - filledStars;
+                                var ratingStarsId = 'ratingStars' + '{{ forloop.counter }}';
+                                if (rating === 0) {
+                                    starsHTML = '&#9734;&#9734;&#9734;&#9734;&#9734;';
+                                } else {
+                                    for (var i = 0; i < filledStars; i++) {
+                                        starsHTML += '&#9733;';
+                                    }
+                                    for (var i = 0; i < emptyStars; i++) {
+                                        starsHTML += '&#9734;';
+                                    }
+                                }
+                                document.getElementById(ratingStarsId).innerHTML = starsHTML;
+                            </script>
+                            <p class="description">{{ rating.comment }}</p>
+                            <p class="date">{{ rating.date }}</p>
+                        </div>
                     </div>
                     {% endfor %}
-                    {% for product in products_urban %}
-                    <div class="product">
-                        <img src="{{ product.image_url }}" alt="{{ products.title }}">
-                        <h2>{{ product.title }}</h2>
-                        <h3>{{ product.category }}</h3>
-                        <p class="price">{{ product.price }} €</p>
-                        <a href="/store/product_details/{{ product.id }}" class="btn">Comprar</a>
-                    </div>
-                    {% endfor %}
-                    {% for product in products_road %}
-                    <div class="product">
-                        <img src="{{ product.image_url }}" alt="{{ products.title }}">
-                        <h2>{{ product.title }}</h2>
-                        <h3>{{ product.category }}</h3>
-                        <p class="price">{{ product.price }} €</p>
-                        <a href="/store/product_details/{{ product.id }}" class="btn">Comprar</a>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="view-all">
-
-                    <a href="/store/bike_catalogue">Ver todas las bicicletas</a>
-
-                </div>
             </section>
+            <div class="view-all">
+                <a href="/store/bike_catalogue">Añadir opinión</a>
+            </div>
         </main>
         <footer>
             <p>&copy; 2023 Xtreme Biking</p>

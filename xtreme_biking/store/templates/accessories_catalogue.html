@@ -58,11 +58,12 @@
             }
             header {
                 background-color: #333; /* changed from background-image to background-color */
-                height: 300px; /* changed height to 300px */
+                height: 90px; /* changed height to 200px */
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
+                margin-bottom: 1px;
             }
             h1 {
                 font-size: 5rem;
@@ -73,7 +74,6 @@
             p {
                 font-size: 2rem;
                 color: #fff;
-                text-shadow: 2px 2px #333;
                 margin-top: 0;
             }
             .price {
@@ -159,6 +159,35 @@
             footer p {
                 margin: 0;
             }
+            .amount_section {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                height: 70px;
+            }
+            .amount_section h3 {
+                margin-top: 6px;
+                font-size: 1.5rem;
+                margin-bottom: 1px;
+                color: #1c1c1c;
+            }
+            .amount_section button {
+                background-color: #1c1c1c;
+                color: #fff; /* changed to white */
+                margin-top: 5px;
+                font-size: 1.2rem; /* reduced font size */
+                padding: 3px 8px; /* reduced padding */
+                border-radius: 5px;
+                margin-right: 10px;
+                margin-left: 10px; /* added margin */
+            }
+            .amount_section button:hover {
+                background-color: #333;
+            }
         </style>
     </head>
     <body>
@@ -174,45 +203,51 @@
                     <li><a href="/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
                 </ul>
             </nav>
-            <h1>Bienvenido a Xtreme Biking</h1>
-            <p>Prepárate para pedalear con nuestras bicicletas y accesorios de alta calidad.</p>
         </header>
         <main>
             <section class="featured">
-                <h2>Bicicletas destacadas</h2>
+                <h2>Accesorios</h2>
                 <div class="products">
-                    {% for product in products_mountain %}
+                    {% for accessory in accessories %}
                     <div class="product">
-                        <img src="{{ product.image_url }}" alt="{{ products.title }}">
-                        <h2>{{ product.title }}</h2>
-                        <h3>{{ product.category }}</h3>
-                        <p class="price">{{ product.price }} €</p>
-                        <a href="/store/product_details/{{ product.id }}" class="btn">Comprar</a>
+                        <img src="{{ accessory.image_url }}" alt="{{ accessory.title }}">
+                        <h2>{{ accessory.title }}</h2>
+                        <h3>{{ accessory.category }}</h3>
+                        <p class="price">{{ accessory.price }} €</p>
+                        {% if accessory.availability == 0 %}
+                        <h3>Este producto se encuentra agotado</h3>
+                        {% else %}
+                        <div class="amount_section">
+                            <h3>Cantidad:</h3>
+                            <p>
+                                <button onclick="decreaseQuantity()">-</button>
+                                <span id="quantity" style="color: black;">1</span>
+                                <button onclick="increaseQuantity()">+</button>
+                            </p>
+                            <script>
+                                function decreaseQuantity() {
+                                    var quantityElement = document.getElementById('quantity');
+                                    var quantity = parseInt(quantityElement.innerText);
+                                    if (quantity > 1) {
+                                        quantity--;
+                                        quantityElement.innerText = quantity;
+                                    }
+                                }
+                                function increaseQuantity() {
+                                    var quantityElement = document.getElementById('quantity');
+                                    var quantity = parseInt(quantityElement.innerText);
+                                    if (quantity < '{{ accessory.availability }}'){
+                                        quantity++;
+                                        quantityElement.innerText = quantity;
+                                    }                    
+                                }
+                            </script>  
+                        </div>
+                        <button class="btn"><i class="fa fa-shopping-cart"></i> Agregar al carrito</button>
+                        {% endif %}
+                        <a href="/store/product_details/{{ accessory.id }}" class="btn">Detalles</a>
                     </div>
                     {% endfor %}
-                    {% for product in products_urban %}
-                    <div class="product">
-                        <img src="{{ product.image_url }}" alt="{{ products.title }}">
-                        <h2>{{ product.title }}</h2>
-                        <h3>{{ product.category }}</h3>
-                        <p class="price">{{ product.price }} €</p>
-                        <a href="/store/product_details/{{ product.id }}" class="btn">Comprar</a>
-                    </div>
-                    {% endfor %}
-                    {% for product in products_road %}
-                    <div class="product">
-                        <img src="{{ product.image_url }}" alt="{{ products.title }}">
-                        <h2>{{ product.title }}</h2>
-                        <h3>{{ product.category }}</h3>
-                        <p class="price">{{ product.price }} €</p>
-                        <a href="/store/product_details/{{ product.id }}" class="btn">Comprar</a>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="view-all">
-
-                    <a href="/store/bike_catalogue">Ver todas las bicicletas</a>
-
                 </div>
             </section>
         </main>
