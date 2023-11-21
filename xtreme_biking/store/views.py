@@ -1,14 +1,14 @@
 from .models import Product, Rating
-from django.shortcuts import render, get_object_or_404
 from django.db.models import Avg
 from django.views.generic.base import View
 from django.http import HttpResponse
 from django import forms
+from django.shortcuts import render, get_object_or_404, redirect
 
 class RatingForm(forms.ModelForm):
     class Meta:
         model = Rating
-        fields = ['rating', 'comment', 'title', 'email']
+        fields = ['comment', 'title', 'email']
 
 def home(request):
     # Retrieve the products of each category ordered by the rating field of the rating model
@@ -64,6 +64,7 @@ def get(request, producto_id):
 
     response = render(request, 'ratings.html', context)
     return HttpResponse(response)
+
         
 def post(request, producto_id):
     if request.method == 'POST':
@@ -71,11 +72,16 @@ def post(request, producto_id):
         if form.is_valid():
             rating = form.save(commit=False)
             rating.bike = Product.objects.get(pk=producto_id)
+            selected_stars = request.POST.get('selectedStars')
+            rating.rating = int(selected_stars) if selected_stars.isdigit() else 0
             rating.save()
-            response = render(request, 'ratings.html')
+            response = redirect('ratings', producto_id=producto_id)
+            
     else:
         form = RatingForm()
         response = render(request, 'rating_form.html', {'form': form})
 
     return HttpResponse(response)
+ 
+
 
