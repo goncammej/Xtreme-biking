@@ -56,6 +56,15 @@
             .btn:hover {
                 background-color: #555;
             }
+            footer {
+                background-color: #333;
+                color: #fff;
+                padding: 10px;
+                text-align: center;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
             header {
                 background-color: #333; /* changed from background-image to background-color */
                 height: 300px; /* changed height to 300px */
@@ -98,15 +107,6 @@
                 background-color: #333;
             }
             footer {
-                background-color: #333;
-                color: #fff;
-                padding: 10px;
-                text-align: center;
-                position: fixed;
-                bottom: 0;
-                width: 100%;
-            }
-            footer {
                 background-color: #1c1c1c;
             }
             .cart-icon {
@@ -123,35 +123,46 @@
             header {
                 margin-bottom: 20px;
             }
-            /* Added styles for featured section */
-            .featured {
-                background-color: #f2f2f2;
+            /* Login form styles */
+            .login {
+                max-width: 500px;
+                margin: 0 auto;
                 padding: 20px;
-                margin-top: 20px;
+                background-color: #fff;
                 border-radius: 5px;
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             }
-            .featured h2 {
+            .login h2 {
                 text-align: center;
                 margin-bottom: 20px;
             }
-            .view-all {
-                text-align: center;
-                margin-top: 20px;
+            .login label {
+                display: block;
+                margin-bottom: 5px;
             }
-            .view-all a {
-                display: inline-block;
-                margin-bottom: 30px;
-                background-color: #1c1c1c;
+            .login input[type="email"],
+            .login input[type="password"] {
+                width: 100%;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid black; /* added border */
+                margin-bottom: 20px;
+            }
+            .login button[type="submit"] {
+                background-color: #333;
                 color: #fff;
                 padding: 10px 20px;
-                text-decoration: none;
+                border: none;
                 border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
             }
-            .view-all a:hover {
+            .login button[type="submit"]:hover {
                 background-color: #555;
             }
+            /* Footer styles */
             footer {
+                background-color: #333;
                 color: #fff;
                 padding: 10px;
                 text-align: center;
@@ -166,11 +177,11 @@
             <nav>
                 <ul>
                     <li><a href="/">Inicio</a></li>
-                    <li><a href="/store/bike_catalogue">Bicicletas</a></li>
-                    <li><a href="/store/accessories_catalogue">Accesorios</a></li>
+                    <li><a href="/">Bicicletas</a></li>
+                    <li><a href="/">Accesorios</a></li>
                     <li><a href="/">Sobre nosotros</a></li>
                     <li><a href="/">Contactar</a></li>
-                    <li><a href="/client/login">Iniciar sesión</a></li>
+                    <li><a href="/client/register">Registrarse</a></li>
                     <li><a href="/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
                 </ul>
             </nav>
@@ -178,42 +189,16 @@
             <p>Prepárate para pedalear con nuestras bicicletas y accesorios de alta calidad.</p>
         </header>
         <main>
-            <section class="featured">
-                <h2>Bicicletas destacadas</h2>
-                <div class="products">
-                    {% for product in products_mountain %}
-                    <div class="product">
-                        <img src="{{ product.image_url }}" alt="{{ products.title }}">
-                        <h2>{{ product.title }}</h2>
-                        <h3>{{ product.category }}</h3>
-                        <p class="price">{{ product.price }} €</p>
-                        <a href="/store/product_details/{{ product.id }}" class="btn">Comprar</a>
-                    </div>
-                    {% endfor %}
-                    {% for product in products_urban %}
-                    <div class="product">
-                        <img src="{{ product.image_url }}" alt="{{ products.title }}">
-                        <h2>{{ product.title }}</h2>
-                        <h3>{{ product.category }}</h3>
-                        <p class="price">{{ product.price }} €</p>
-                        <a href="/store/product_details/{{ product.id }}" class="btn">Comprar</a>
-                    </div>
-                    {% endfor %}
-                    {% for product in products_road %}
-                    <div class="product">
-                        <img src="{{ product.image_url }}" alt="{{ products.title }}">
-                        <h2>{{ product.title }}</h2>
-                        <h3>{{ product.category }}</h3>
-                        <p class="price">{{ product.price }} €</p>
-                        <a href="/store/product_details/{{ product.id }}" class="btn">Comprar</a>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="view-all">
-
-                    <a href="/store/bike_catalogue">Ver todas las bicicletas</a>
-
-                </div>
+            <section class="login">
+                <h2>Iniciar sesión</h2>
+                <form action="/login" method="POST">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                    <a href="/" class="btn">Iniciar sesión</a>
+                    <a href="/client/register" class="btn">Registrarse</a>
+                </form>
             </section>
         </main>
         <footer>

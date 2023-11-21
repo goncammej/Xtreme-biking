@@ -22,4 +22,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', store_views.home, name='home'),
     path('store/',include('store.urls')),
+    path('administrator/', include('administrator.urls')),
+    path('cart/', include('cart.urls')),
+    path('client/', include('client.urls')),
+    path('order/', include('order.urls')),
+    path('payment/', include('payment.urls')),
+    path('store/', include('store.urls')),
 ]
+
