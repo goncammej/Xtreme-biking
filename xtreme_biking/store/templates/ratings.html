@@ -1,0 +1,251 @@
+{% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Xtreme Biking</title>
+        <style>
+            nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            nav li {
+                display: inline-block;
+                margin-right: 20px;
+            }
+            nav li a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 1.2rem; /* increased font size */
+            }
+            main {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            .products {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            .product {
+                width: 30%;
+                margin-bottom: 20px;
+                text-align: left;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            }
+            .product img {
+                max-width: 100%;
+                height: 200px; /* added height */
+                object-fit: cover; /* added object-fit */
+                border-radius: 5px;
+            }
+            .btn {
+                display: inline-block;
+                background-color: #333;
+                color: #fff;
+                padding: 10px 20px;
+                text-decoration: none;
+                margin-top: 10px;
+                border-radius: 5px;
+            }
+            .btn:hover {
+                background-color: #555;
+            }
+            header {
+                background-color: #333; /* changed from background-image to background-color */
+                height: 90px; /* changed height to 200px */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                margin-bottom: 1px;
+            }
+            h1 {
+                font-size: 5rem;
+                color: #fff;
+                text-shadow: 2px 2px #333;
+                margin-bottom: 0;
+            }
+            p {
+                font-size: 1.5rem;
+                color: black;
+                margin-top: 10px;
+            }
+            .price {
+                color: black;
+                text-shadow: none; /* remove the shadow */
+            }
+            /* New color palette */
+            body {
+                background-color: #f2f2f2;
+            }
+            header {
+                background-color: #1c1c1c;
+            }
+            nav li a {
+                color: #f2f2f2;
+            }
+            .btn {
+                background-color: #1c1c1c;
+                color: #f2f2f2;
+            }
+            .btn:hover {
+                background-color: #333;
+            }
+            footer {
+                background-color: #333;
+                color: #fff;
+                padding: 10px;
+                text-align: center;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+            footer {
+                background-color: #1c1c1c;
+            }
+            .cart-icon {
+                display: inline-block;
+                margin-left: 20px;
+                font-size: 2rem;
+                color: #fff;
+            }
+            .cart-link {
+                color: #fff;
+                text-decoration: none;
+            }
+            /* Added margin to header */
+            header {
+                margin-bottom: 20px;
+            }
+            /* Added styles for featured section */
+            .featured {
+                background-color: #f2f2f2;
+                padding: 20px;
+                margin-top: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            }
+            .featured h2 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .view-all {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .view-all a {
+                display: inline-block;
+                margin-bottom: 30px;
+                background-color: #1c1c1c;
+                color: #fff;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+            .view-all a:hover {
+                background-color: #555;
+            }
+            footer {
+                color: #fff;
+                padding: 10px;
+                text-align: center;
+            }
+            footer p {
+                color: white;
+                margin: 0;
+            }
+            .stars {
+                display: flex;
+                margin-top: 0px;
+            }
+            .stars {
+                color: gold;
+                font-size: 2rem;
+                margin-right: 5px;
+            }
+            .rating-info {
+                display: flex;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+            .rating-info i {
+                margin-bottom: 15px;
+                margin-right: 5px;
+            }
+            .date {
+                color: gray;
+            }
+            .description {
+                margin-top: 10px;
+            }
+            .email {
+                color: #1c1c1c;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/store/bike_catalogue">Bicicletas</a></li>
+                    <li><a href="/store/accessories_catalogue">Accesorios</a></li>
+                    <li><a href="/">Sobre nosotros</a></li>
+                    <li><a href="/">Contactar</a></li>
+                    <li><a href="/client/login">Iniciar sesión</a></li>
+                    <li><a href="/cart" class="cart-link"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section class="featured">
+                <h2>Valoraciones del producto: {{product.title}}</h2>
+                <div class="products">
+                    {% for rating in ratings %}
+                    <div class="product">
+                        <div class="rating-info">
+                            <i class="far fa-user-circle fa-2x"></i>
+                            <p class="email">{{ rating.email }}</p>
+                        </div>
+                        <div class="rating-details">
+                            <span class="stars" id="ratingStars{{ forloop.counter }}"></span>
+                            <script>
+                                var rating = '{{ rating.rating }}';
+                                var starsHTML = '';
+                                var filledStars = Number(rating);
+                                var emptyStars = 5 - filledStars;
+                                var ratingStarsId = 'ratingStars' + '{{ forloop.counter }}';
+                                if (rating === 0) {
+                                    starsHTML = '&#9734;&#9734;&#9734;&#9734;&#9734;';
+                                } else {
+                                    for (var i = 0; i < filledStars; i++) {
+                                        starsHTML += '&#9733;';
+                                    }
+                                    for (var i = 0; i < emptyStars; i++) {
+                                        starsHTML += '&#9734;';
+                                    }
+                                }
+                                document.getElementById(ratingStarsId).innerHTML = starsHTML;
+                            </script>
+                            <p class="description">{{ rating.comment }}</p>
+                            <p class="date">{{ rating.date }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+            </section>
+            <div class="view-all">
+                <a href="/store/bike_catalogue">Añadir opinión</a>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2023 Xtreme Biking</p>
+        </footer>
+    </body>
+</html>
