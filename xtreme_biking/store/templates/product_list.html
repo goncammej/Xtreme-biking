@@ -408,108 +408,25 @@
 
       <div class="lg:col-span-3">
         <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {% for product in products %}
           <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
+            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' producto_id=product.id %}">
                 <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
             </a>
 
             <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
+                <a href="{% url 'product_details' producto_id=product.id %}">Nombre del producto</a>
 
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
+                <a href="{% url 'product_details' producto_id=product.id %}" style="color: #a3cb64;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                 </a>
             </div>
 
-            <p class="pt-1 text-gray-400">$9.99</p>
+            <p class="pt-1 text-gray-400">{{ product.price }} €</p>
           </li>
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
-            </a>
-
-            <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
-
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </a>
-            </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
-            </a>
-
-            <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
-
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </a>
-            </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
-            </a>
-
-            <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
-
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </a>
-            </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
-            </a>
-
-            <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
-
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </a>
-            </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
-            </a>
-
-            <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
-
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </a>
-            </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
+          {% endfor %}
         </ul>
       </div>
     </div>

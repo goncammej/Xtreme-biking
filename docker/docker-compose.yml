@@ -23,7 +23,7 @@ services:
       - "5000"
     volumes:
       - ../xtreme_biking:/app/xtreme_biking
-      - ../xtreme_biking/static:/app/static
+      - static:/app/static
     depends_on:
       - db
     networks:
@@ -37,7 +37,7 @@ services:
         dockerfile: Dockerfile-nginx
     volumes:
       - ../xtreme_biking:/app/xtreme_biking
-      - ../xtreme_biking/static:/app/static
+      - static:/app/static
     ports:
       - "8000:80"
     depends_on:

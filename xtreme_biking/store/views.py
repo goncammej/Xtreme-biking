@@ -4,6 +4,7 @@ from django.db.models import Avg
 from django.views.generic.base import View
 from django.http import HttpResponse
 from django import forms
+from django.shortcuts import redirect
 
 class RatingForm(forms.ModelForm):
     class Meta:
@@ -18,48 +19,42 @@ def product_list(request):
 
 def frontpage(request):
     # Retrieve the products of each category ordered by the rating field of the rating model
-    products_mountain = Product.objects.filter(category='Bicleta de montaña').order_by('-rating__rating')[:1]
-    products_urban = Product.objects.filter(category='Bicicleta urbana').order_by('-rating__rating')[:1]
-    products_road = Product.objects.filter(category='Bicicleta de carretera').order_by('-rating__rating')[:1]
-    
-    # Pass the products to the template
-    context = {'products_mountain': products_mountain}
-    context['products_urban'] = products_urban
-    context['products_road'] = products_road
+    products= Product.objects.order_by('-rating__rating')[:7]
+    context = {"products": products}
     
     return render(request, 'home.html', context)
 
-def bike_catalogue(request):
-    products_mountain = Product.objects.filter(category='Bicleta de montaña')
-    products_urban = Product.objects.filter(category='Bicicleta urbana')
-    products_road = Product.objects.filter(category='Bicicleta de carretera')
-    
-    # Pass the products to the template
-    context = {'products_mountain': products_mountain}
-    context['products_urban'] = products_urban
-    context['products_road'] = products_road
-    
-    return render(request, 'bike_catalogue.html', context)
+def catalogue(request):
+    products = Product.objects.all
+    context = {"products": products}
 
-def accessories_catalogue(request):
-    accssories = Product.objects.filter(category='Accesorio')
-    
-    # Pass the products to the template
-    context = {'accessories': accssories}
-    
-    return render(request, 'accessories_catalogue.html', context)
-
-
+    return render(request, 'product_list.html', context)
 
 def product_details(request, producto_id):
-    product = get_object_or_404(Product, pk=producto_id)
-    ratings_count = product.rating_set.count()
-    ratings_mean = product.rating_set.aggregate(Avg('rating'))['rating__avg']
-    
-    context = {'product': product}
-    context['ratings_count'] = ratings_count
-    context['ratings_mean'] = ratings_mean
-    return render(request, 'product_details.html', context)
+    if request.method == 'POST':
+        product = request.POST.get('product')
+        cart = request.session.get('cart')
+        if cart:
+            quantity = cart.get(product)
+            if quantity:
+                cart[product] = quantity + 1
+            else:
+                cart[product] = 1
+        else:
+            cart = {}
+            cart[product] = 1
+
+        request.session['cart'] = cart
+        return redirect('/cart')
+    else:
+        product = get_object_or_404(Product, pk=producto_id)
+        ratings_count = product.rating_set.count()
+        ratings_mean = product.rating_set.aggregate(Avg('rating'))['rating__avg']
+        
+        context = {'product': product}
+        context['ratings_count'] = ratings_count
+        context['ratings_mean'] = ratings_mean
+        return render(request, 'product_details.html', context)
 
 def get(request, producto_id):
     product = get_object_or_404(Product, pk=producto_id)

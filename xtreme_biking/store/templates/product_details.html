@@ -9,13 +9,50 @@
     <div class="information w-full lg:w-2/5 lg:p-6">
         <h1 class="text-2xl">{{product.title}}</h1>
 
-        <p class="mt-1 text-gray-400">$9.99</p>
+        <p class="mt-1 text-gray-400">9.99€</p>
 
         <p class="mt-6 text-gray-700">Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
 
-        <a href="#" style="background-color: #a3cb64;" class="mt-6 inline-block px-8 py-4 rounded-xl text-white">
+        <form method="post" action="/store/product_details/{{product.id}}/">
+          {% csrf_token %}
+          <input style="display: none;" type="text" value="{{product.id}}" name="product">
+          {% if product.availability == 0 %}
+          <h3>Este producto se encuentra agotado</h3>
+          {% else %}
+          <div class="amount_section">
+              <h3>Cantidad:</h3>
+              <p>
+                  <span class="select-none" onclick="decreaseQuantity()">-</span>
+                  <input id="quantity" name="quantity" value="1" readonly>
+                  <span class="select-none" onclick="increaseQuantity()">+</span>
+              </p>
+              <script>
+                  function decreaseQuantity() {
+                      var quantityElement = document.getElementById('quantity');
+                      var quantity = parseInt(quantityElement.value);
+                      if (quantity > 1) {
+                          quantity--;
+                          quantityElement.value = quantity;
+                      }
+                  }
+                  function increaseQuantity() {
+                      var quantityElement = document.getElementById('quantity');
+                      var quantity = parseInt(quantityElement.value);
+                      if (quantity < '{{ product.availability }}'){
+                          quantity++;
+                          quantityElement.value = quantity;
+                      }                    
+                  }
+              </script>
+          </div>
+          {% endif %}
+          <input style="background-color: #a3cb64;" type="submit" class="mt-6 inline-block px-8 py-4 rounded-xl text-white" value="Añadir al carrito">
+        </form>
+
+        <!-- <a href="#" style="background-color: #a3cb64;" class="mt-6 inline-block px-8 py-4 rounded-xl text-white">
             Add to cart
-        </a>
+        </a> -->
+
         <span class="stars" id="ratingStars"></span>
                     <script>
                         var averageRating = '{{ ratings_mean }}';
@@ -37,36 +74,6 @@
                         }
                         document.getElementById('ratingStars').innerHTML = starsHTML;
                     </script>
-        {% if product.availability == 0 %}
-        <h3>Este producto se encuentra agotado</h3>
-        {% else %}
-        <div class="amount_section">
-            <h3>Cantidad:</h3>
-            <p>
-                <button onclick="decreaseQuantity()">-</button>
-                <span id="quantity" style="color: black;">1</span>
-                <button onclick="increaseQuantity()">+</button>
-            </p>
-            <script>
-                function decreaseQuantity() {
-                    var quantityElement = document.getElementById('quantity');
-                    var quantity = parseInt(quantityElement.innerText);
-                    if (quantity > 1) {
-                        quantity--;
-                        quantityElement.innerText = quantity;
-                    }
-                }
-                function increaseQuantity() {
-                    var quantityElement = document.getElementById('quantity');
-                    var quantity = parseInt(quantityElement.innerText);
-                    if (quantity < '{{ product.availability }}'){
-                        quantity++;
-                        quantityElement.innerText = quantity;
-                    }                    
-                }
-            </script>
-        </div>
-        {% endif %}
     </div>
 
     <ul class="mt-12">
@@ -94,7 +101,7 @@
               </div>
               <p class="mt-5 text-base text-gray-900">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro blanditiis sapiente ab dolores, ad dignissimos perspiciatis.</p>
               <p class="mt-5 text-sm font-bold text-gray-900">John Lester</p>
-              <p class="mt-1 text-sm text-gray-600">March 01, 2022</p>
+              <p class="mt-1 text-sm text-gray-600">22 de noviembre, 2023</p>
             </div>
           </div>
         </li>

@@ -89,14 +89,14 @@
           Productos destacados
         </h2>
     </div>
-    {% for product in products_mountain %}
     <div class="products flex items-center flex-wrap">
+      {% for product in products %}
         <div class="w-full md:w-1/3 xl:w-1/4 p-6">
-            <a href="/store/product_details/{{ products_mountain.id }}">
-                <img src="{{products_urban.image_url}}" class="rounded-xl hover:shadow-lg">
+            <a href="{% url 'product_details' producto_id=product.id %}">
+                <img src="{{product.image_url}}" class="rounded-xl hover:shadow-lg">
             </a>
             <div class="pt-3 flex items-center justify-between">
-                <a href="/store/product_details/{{ products_mountain.id }}">{{product.title}}</a>
+                <a href="{% url 'product_details' producto_id=product.id %}">{{product.title}}</a>
 
                 <a href="#" style="color: #a3cb64;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -107,14 +107,11 @@
 
             <p class="pt-1 text-gray-400">{{ products_mountain.price }}</p>
         </div>
-        <script>
-          console.log("{{ products_mountain }}")
-        </script>
         {% endfor %}
     </div>
 
 
-    <a href="#" style="color: #a3cb64;"  class="my-6 flex px-8 py-4 justify-center">
+    <a href="{% url 'catalogue' %}" style="color: #a3cb64;"  class="my-6 flex px-8 py-4 justify-center">
         Ver más 
         <svg class="mx-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a3cb64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
     </a>
