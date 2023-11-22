@@ -10,16 +10,13 @@ class RatingForm(forms.ModelForm):
         model = Rating
         fields = ['rating', 'comment', 'title', 'email']
 
-def frontpage(request):
-    return render(request, 'frontpage.html')
-
 def about(request):
     return render(request, 'about.html')
 
 def product_list(request):
     return render(request, 'product_list.html')
 
-def home(request):
+def frontpage(request):
     # Retrieve the products of each category ordered by the rating field of the rating model
     products_mountain = Product.objects.filter(category='Bicleta de montaña').order_by('-rating__rating')[:1]
     products_urban = Product.objects.filter(category='Bicicleta urbana').order_by('-rating__rating')[:1]
