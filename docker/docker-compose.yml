@@ -1,0 +1,61 @@
+version: '3.4'
+
+services:
+  db:
+    restart: always
+    container_name: xtreme_db
+    image: postgres:14.9-alpine
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - xtreme_net
+    environment:
+      - POSTGRES_PASSWORD=postgres
+  web:
+    restart: always
+    container_name: xtreme_web
+    image: xtreme_web:latest
+    build: 
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: ash -c "python manage.py migrate && gunicorn -w 5 xtreme_biking.wsgi --timeout=500 -b 0.0.0.0:5000"
+    expose:
+      - "5000"
+    volumes:
+      - ../xtreme_biking:/app/xtreme_biking
+      - ../xtreme_biking/static:/app/static
+    depends_on:
+      - db
+    networks:
+      - xtreme_net
+  nginx:
+    restart: always
+    container_name: xtreme_nginx
+    image: xtreme_nginx:latest
+    build:
+        context: .
+        dockerfile: Dockerfile-nginx
+    volumes:
+      - ../xtreme_biking:/app/xtreme_biking
+      - ../xtreme_biking/static:/app/static
+    ports:
+      - "8000:80"
+    depends_on:
+      - web
+    networks:
+      - xtreme_net
+
+volumes:
+  static:
+    name: xtreme_static
+  db:
+    name: xtreme_db
+
+networks:
+  xtreme_net:
+    driver: bridge
+    name: xtreme_net
+    ipam:
+     driver: default
+     config:
+       - subnet: 10.5.0.0/16

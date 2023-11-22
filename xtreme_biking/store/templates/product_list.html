@@ -1,0 +1,675 @@
+
+{% extends 'base.html' %}
+
+{% load static %} 
+
+{% block content %}
+
+
+<section>
+  <div class="mx-auto max-w-6xl px-6 py-12">
+    <header>
+      <div class="flex flex-col">
+        <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
+          Catálogo de productos
+        </h2>
+  
+        <p class="mt-4 max-w-md text-gray-500">
+          Los productos se ecuntran ordenados en diferentes secciones, según su categoría.
+        </p>
+      </div>
+    </header>
+
+    <div class="mt-8 block lg:hidden">
+      <button
+        class="flex cursor-pointer items-center gap-2 border-b border-gray-400 pb-1 text-gray-900 transition hover:border-gray-600"
+      >
+        <span class="text-sm font-medium"> Filters & Sorting </span>
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="h-4 w-4 rtl:rotate-180"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M8.25 4.5l7.5 7.5-7.5 7.5"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <div class="mt-4 lg:mt-8 lg:grid lg:grid-cols-4 lg:items-start lg:gap-8">
+      <div class="hidden space-y-4 lg:block">
+        <div>
+          <label for="SortBy" class="block text-xs font-medium text-gray-700">
+            Sort By
+          </label>
+
+          <select id="SortBy" class="mt-1 p-2 rounded border-gray-300 text-sm">
+            <option>Sort By</option>
+            <option value="Title, DESC">Title, DESC</option>
+            <option value="Title, ASC">Title, ASC</option>
+            <option value="Price, DESC">Price, DESC</option>
+            <option value="Price, ASC">Price, ASC</option>
+          </select>
+        </div>
+
+        <div class="relative">
+          <label for="Search" class="sr-only"> Search </label>
+    
+          <input
+            type="text"
+            id="Search"
+            placeholder="Search for..."
+            class="w-full rounded-md border-gray-200 py-2.5 pe-10 ps-2 shadow-sm sm:text-sm"
+          />
+    
+          <span class="absolute inset-y-0 end-0 grid w-10 place-content-center">
+            <button type="button" id="searchButton" class="text-gray-600 hover:text-gray-700">
+              <span class="sr-only">Search</span>
+    
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="h-4 w-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                />
+              </svg>
+            </button>
+          </span>
+        </div>
+
+        <div>
+          <p class="block text-xs font-medium text-gray-700">Filters</p>
+
+          <div class="mt-1 space-y-2">
+            <details
+              class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
+            >
+              <summary
+                class="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition"
+              >
+                <span class="text-sm font-medium"> Availability </span>
+
+                <span class="transition group-open:-rotate-180">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-4 w-4"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </span>
+              </summary>
+
+              <div class="border-t border-gray-200 bg-white">
+                <header class="flex items-center justify-between p-4">
+                  <span class="text-sm text-gray-700"> 0 Selected </span>
+
+                  <button
+                    type="button"
+                    class="text-sm text-gray-900 underline underline-offset-4"
+                  >
+                    Reset
+                  </button>
+                </header>
+
+                <ul class="space-y-1 border-t border-gray-200 p-4">
+                  <li>
+                    <label
+                      for="FilterInStock"
+                      class="inline-flex items-center gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id="FilterInStock"
+                        class="h-5 w-5 rounded border-gray-300"
+                      />
+
+                      <span class="text-sm font-medium text-gray-700">
+                        In Stock (5+)
+                      </span>
+                    </label>
+                  </li>
+
+                  <li>
+                    <label
+                      for="FilterPreOrder"
+                      class="inline-flex items-center gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id="FilterPreOrder"
+                        class="h-5 w-5 rounded border-gray-300"
+                      />
+
+                      <span class="text-sm font-medium text-gray-700">
+                        Pre Order (3+)
+                      </span>
+                    </label>
+                  </li>
+
+                  <li>
+                    <label
+                      for="FilterOutOfStock"
+                      class="inline-flex items-center gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id="FilterOutOfStock"
+                        class="h-5 w-5 rounded border-gray-300"
+                      />
+
+                      <span class="text-sm font-medium text-gray-700">
+                        Out of Stock (10+)
+                      </span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <details
+              class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
+            >
+              <summary
+                class="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition"
+              >
+                <span class="text-sm font-medium"> Price </span>
+
+                <span class="transition group-open:-rotate-180">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-4 w-4"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </span>
+              </summary>
+
+              <div class="border-t border-gray-200 bg-white">
+                <header class="flex items-center justify-between p-4">
+                  <span class="text-sm text-gray-700">
+                    The highest price is $600
+                  </span>
+
+                  <button
+                    type="button"
+                    class="text-sm text-gray-900 underline underline-offset-4"
+                  >
+                    Reset
+                  </button>
+                </header>
+
+                <div class="border-t border-gray-200 p-4">
+                  <div class="flex justify-between gap-4">
+                    <label
+                      for="FilterPriceFrom"
+                      class="flex items-center gap-2"
+                    >
+                      <span class="text-sm text-gray-600">$</span>
+
+                      <input
+                        type="number"
+                        id="FilterPriceFrom"
+                        placeholder="From"
+                        class="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                      />
+                    </label>
+
+                    <label for="FilterPriceTo" class="flex items-center gap-2">
+                      <span class="text-sm text-gray-600">$</span>
+
+                      <input
+                        type="number"
+                        id="FilterPriceTo"
+                        placeholder="To"
+                        class="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </details>
+
+            <details
+              class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
+            >
+              <summary
+                class="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition"
+              >
+                <span class="text-sm font-medium"> Colors </span>
+
+                <span class="transition group-open:-rotate-180">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-4 w-4"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </span>
+              </summary>
+
+              <div class="border-t border-gray-200 bg-white">
+                <header class="flex items-center justify-between p-4">
+                  <span class="text-sm text-gray-700"> 0 Selected </span>
+
+                  <button
+                    type="button"
+                    class="text-sm text-gray-900 underline underline-offset-4"
+                  >
+                    Reset
+                  </button>
+                </header>
+
+                <ul class="space-y-1 border-t border-gray-200 p-4">
+                  <li>
+                    <label
+                      for="FilterRed"
+                      class="inline-flex items-center gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id="FilterRed"
+                        class="h-5 w-5 rounded border-gray-300"
+                      />
+
+                      <span class="text-sm font-medium text-gray-700">
+                        Red
+                      </span>
+                    </label>
+                  </li>
+
+                  <li>
+                    <label
+                      for="FilterBlue"
+                      class="inline-flex items-center gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id="FilterBlue"
+                        class="h-5 w-5 rounded border-gray-300"
+                      />
+
+                      <span class="text-sm font-medium text-gray-700">
+                        Blue
+                      </span>
+                    </label>
+                  </li>
+
+                  <li>
+                    <label
+                      for="FilterGreen"
+                      class="inline-flex items-center gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id="FilterGreen"
+                        class="h-5 w-5 rounded border-gray-300"
+                      />
+
+                      <span class="text-sm font-medium text-gray-700">
+                        Green
+                      </span>
+                    </label>
+                  </li>
+
+                  <li>
+                    <label
+                      for="FilterOrange"
+                      class="inline-flex items-center gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id="FilterOrange"
+                        class="h-5 w-5 rounded border-gray-300"
+                      />
+
+                      <span class="text-sm font-medium text-gray-700">
+                        Orange
+                      </span>
+                    </label>
+                  </li>
+
+                  <li>
+                    <label
+                      for="FilterPurple"
+                      class="inline-flex items-center gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id="FilterPurple"
+                        class="h-5 w-5 rounded border-gray-300"
+                      />
+
+                      <span class="text-sm font-medium text-gray-700">
+                        Purple
+                      </span>
+                    </label>
+                  </li>
+
+                  <li>
+                    <label
+                      for="FilterTeal"
+                      class="inline-flex items-center gap-2"
+                    >
+                      <input
+                        type="checkbox"
+                        id="FilterTeal"
+                        class="h-5 w-5 rounded border-gray-300"
+                      />
+
+                      <span class="text-sm font-medium text-gray-700">
+                        Teal
+                      </span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-3">
+        <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
+          Bicicletas de montaña
+        </h2> 
+        <div class="mt-4"></div>
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {% for product in products_mountain %}
+          <li class="product-item" data-title="{{ product.title | lower }}">
+            <a class="block overflow-hidden rounded-xl" href="/store/product_details/{{ product.id }}">
+                <img src="{{product.image_url}}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
+            </a>
+
+            <div class="pt-3 flex items-center justify-between">
+                <a class="product-title" href="/store/product_details/{{ product.id }}">{{product.title}}</a>
+
+                {% if product.availability == 0 %}
+                <h3></h3>
+                {% else %}
+                <a href="#" style="color: #a3cb64;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+            <div class="pt-3 flex items-center justify-between">
+              <p class="pt-1 text-gray-400">{{product.price}} €</p>
+              {% if product.availability == 0 %}
+              <h3>Agotado</h3>
+              {% else %}
+              <div class="amount_section" data-availability="{{ product.availability }}">
+                <h3 style="display: inline;">Cantidad:</h3>
+                  <p style="display: inline;">
+                    <button onclick="updateQuantity(this, 'decrease')">-</button>
+                    <span class="quantity" style="color: black;">1</span>
+                    <button onclick="updateQuantity(this, 'increase')">+</button>
+                  </p>
+              </div>
+              {% endif %}
+            </div>
+           </li>
+          {% endfor %}
+        </ul>
+        <script>
+          function updateQuantity(element, action) {
+            var quantityElement = element.parentNode.querySelector('.quantity');
+            var quantity = parseInt(quantityElement.innerText);
+            var availability = element.closest('.amount_section').dataset.availability;
+        
+            if (action === 'decrease' && quantity > 1) {
+              quantity--;
+            } else if (action === 'increase' && quantity < availability) {
+              quantity++;
+            }
+        
+            quantityElement.innerText = quantity;
+          }
+        </script>
+        
+        <hr class="my-8 border-gray-300">
+        <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
+          Bicicletas urbanas
+        </h2> 
+        <div class="mt-4"></div>
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {% for product in products_urban %}
+          <li class="product-item" data-title="{{ product.title | lower }}">
+            <a class="block overflow-hidden rounded-xl" href="/store/product_details/{{ product.id }}">
+                <img src="{{product.image_url}}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
+            </a>
+
+            <div class="pt-3 flex items-center justify-between">
+                <a href="/store/product_details/{{ product.id }}">{{product.title}}</a>
+
+                {% if product.availability == 0 %}
+                <h3></h3>
+                {% else %}
+                <a href="#" style="color: #a3cb64;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="pt-3 flex items-center justify-between">
+              <p class="pt-1 text-gray-400">{{product.price}} €</p>
+              {% if product.availability == 0 %}
+              <h3>Agotado</h3>
+              {% else %}
+              <div class="amount_section" data-availability="{{ product.availability }}">
+                <h3 style="display: inline;">Cantidad:</h3>
+                  <p style="display: inline;">
+                    <button onclick="updateQuantity2(this, 'decrease')">-</button>
+                    <span class="quantity2" style="color: black;">1</span>
+                    <button onclick="updateQuantity2(this, 'increase')">+</button>
+                  </p>
+              </div>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <script>
+          function updateQuantity2(element, action) {
+            var quantityElement = element.parentNode.querySelector('.quantity2');
+            var quantity = parseInt(quantityElement.innerText);
+            var availability = element.closest('.amount_section').dataset.availability;
+        
+            if (action === 'decrease' && quantity > 1) {
+              quantity--;
+            } else if (action === 'increase' && quantity < availability) {
+              quantity++;
+            }
+        
+            quantityElement.innerText = quantity;
+          }
+        </script>
+        
+        <hr class="my-8 border-gray-300">
+        <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
+          Bicicletas de carretera
+        </h2> 
+        <div class="mt-4"></div>
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {% for product in products_road %}
+          <li class="product-item" data-title="{{ product.title | lower }}">
+            <a class="block overflow-hidden rounded-xl" href="/store/product_details/{{ product.id }}">
+                <img src="{{product.image_url}}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
+            </a>
+
+            <div class="pt-3 flex items-center justify-between">
+                <a href="/store/product_details/{{ product.id }}">{{product.title}}</a>
+
+                {% if product.availability == 0 %}
+                <h3></h3>
+                {% else %}
+                <a href="#" style="color: #a3cb64;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+            <div class="pt-3 flex items-center justify-between">
+              <p class="pt-1 text-gray-400">{{product.price}} €</p>
+              {% if product.availability == 0 %}
+              <h3>Agotado</h3>
+              {% else %}
+              <div class="amount_section" data-availability="{{ product.availability }}">
+                <h3 style="display: inline;">Cantidad:</h3>
+                  <p style="display: inline;">
+                      <button onclick="updateQuantity3(this, 'decrease')">-</button>
+                      <span class="quantity3" style="color: black;">1</span>
+                      <button onclick="updateQuantity3(this, 'increase')">+</button>
+                  </p>
+              </div>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <script>
+          function updateQuantity3(element, action) {
+            var quantityElement = element.parentNode.querySelector('.quantity3');
+            var quantity = parseInt(quantityElement.innerText);
+            var availability = element.closest('.amount_section').dataset.availability;
+        
+            if (action === 'decrease' && quantity > 1) {
+              quantity--;
+            } else if (action === 'increase' && quantity < availability) {
+              quantity++;
+            }
+        
+            quantityElement.innerText = quantity;
+          }
+        </script>
+        <hr class="my-8 border-gray-300">
+        <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
+          Accesorios y recambios
+        </h2> 
+        <div class="mt-4"></div> 
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {% for product in accessories %}
+          <li class="product-item" data-title="{{ product.title | lower }}">
+            <a class="block overflow-hidden rounded-xl" href="/store/product_details/{{ product.id }}">
+                <img src="{{product.image_url}}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
+            </a>
+
+            <div class="pt-3 flex items-center justify-between">
+                <a href="/store/product_details/{{ product.id }}">{{product.title}}</a>
+                {% if product.availability == 0 %}
+                <h3></h3>
+                {% else %}
+                <a href="#" style="color: #a3cb64;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+            <div class="pt-3 flex items-center justify-between">
+              <p class="pt-1 text-gray-400">{{product.price}} €</p>
+              {% if product.availability == 0 %}
+              <h3>Agotado</h3>
+              {% else %}
+              <div class="amount_section" data-availability="{{ product.availability }}">
+                <h3 style="display: inline;">Cantidad:</h3>
+                  <p style="display: inline;">
+                      <button onclick="updateQuantity4(this, 'decrease')">-</button>
+                      <span class="quantity4" style="color: black;">1</span>
+                      <button onclick="updateQuantity4(this, 'increase')">+</button>
+                  </p>
+              </div>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <script>
+          function updateQuantity4(element, action) {
+            var quantityElement = element.parentNode.querySelector('.quantity4');
+            var quantity = parseInt(quantityElement.innerText);
+            var availability = element.closest('.amount_section').dataset.availability;
+        
+            if (action === 'decrease' && quantity > 1) {
+              quantity--;
+            } else if (action === 'increase' && quantity < availability) {
+              quantity++;
+            }
+        
+            quantityElement.innerText = quantity;
+          }
+        </script>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#searchButton').click(function () {
+      const searchTerm = $('#Search').val().toLowerCase();
+
+      $.ajax({
+        type: 'GET',
+        url: '/store/buscar-productos/', 
+        data: { search: searchTerm },
+        success: function (response) {  
+          // Limpiar la sección de productos
+          $('.product-item').hide();
+
+          // Mostrar solo los productos que coinciden con la búsqueda
+          response.products.forEach((product) => {
+            $(`.product-item[data-title*="${product.title.toLowerCase()}"]`).show();
+          });
+        },
+        error: function (error) {
+          console.error('Error en la búsqueda', error);
+        }
+      });
+    });
+  });
+</script>
+
+
+{% endblock %}
