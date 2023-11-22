@@ -1,21 +1,21 @@
+
 {% extends 'base.html' %}
 
 {% load static %} 
 
 {% block content %}
 
+
 <section>
   <div class="mx-auto max-w-6xl px-6 py-12">
     <header>
       <div class="flex flex-col">
         <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
-          Product Collection
+          Catálogo de productos
         </h2>
   
         <p class="mt-4 max-w-md text-gray-500">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque
-          praesentium cumque iure dicta incidunt est ipsam, officia dolor fugit
-          natus?
+          Los productos se ecuntran ordenados en diferentes secciones, según su categoría.
         </p>
       </div>
     </header>
@@ -70,7 +70,7 @@
           />
     
           <span class="absolute inset-y-0 end-0 grid w-10 place-content-center">
-            <button type="button" class="text-gray-600 hover:text-gray-700">
+            <button type="button" id="searchButton" class="text-gray-600 hover:text-gray-700">
               <span class="sr-only">Search</span>
     
               <svg
@@ -405,115 +405,271 @@
           </div>
         </div>
       </div>
-
+      
       <div class="lg:col-span-3">
+        <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
+          Bicicletas de montaña
+        </h2> 
+        <div class="mt-4"></div>
         <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
+          {% for product in products_mountain %}
+          <li class="product-item" data-title="{{ product.title | lower }}">
+            <a class="block overflow-hidden rounded-xl" href="/store/product_details/{{ product.id }}">
+                <img src="{{product.image_url}}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
             </a>
 
             <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
+                <a class="product-title" href="/store/product_details/{{ product.id }}">{{product.title}}</a>
 
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
+                {% if product.availability == 0 %}
+                <h3></h3>
+                {% else %}
+                <a href="#" style="color: #a3cb64;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                 </a>
+                {% endif %}
             </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
-            </a>
-
             <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
-
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </a>
+              <p class="pt-1 text-gray-400">{{product.price}} €</p>
+              {% if product.availability == 0 %}
+              <h3>Agotado</h3>
+              {% else %}
+              <div class="amount_section" data-availability="{{ product.availability }}">
+                <h3 style="display: inline;">Cantidad:</h3>
+                  <p style="display: inline;">
+                    <button onclick="updateQuantity(this, 'decrease')">-</button>
+                    <span class="quantity" style="color: black;">1</span>
+                    <button onclick="updateQuantity(this, 'increase')">+</button>
+                  </p>
+              </div>
+              {% endif %}
             </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
-            </a>
-
-            <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
-
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </a>
-            </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
-            </a>
-
-            <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
-
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </a>
-            </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
-            </a>
-
-            <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
-
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </a>
-            </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
-          <li>
-            <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
-            </a>
-
-            <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' %}">Product name</a>
-
-                <a href="{% url 'product_details' %}" style="color: #a3cb64;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                </a>
-            </div>
-
-            <p class="pt-1 text-gray-400">$9.99</p>
-          </li>
+           </li>
+          {% endfor %}
         </ul>
+        <script>
+          function updateQuantity(element, action) {
+            var quantityElement = element.parentNode.querySelector('.quantity');
+            var quantity = parseInt(quantityElement.innerText);
+            var availability = element.closest('.amount_section').dataset.availability;
+        
+            if (action === 'decrease' && quantity > 1) {
+              quantity--;
+            } else if (action === 'increase' && quantity < availability) {
+              quantity++;
+            }
+        
+            quantityElement.innerText = quantity;
+          }
+        </script>
+        
+        <hr class="my-8 border-gray-300">
+        <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
+          Bicicletas urbanas
+        </h2> 
+        <div class="mt-4"></div>
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {% for product in products_urban %}
+          <li class="product-item" data-title="{{ product.title | lower }}">
+            <a class="block overflow-hidden rounded-xl" href="/store/product_details/{{ product.id }}">
+                <img src="{{product.image_url}}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
+            </a>
+
+            <div class="pt-3 flex items-center justify-between">
+                <a href="/store/product_details/{{ product.id }}">{{product.title}}</a>
+
+                {% if product.availability == 0 %}
+                <h3></h3>
+                {% else %}
+                <a href="#" style="color: #a3cb64;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="pt-3 flex items-center justify-between">
+              <p class="pt-1 text-gray-400">{{product.price}} €</p>
+              {% if product.availability == 0 %}
+              <h3>Agotado</h3>
+              {% else %}
+              <div class="amount_section" data-availability="{{ product.availability }}">
+                <h3 style="display: inline;">Cantidad:</h3>
+                  <p style="display: inline;">
+                    <button onclick="updateQuantity2(this, 'decrease')">-</button>
+                    <span class="quantity2" style="color: black;">1</span>
+                    <button onclick="updateQuantity2(this, 'increase')">+</button>
+                  </p>
+              </div>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <script>
+          function updateQuantity2(element, action) {
+            var quantityElement = element.parentNode.querySelector('.quantity2');
+            var quantity = parseInt(quantityElement.innerText);
+            var availability = element.closest('.amount_section').dataset.availability;
+        
+            if (action === 'decrease' && quantity > 1) {
+              quantity--;
+            } else if (action === 'increase' && quantity < availability) {
+              quantity++;
+            }
+        
+            quantityElement.innerText = quantity;
+          }
+        </script>
+        
+        <hr class="my-8 border-gray-300">
+        <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
+          Bicicletas de carretera
+        </h2> 
+        <div class="mt-4"></div>
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {% for product in products_road %}
+          <li class="product-item" data-title="{{ product.title | lower }}">
+            <a class="block overflow-hidden rounded-xl" href="/store/product_details/{{ product.id }}">
+                <img src="{{product.image_url}}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
+            </a>
+
+            <div class="pt-3 flex items-center justify-between">
+                <a href="/store/product_details/{{ product.id }}">{{product.title}}</a>
+
+                {% if product.availability == 0 %}
+                <h3></h3>
+                {% else %}
+                <a href="#" style="color: #a3cb64;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+            <div class="pt-3 flex items-center justify-between">
+              <p class="pt-1 text-gray-400">{{product.price}} €</p>
+              {% if product.availability == 0 %}
+              <h3>Agotado</h3>
+              {% else %}
+              <div class="amount_section" data-availability="{{ product.availability }}">
+                <h3 style="display: inline;">Cantidad:</h3>
+                  <p style="display: inline;">
+                      <button onclick="updateQuantity3(this, 'decrease')">-</button>
+                      <span class="quantity3" style="color: black;">1</span>
+                      <button onclick="updateQuantity3(this, 'increase')">+</button>
+                  </p>
+              </div>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <script>
+          function updateQuantity3(element, action) {
+            var quantityElement = element.parentNode.querySelector('.quantity3');
+            var quantity = parseInt(quantityElement.innerText);
+            var availability = element.closest('.amount_section').dataset.availability;
+        
+            if (action === 'decrease' && quantity > 1) {
+              quantity--;
+            } else if (action === 'increase' && quantity < availability) {
+              quantity++;
+            }
+        
+            quantityElement.innerText = quantity;
+          }
+        </script>
+        <hr class="my-8 border-gray-300">
+        <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
+          Accesorios y recambios
+        </h2> 
+        <div class="mt-4"></div> 
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {% for product in accessories %}
+          <li class="product-item" data-title="{{ product.title | lower }}">
+            <a class="block overflow-hidden rounded-xl" href="/store/product_details/{{ product.id }}">
+                <img src="{{product.image_url}}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
+            </a>
+
+            <div class="pt-3 flex items-center justify-between">
+                <a href="/store/product_details/{{ product.id }}">{{product.title}}</a>
+                {% if product.availability == 0 %}
+                <h3></h3>
+                {% else %}
+                <a href="#" style="color: #a3cb64;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+            <div class="pt-3 flex items-center justify-between">
+              <p class="pt-1 text-gray-400">{{product.price}} €</p>
+              {% if product.availability == 0 %}
+              <h3>Agotado</h3>
+              {% else %}
+              <div class="amount_section" data-availability="{{ product.availability }}">
+                <h3 style="display: inline;">Cantidad:</h3>
+                  <p style="display: inline;">
+                      <button onclick="updateQuantity4(this, 'decrease')">-</button>
+                      <span class="quantity4" style="color: black;">1</span>
+                      <button onclick="updateQuantity4(this, 'increase')">+</button>
+                  </p>
+              </div>
+              {% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <script>
+          function updateQuantity4(element, action) {
+            var quantityElement = element.parentNode.querySelector('.quantity4');
+            var quantity = parseInt(quantityElement.innerText);
+            var availability = element.closest('.amount_section').dataset.availability;
+        
+            if (action === 'decrease' && quantity > 1) {
+              quantity--;
+            } else if (action === 'increase' && quantity < availability) {
+              quantity++;
+            }
+        
+            quantityElement.innerText = quantity;
+          }
+        </script>
       </div>
     </div>
   </div>
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#searchButton').click(function () {
+      const searchTerm = $('#Search').val().toLowerCase();
+
+      $.ajax({
+        type: 'GET',
+        url: '/store/buscar-productos/', 
+        data: { search: searchTerm },
+        success: function (response) {  
+          // Limpiar la sección de productos
+          $('.product-item').hide();
+
+          // Mostrar solo los productos que coinciden con la búsqueda
+          response.products.forEach((product) => {
+            $(`.product-item[data-title*="${product.title.toLowerCase()}"]`).show();
+          });
+        },
+        error: function (error) {
+          console.error('Error en la búsqueda', error);
+        }
+      });
+    });
+  });
+</script>
+
 
 {% endblock %}

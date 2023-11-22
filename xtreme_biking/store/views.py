@@ -4,90 +4,86 @@ from django.views.generic.base import View
 from django.http import HttpResponse
 from django import forms
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Avg
+from django.http import JsonResponse
 
-class RatingForm(forms.ModelForm):
-    class Meta:
-        model = Rating
-        fields = ['comment', 'title', 'email']
 
 def about(request):
     return render(request, 'about.html')
 
-def product_list(request):
-    return render(request, 'product_list.html')
+def contact(request):
+    return render(request, 'contact.html')
 
 def frontpage(request):
-    # Retrieve the products of each category ordered by the rating field of the rating model
-    products_mountain = Product.objects.filter(category='Bicleta de montaña').order_by('-rating__rating')[:1]
-    products_urban = Product.objects.filter(category='Bicicleta urbana').order_by('-rating__rating')[:1]
-    products_road = Product.objects.filter(category='Bicicleta de carretera').order_by('-rating__rating')[:1]
+    # Retrieve the products ordered by the mean of their ratings
+    featured_products = Product.objects.annotate(mean_rating=Avg('rating__rating')).order_by('-mean_rating')[:10]
     
     # Pass the products to the template
-    context = {'products_mountain': products_mountain}
-    context['products_urban'] = products_urban
-    context['products_road'] = products_road
+    context = {'featured_products': featured_products}
     
-    return render(request, 'home.html', context)
+    return render(request, 'frontpage.html', context)
 
-def bike_catalogue(request):
+def product_list(request):
     products_mountain = Product.objects.filter(category='Bicleta de montaña')
     products_urban = Product.objects.filter(category='Bicicleta urbana')
     products_road = Product.objects.filter(category='Bicicleta de carretera')
+    accessories = Product.objects.filter(category='Accesorio')
     
     # Pass the products to the template
     context = {'products_mountain': products_mountain}
     context['products_urban'] = products_urban
     context['products_road'] = products_road
+    context['accessories'] = accessories
     
-    return render(request, 'bike_catalogue.html', context)
-
-def accessories_catalogue(request):
-    accssories = Product.objects.filter(category='Accesorio')
-    
-    # Pass the products to the template
-    context = {'accessories': accssories}
-    
-    return render(request, 'accessories_catalogue.html', context)
-
+    return render(request, 'product_list.html', context)
 
 
 def product_details(request, producto_id):
     product = get_object_or_404(Product, pk=producto_id)
     ratings_count = product.rating_set.count()
     ratings_mean = product.rating_set.aggregate(Avg('rating'))['rating__avg']
+    ratings = product.rating_set.all()
     
     context = {'product': product}
     context['ratings_count'] = ratings_count
     context['ratings_mean'] = ratings_mean
+    context['ratings'] = ratings
     return render(request, 'product_details.html', context)
 
-def get(request, producto_id):
-    product = get_object_or_404(Product, pk=producto_id)
-    ratings = product.rating_set.all()
-
-    context = {'ratings': ratings}
-    context['product'] = product
-
-    response = render(request, 'ratings.html', context)
-    return HttpResponse(response)
-
         
-def post(request, producto_id):
+def create_rating(request, producto_id):
     if request.method == 'POST':
-        form = RatingForm(request.POST)
-        if form.is_valid():
-            rating = form.save(commit=False)
-            rating.bike = Product.objects.get(pk=producto_id)
-            selected_stars = request.POST.get('selectedStars')
-            rating.rating = int(selected_stars) if selected_stars.isdigit() else 0
-            rating.save()
-            response = redirect('ratings', producto_id=producto_id)
-            
-    else:
-        form = RatingForm()
-        response = render(request, 'rating_form.html', {'form': form})
+        rating = int(request.POST.get('selectedStars') or 0)
+        title = request.POST.get('title')
+        comment = request.POST.get('comment')
+        email = request.POST.get('email')
+      
+        product = Product.objects.get(pk=producto_id)
 
-    return HttpResponse(response)
+        new_rating = Rating.objects.create(
+            bike=product,
+            rating=rating,
+            title=title,
+            comment=comment,
+            email=email
+        )
+        new_rating.save()
+        return redirect('product_details', producto_id=producto_id)
+    
+    product = Product.objects.get(pk=producto_id)
+    return render(request, 'rating_form.html', {'product': product})
+
+
  
-
+def buscar_productos(request):
+    if request.method == 'GET' and 'search' in request.GET:
+        search_term = request.GET.get('search', '').lower()
+        # Realiza la búsqueda en la base de datos
+        # Filtra los productos por el término de búsqueda
+        products = Product.objects.filter(title__icontains=search_term)
+        # Serializa los datos de los productos para enviarlos como respuesta
+        serialized_products = [{'title': product.title} for product in products]
+        return JsonResponse({'products': serialized_products})
+    else:
+        return JsonResponse({'error': 'No se proporcionó un término de búsqueda válido'})
 

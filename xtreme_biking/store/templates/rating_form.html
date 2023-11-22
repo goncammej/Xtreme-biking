@@ -1,166 +1,151 @@
-<!-- FILEPATH: /c:/Users/aleja/Desktop/Universidad/4º/PGPI/Xtreme-biking/xtreme_biking/store/templates/rating_form.html -->
-<!DOCTYPE html>
+{% load static %} 
+<!doctype html>
+
 <html>
-<head>
-    <title>Rating Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        form {
-            background-color: #f2f2f2;
-            padding: 20px;
-            border-radius: 5px;
-            margin: 20px auto;
-            max-width: 500px;
-        }
-        .rating-stars {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .rating-stars input[type="radio"] {
-            display: none;
-        }
-        .rating-stars label {
-            font-size: 30px;
-            color: #ccc;
-            cursor: pointer;
-        }
-        .rating-stars input[type="radio"]:checked ~ label {
-            color: gold;
-        }
-        .error-message {
-            color: red;
-            margin-top: 5px;
-        }
-        button {
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #555;
-        }
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-        }
+        <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <script src="https://cdn.tailwindcss.com"></script>
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-        }
+                <style>
+                        html, body {
+                                margin: 0;
+                                padding: 0;
+                                display: flex;
+                                flex-direction: column;
+                                position: relative;
+                        }
+                            .stars {
+                                display: flex;
+                                gap: 5px;
+                                margin-bottom: 20px;
+                            }
 
-        .stars {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-        }
+                            .star {
+                                cursor: pointer;
+                                font-size: 24px;
+                                color: #ccc;
+                            }
 
-        .star {
-            cursor: pointer;
-            font-size: 24px;
-            color: #ccc;
-        }
+                            .star:hover,
+                            .star.active {
+                                color: #f39c12;
+                            }
+                        </style>
+                </style>
+        </head>
 
-        .star:hover,
-        .star.active {
-            color: #f39c12;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Valorar Producto</h1>
-    </header>
-    <form method="post">
-        {% csrf_token %}
-        <label for="stars">Rating</label>
-                <div class="stars" id="rating">
-                    <span class="star" data-value="1">&#9733;</span>
-                    <span class="star" data-value="2">&#9733;</span>
-                    <span class="star" data-value="3">&#9733;</span>
-                    <span class="star" data-value="4">&#9733;</span>
-                    <span class="star" data-value="5">&#9733;</span>
+        <body>
+            <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-lg text-center">
+                    <h1 class="text-2xl font-bold sm:text-3xl">Añade una valoración</h1>
+
+                    <p class="mt-4 text-gray-500">
+                        Rellena el formulario para crear una valoración sobre el producto {{ product.title }}
+                    </p>
                 </div>
-        <input type="hidden" name="selectedStars" id="selectedStarsInput">
-        {% for field in form %}
-            <div>
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    <div class="error-message">
-                        {% for error in field.errors %}
-                            {{ error }}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-            <div>
+
+                <form method="post" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
+                    {% csrf_token %}
+                    <label for="stars">Selecciona el número de estrellas: </label>
+                            <div class="stars" id="rating">
+                                <span class="star" data-value="1">&#9733;</span>
+                                <span class="star" data-value="2">&#9733;</span>
+                                <span class="star" data-value="3">&#9733;</span>
+                                <span class="star" data-value="4">&#9733;</span>
+                                <span class="star" data-value="5">&#9733;</span>
+                            </div>
+                    <input type="hidden" name="selectedStars" id="selectedStarsInput">
+                    <script>
+                        const stars = document.querySelectorAll('.star');
+                        const rating = document.querySelector('#rating');
+                        const selectedStarsInput = document.querySelector('#selectedStarsInput');
                 
-                {% if form.rating.errors %}
-                    <div class="error-message">
-                        {% for error in form.rating.errors %}
-                            {{ error }}
-                        {% endfor %}
+                        rating.addEventListener('click', (e) => {
+                            const starClicked = e.target.closest('.star');
+                            if (starClicked) {
+                                const starsArray = Array.from(stars);
+                                const index = starsArray.indexOf(starClicked);
+                                const selectedStars = index + 1;
+                                selectedStarsInput.value = selectedStars;
+                                stars.forEach((star, i) => {
+                                    if (i < selectedStars) {
+                                        star.classList.add('active');
+                                    } else {
+                                        star.classList.remove('active');
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+                    <div>
+                        <label for="title" class="sr-only">Title</label>
+    
+                            <div class="relative">
+                                <input
+                                    name="title"
+                                    type="text"
+                                    class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                                    placeholder="Introduce un título"
+                                    required
+                                />
+                            </div>
                     </div>
-                {% endif %}
+                    <div>
+                        <label for="comment" class="sr-only">Comment</label>
+
+                        <div class="relative">
+                            <textarea
+                                name="comment"
+                                class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                                placeholder="Escribe tu comentario"
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="email" class="sr-only">Email</label>
+    
+                            <div class="relative">
+                                <input
+                                    name="email"
+                                    type="email"
+                                    class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+                                    placeholder="Introduce un correo electrónico"
+                                    required    
+                                />
+    
+                                <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="h-4 w-4 text-gray-400"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                                        />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+
+                    <div class="flex items-center justify-between">
+
+                        <button
+                            type="submit"
+                            class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+                        >
+                            Añadir valoración
+                        </button>
+                    </div>
+                </form>
             </div>
-        {% endfor %}
+
+        </body>
         
-        <button type="submit"onclick="getSelectedStars()">Enviar Opinión</button>
-    </form>
-    <footer>
-        <p>&copy; 2023 Xtreme Biking</p>
-    </footer>
-    <script>
-        const stars = document.querySelectorAll('.star');
-        const rating = document.querySelector('#rating');
-        const selectedStarsInput = document.querySelector('#selectedStarsInput');
-
-        rating.addEventListener('click', (e) => {
-            const starClicked = e.target.closest('.star');
-            if (starClicked) {
-                const starsArray = Array.from(stars);
-                const index = starsArray.indexOf(starClicked);
-                const selectedStars = index + 1;
-                selectedStarsInput.value = selectedStars;
-                stars.forEach((star, i) => {
-                    if (i < selectedStars) {
-                        star.classList.add('active');
-                    } else {
-                        star.classList.remove('active');
-                    }
-                });
-            }
-        });
-    </script>
-
-    </script>
-</body>
 </html>
