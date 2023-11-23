@@ -24,7 +24,7 @@ def frontpage(request):
     return render(request, 'frontpage.html', context)
 
 def product_list(request):
-    products_mountain = Product.objects.filter(category='Bicleta de montaña')
+    products_mountain = Product.objects.filter(category='Bicicleta de montaña')
     products_urban = Product.objects.filter(category='Bicicleta urbana')
     products_road = Product.objects.filter(category='Bicicleta de carretera')
     accessories = Product.objects.filter(category='Accesorio')

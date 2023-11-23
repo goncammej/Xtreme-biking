@@ -12,7 +12,7 @@ class Product(models.Model):
     #cart = models.ForeignKey(Cart, on_delete=models.CASCADE) Many to one hacia carrito
 
     class Category(models.TextChoices):
-        MOUNTAIN_BIKE = 'Bicleta de montaña'
+        MOUNTAIN_BIKE = 'Bicicleta de montaña'
         URBAN_BIKE = 'Bicicleta urbana'
         ROAD_BIKE = 'Bicicleta de carretera'
         ACCESSORY = 'Accesorio'
