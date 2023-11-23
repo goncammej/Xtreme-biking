@@ -29,15 +29,17 @@
           </p>
         </div>
 
-        <form action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
+        <form method="post" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
+          {% csrf_token %}
           <div>
-            <label for="email" class="sr-only">Email</label>
+            <label for="username" class="sr-only">Usuario</label>
 
             <div class="relative">
               <input
-                type="email"
+                type="text"
                 class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-                placeholder="Enter email"
+                placeholder="Enter username"
+                name="username"
               />
 
               <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -67,6 +69,7 @@
                 type="password"
                 class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                 placeholder="Enter password"
+                name="password"
               />
 
               <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
