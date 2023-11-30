@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% load static %} 
+
+{% block content %}
+<div class="max-w-6xl mx-auto flex flex-wrap items-start py-6">
+    <div class="products w-full">
+        <h1 class="mb-5 text-3xl">Compra</h1>
+        <div class="w-full flex">
+            <div class="pr-6 w-3/5">
+                <div class="mb-6 p-6 bg-gray-100 rounded-xl">
+                    <h2 class="mb-5 uppercase text-lg">Información de contacto</h2>
+                    <div class="mb-4 w-full">
+                        <label class="inline-block mb-2">Correo electrónico</label>
+                        <input type="email" class="w-full p-5 rounded-xl">
+                    </div>
+                </div>
+                <div class="mb-6 p-6 bg-gray-100 rounded-xl">
+                    <h2 class="mb-5 uppercase text-lg">Información de envío</h2>
+    
+                    <div class="flex space-x-6">
+                        <div class="w-full mb-4">
+                            <label class="inline-block mb-2">Nombre</label>
+                            <input type="text" class="w-full p-5 rounded-xl">
+                        </div>
+                    </div>
+    
+                    <div class="mb-4">
+                        <label class="inline-block mb-2">Dirección</label>
+                        <input type="text" class="w-full p-5 rounded-xl">
+                    </div>
+    
+                    <div class="flex space-x-6">
+                        <div class="w-1/2 mb-4">
+                            <label class="inline-block mb-2">Código postal</label>
+                            <input type="text" class="w-full p-5 rounded-xl">
+                        </div>
+    
+                        <div class="w-1/2 mb-4">
+                            <label class="inline-block mb-2">Ciudad</label>
+                            <input type="text" class="w-full p-5 rounded-xl">
+                        </div>
+
+                        <div class="w-full mb-4">
+                            <label class="inline-block mb-2">Localidad</label>
+                            <input type="text" class="w-full p-5 rounded-xl">
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="mb-6 p-6 bg-gray-100 rounded-xl">
+                    <h2 class="mb-5 uppercase text-lg">Método de pago</h2>
+                </div>
+            </div>
+            <div class="summary p-6 w-2/5 h-fit bg-gray-100 rounded-xl">
+                <h2 class="uppercase text-lg mb-5">Summary</h2>
+        
+                <div class="mb-6 flex justify-between">
+                    <span class="font-semibold">Total</span>
+                    <span>$99</span>
+                </div>
+        
+                <a href="#" class="inline-block px-8 py-4 rounded-xl bg-purple-500 hover:bg-purple-700 text-white">Confirm checkout</a>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

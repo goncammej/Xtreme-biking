@@ -3,108 +3,22 @@
 {% block content %}
 <div class="max-w-6xl mx-auto py-6 px-6 xl:px-0 items-center flex flex-wrap justify-center">
     <div class="images w-full mb-6 lg:mb-0 lg:w-3/5">
-        <img class="rounded-xl" src="{% static 'img/bike1.jpg' %}">
+        <img class="rounded-xl" src="{{ product.image_url }}">
     </div>
 
     <div class="information w-full lg:w-2/5 lg:p-6">
         <h1 class="text-2xl">{{product.title}}</h1>
 
-        <p class="mt-1 text-gray-400">9.99€</p>
+        <p class="mt-1 text-gray-400">{{product.price}}€</p>
 
-        <p class="mt-6 text-gray-700">Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+        <p class="mt-6 text-gray-700">{{product.description}}</p>
 
-        <form method="post" action="/store/product_details/{{product.id}}/">
-          {% csrf_token %}
-          <input style="display: none;" type="text" value="{{product.id}}" name="product">
-          {% if product.availability == 0 %}
-          <h3>Este producto se encuentra agotado</h3>
-          {% else %}
-          <div class="amount_section">
-              <h3>Cantidad:</h3>
-              <p>
-                  <span class="select-none" onclick="decreaseQuantity()">-</span>
-                  <input id="quantity" name="quantity" value="1" readonly>
-                  <span class="select-none" onclick="increaseQuantity()">+</span>
-              </p>
-              <script>
-                  function decreaseQuantity() {
-                      var quantityElement = document.getElementById('quantity');
-                      var quantity = parseInt(quantityElement.value);
-                      if (quantity > 1) {
-                          quantity--;
-                          quantityElement.value = quantity;
-                      }
-                  }
-                  function increaseQuantity() {
-                      var quantityElement = document.getElementById('quantity');
-                      var quantity = parseInt(quantityElement.value);
-                      if (quantity < '{{ product.availability }}'){
-                          quantity++;
-                          quantityElement.value = quantity;
-                      }                    
-                  }
-              </script>
-          </div>
-          {% endif %}
-          <input style="background-color: #a3cb64;" type="submit" class="mt-6 inline-block px-8 py-4 rounded-xl text-white" value="Añadir al carrito">
-        </form>
+        {% if product.availability == 0 %}
+        <h3>Este producto se encuentra agotado</h3>
+        {% else %}
+        <button data-product="{{product.id}}" data-action="add" data-redirect="{% url 'cart' %}" data-quantity="1" style="background-color: #a3cb64;" class="update-cart mt-6 inline-block px-8 py-4 rounded-xl text-white">Añadir al carrito</button>
+        {% endif %}
 
-        <!-- <a href="#" style="background-color: #a3cb64;" class="mt-6 inline-block px-8 py-4 rounded-xl text-white">
-            Add to cart
-        </a> -->
-
-        <span class="stars" id="ratingStars"></span>
-                    <script>
-                        var averageRating = '{{ ratings_mean }}';
-                        var ratings = '{{ ratings_count }}';
-                        var filledStars = Math.round(averageRating);
-                        var emptyStars = 5 - filledStars;
-                        var starsHTML = '';
-                        if (ratings == 0){
-                            starsHTML = '&#9734;&#9734;&#9734;&#9734;&#9734;';
-                        }
-                        else{
-                            for (var i = 0; i < filledStars; i++) {
-                                starsHTML += '&#9733;';
-                             }
-                        
-                            for (var i = 0; i < emptyStars; i++) {
-                                starsHTML += '&#9734;';
-                             }
-                        }
-                        document.getElementById('ratingStars').innerHTML = starsHTML;
-                    </script>
     </div>
-
-    <ul class="mt-12">
-        <li class="py-8 text-left border px-4 mt-2">
-          <div class="flex items-start">
-            <img class="block h-10 w-10 max-w-full flex-shrink-0 rounded-full align-middle" src="/images/Ju6-1negUEjTnBKw_ZP4r.png" alt="" />
-      
-            <div class="ml-6">
-              <div class="flex items-center">
-                <svg class="block h-6 w-6 align-middle text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" class=""></path>
-                </svg>
-                <svg class="block h-6 w-6 align-middle text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" class=""></path>
-                </svg>
-                <svg class="block h-6 w-6 align-middle text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" class=""></path>
-                </svg>
-                <svg class="block h-6 w-6 align-middle text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" class=""></path>
-                </svg>
-                <svg class="block h-6 w-6 align-middle text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" class=""></path>
-                </svg>
-              </div>
-              <p class="mt-5 text-base text-gray-900">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro blanditiis sapiente ab dolores, ad dignissimos perspiciatis.</p>
-              <p class="mt-5 text-sm font-bold text-gray-900">John Lester</p>
-              <p class="mt-1 text-sm text-gray-600">22 de noviembre, 2023</p>
-            </div>
-          </div>
-        </li>
-    </ul>
 </div>
 {% endblock %}

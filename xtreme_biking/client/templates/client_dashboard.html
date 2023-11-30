@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto p-6">
+    <h1 class="mb-5 text-3xl">Mi cuenta</h1>
+
+    <div class="mb-6">
+        <strong>Nombre: </strong>{{ user.name }}<br>
+        <strong>Correo electrónico: </strong>{{ user.email }}<br>
+    </div>
+
+    <div class="mb-6">
+        <strong>Método de pago: 
+        <form method="POST">
+            {% csrf_token %}
+            {{ payment_form | crispy}}
+            <button type="submit" style="background-color: #a3cb64;" class="w-full text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Cambiar método de pago</button>
+        </form>
+    </div>
+
+    <div class="mb-6">
+        <strong>Dirección de envío: </strong>
+        <form method="POST">
+            {% csrf_token %}
+            {{ shipping_form | crispy }}
+            <button type="submit" style="background-color: #a3cb64;" class="w-full text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Cambiar dirección</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <h2 class="my-6 text-xl">Mis pedidos</h2>
+
+    {% for order in orders %}
+        <div class="w-full mb-6 p-6 flex flex-wrap bg-gray-100 rounded-xl">
+            <div class="mb-6 flex justify-between">
+                <a href="#">Identificador de pedido: {{ order.transaction_id }}</a>
+            </div>
+
+            <div class="mb-6 w-full">
+                {% for item in order.orderitem_set.all %}
+                    <div class="product mb-6 flex pr-6">
+                        <a href="#" class="w-1/4">
+                            <img class="hover:shadow-lg rounded-xl" src="{{ item.product.image_url }}">
+                        </a>
+
+                        <div class="w-3/4 pl-6">
+                            <div class="flex justify-between">
+                                <a href="#" class="text-lg">{{ item.product.title }}</a>
+
+                                <p class="mb-6 pt-1 text-gray-400">${{ item.get_total }}</p>
+                            </div>
+
+                            <hr>
+
+                            <div class="mt-6">
+                                Cantidad: {{ item.quantity }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div>
+                <p class="text-lg">Date: {{ order.date_ordered }}</p>
+                <p class="text-lg">Total: ${{ order.get_cart_total }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

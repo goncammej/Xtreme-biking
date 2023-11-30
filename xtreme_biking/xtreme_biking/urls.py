@@ -18,15 +18,18 @@ from django.contrib import admin
 from django.urls import path,include
 from store import views as store_views
 
+handler404 = 'store.views.custom_404'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', store_views.frontpage, name='frontpage'),
+    path('accounts/', include('accounts.urls')),
     path('store/',include('store.urls')),
-    path('administrator/', include('administrator.urls')),
     path('cart/', include('cart.urls')),
     path('client/', include('client.urls')),
     path('order/', include('order.urls')),
     path('payment/', include('payment.urls')),
     path('store/', include('store.urls')),
+    path('update_item/', store_views.updateItem, name="update_item")
 ]
 

@@ -3,59 +3,82 @@
 {% load static %} 
 
 {% block content %}
-
 <section>
-  <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+  <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
     <div class="mx-auto max-w-3xl">
+      {% if order.get_cart_items == 0 %}
       <header class="text-center">
-        <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">Tu carrito</h1>
+        <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">El carrito está vacío</strong></h1>
+      </header>
+      {% else %}
+      <header class="text-center">
+        <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">Tu carrito <strong>{{order.get_cart_items}}</strong></h1>
       </header>
 
       <div id="cart" class="mt-8">
         <ul class="space-y-4">
-          {% for product in cart_items %}
+          {% for item in items %}
           <script>
             console.log("{{ product.product.title }}")
           </script>
           <li class="flex items-center gap-4">
             <img
-              src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=830&q=80"
+              src="{{ item.product.image_url }}"
               alt=""
               class="h-16 w-16 rounded object-cover"
             />
 
             <div>
-              <h3 class="text-sm text-gray-900">{{ product.product.title }}</h3>
+              <h3 class="text-sm text-gray-900">{{ item.product.title }}</h3>
 
               <dl class="mt-0.5 space-y-px text-[10px] text-gray-600">
                 <div>
                   <dt class="inline">Categoría:</dt>
-                  <dd class="inline">{{ product.product.category }}</dd>
+                  <dd class="inline">{{ item.product.category }}</dd>
                 </div>
 
                 <div>
                   <dt class="inline">Precio unitario:</dt>
-                  <dd class="inline">{{ product.product.price }}</dd>
+                  <dd class="inline">{{ item.product.price|floatformat:2 }}</dd>
                 </div>
               </dl>
             </div>
 
             <div class="flex flex-1 items-center justify-end gap-2">
-              <form>
-                <label for="Line1Qty" class="sr-only"> Cantidad </label>
+              
+              <div>
+                <div class="flex items-center border border-gray-200 rounded">
+                  <button
+                    type="button"
+                    data-action="remove"
+                    data-product="{{item.product.id}}"
+                    data-redirect="{% url 'cart' %}"
+                    class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 update-cart"
+                  >
+                    &minus;
+                  </button>
+              
+                  <p
+                    class="h-10 w-16 align-middle border-transparent text-center [-moz-appearance:_textfield] [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none"
+                  >
+                  {{item.quantity}}
+                  </p>
+              
+                  <button
+                    type="button"
+                    data-action="add"
+                    data-product="{{item.product.id}}"
+                    data-redirect="{% url 'cart' %}"
+                    class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 update-cart"
+                  >
+                    &plus;
+                  </button>
+                </div>
+              </div>
 
-                <input
-                  type="number"
-                  min="1"
-                  value="1"
-                  id="Line1Qty"
-                  class="h-8 w-12 rounded border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600 [-moz-appearance:_textfield] focus:outline-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-                />
-              </form>
-
-              <button class="text-gray-600 transition hover:text-red-600">
+              <button type="button" data-action="delete" data-product="{{item.product.id}}" data-redirect="{% url 'cart' %}" class="text-gray-600 transition hover:text-red-600 update-cart">
                 <span class="sr-only">Eliminar elemento</span>
-                <a href="{% url 'delete_product_from_cart' product.product.id %}">
+                <a href="#">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -83,7 +106,7 @@
 
               <div class="flex justify-between !text-base font-medium">
                 <dt>Total</dt>
-                <dd>888,88€</dd>
+                <dd>{{order.get_cart_total|floatformat:2}}€</dd>
               </div>
             </dl>
 
@@ -98,9 +121,9 @@
           </div>
         </div>
       </div>
+      {% endif %}
     </div>
   </div>
 </section>
-
 
 {% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base_plain.html' %}
+
+{% load static %} 
+
+{% block content %}
+
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+
+<section class="flex-grow">
+    <div class="flex h-100 flex-col items-center justify-center px-6 mx-auto">
+        <a href="{% url 'frontpage' %}" class="py-4 w-1/5 h-1/5">
+            <img src="{% static 'img/xtreme-logo.png' %}" alt="logo">      
+        </a>
+        <div class="w-full bg-gray-100 border-b border-gray-300 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
+            <div class="p-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight">
+                    Inicia sesión en tu cuenta
+                </h1>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" style="background-color: #a3cb64;" class="w-full text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</button>
+                    <p class="text-sm font-light">
+                        ¿No tienes cuenta todavía? <a href="{% url 'accounts:signup' %}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Registrate</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  {% endblock %}

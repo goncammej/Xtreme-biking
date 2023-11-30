@@ -2,20 +2,28 @@
 
 {% load static %} 
 
+{% load url_replace %}
+
 {% block content %}
 
-<section>
+<ul>
+  <li><a href="">Todos los productos</a></li>
+  <li><a href="{% url 'search_results' %}?c=montaña">Bicicletas de montaña</a></li>
+  <li><a href="">Bicicleta urbana</a></li>
+  <li><a href="">Bicicleta de carretera</a></li>
+  <li><a href="">Piezas de sustitución</a></li>
+</ul>
+
+<!-- <section>
   <div class="mx-auto max-w-6xl px-6 py-12">
     <header>
       <div class="flex flex-col">
         <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">
-          Product Collection
+          Catálogo de productos
         </h2>
   
         <p class="mt-4 max-w-md text-gray-500">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque
-          praesentium cumque iure dicta incidunt est ipsam, officia dolor fugit
-          natus?
+          Explora las diferentes secciones de la tienda y encuentra el producto que mejor se adapte a tus necesidades
         </p>
       </div>
     </header>
@@ -411,11 +419,11 @@
           {% for product in products %}
           <li>
             <a class="block overflow-hidden rounded-xl" href="{% url 'product_details' producto_id=product.id %}">
-                <img src="{% static 'img/bike1.jpg' %}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
+                <img src="{{ product.image_url }}" class="hover:shadow-lg h-[250px] w-full object-cover transition duration-500 hover:scale-105 sm:h-[350px]">
             </a>
 
             <div class="pt-3 flex items-center justify-between">
-                <a href="{% url 'product_details' producto_id=product.id %}">Nombre del producto</a>
+                <a href="{% url 'product_details' producto_id=product.id %}">{{ product.title }}</a>
 
                 <a href="{% url 'product_details' producto_id=product.id %}" style="color: #a3cb64;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -431,6 +439,6 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 {% endblock %}

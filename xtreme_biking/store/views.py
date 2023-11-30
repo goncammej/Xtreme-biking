@@ -1,15 +1,17 @@
-from .models import Product, Rating
+import json
+from store.utils import cartData
+from store.models import Product
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Avg
 from django.views.generic.base import View
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django import forms
 from django.shortcuts import redirect
+from django.views.generic import TemplateView, ListView
 
-class RatingForm(forms.ModelForm):
-    class Meta:
-        model = Rating
-        fields = ['rating', 'comment', 'title', 'email']
+from order.models import Order, OrderItem
+
+from django.db.models import Q
 
 def about(request):
     return render(request, 'about.html')
@@ -18,65 +20,86 @@ def product_list(request):
     return render(request, 'product_list.html')
 
 def frontpage(request):
-    # Retrieve the products of each category ordered by the rating field of the rating model
-    products= Product.objects.order_by('-rating__rating')[:7]
-    context = {"products": products}
+    data = cartData(request)
+
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+
+    products= Product.objects.all()[:3]
+    context = {"products": products, "cartItems": cartItems}
     
     return render(request, 'home.html', context)
 
 def catalogue(request):
-    products = Product.objects.all
-    context = {"products": products}
+    data = cartData(request)
+
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+    
+    products = Product.objects.all()
+    context = {"products": products, "cartItems": cartItems}
 
     return render(request, 'product_list.html', context)
 
 def product_details(request, producto_id):
-    if request.method == 'POST':
-        product = request.POST.get('product')
-        cart = request.session.get('cart')
-        if cart:
-            quantity = cart.get(product)
-            if quantity:
-                cart[product] = quantity + 1
-            else:
-                cart[product] = 1
-        else:
-            cart = {}
-            cart[product] = 1
-
-        request.session['cart'] = cart
-        return redirect('/cart')
-    else:
-        product = get_object_or_404(Product, pk=producto_id)
-        ratings_count = product.rating_set.count()
-        ratings_mean = product.rating_set.aggregate(Avg('rating'))['rating__avg']
-        
-        context = {'product': product}
-        context['ratings_count'] = ratings_count
-        context['ratings_mean'] = ratings_mean
-        return render(request, 'product_details.html', context)
-
-def get(request, producto_id):
     product = get_object_or_404(Product, pk=producto_id)
-    ratings = product.rating_set.all()
+    
+    context = {'product': product}
+    return render(request, 'product_details.html', context)
 
-    context = {'ratings': ratings}
-    context['product'] = product
+class SearchResultsView(ListView):
+    model = Product
+    template_name = 'search_results.html'
+    
+    def get_queryset(self):
+        query = str(self.request.GET.get("q"))
+        category = str(self.request.GET.get("c"))
+        if category and query:
+            return Product.objects.filter(
+                Q(title__icontains=query) & Q(category__icontains=category)
+            )
+        elif category and not query:
+            return Product.objects.filter(
+                Q(category__icontains=category)
+            )
+        elif query and not category:
+            return Product.objects.filter(
+                Q(category__icontains=query | Q(category__icontains=query))
+            )
+    
+def updateItem(request):
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
+    quantity = data['quantity']
+    print('Action:', action)
+    print('Product:', productId)
+    print('Quantity:', quantity)
 
-    response = render(request, 'ratings.html', context)
-    return HttpResponse(response)
-        
-def post(request, producto_id):
-    if request.method == 'POST':
-        form = RatingForm(request.POST)
-        if form.is_valid():
-            rating = form.save(commit=False)
-            rating.bike = Product.objects.get(pk=producto_id)
-            rating.save()
-            response = render(request, 'ratings.html')
-    else:
-        form = RatingForm()
-        response = render(request, 'rating_form.html', {'form': form})
+    customer = request.user.customer
+    product = Product.objects.get(id=productId)
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
-    return HttpResponse(response)
+    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
+    if action == 'add':
+        orderItem.quantity = (orderItem.quantity + 1)
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+    elif action == 'delete':
+        orderItem.delete()
+    elif action == 'add-quantity':
+        orderItem.quantity = (orderItem.quantity + quantity)
+
+    orderItem.save()
+
+    if orderItem.quantity <= 0:
+        orderItem.delete()
+
+    return JsonResponse('Item was added', safe=False)
+
+# custom 404 view
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)

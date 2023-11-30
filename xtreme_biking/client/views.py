@@ -1,26 +1,29 @@
 from django.shortcuts import render, get_object_or_404
 
-from .models import Order
+from order.models import Order
+from . import forms
+from .models import CustomerPaymentMethod, CustomerShipping
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+@login_required
+def client_dashboard(request):
+    user = request.user
+    orders = Order.objects.filter(customer=user.customer)
+    payment_method = CustomerPaymentMethod.objects.get(customer=user.customer)
+    shipping_address = CustomerShipping.objects.get(customer=user.customer)
 
-def login(request):
-    return render(request, 'login.html')
+    payment_form = forms.PaymentMethodForm(initial={'customer': user.customer, "method": payment_method.method})
+    shipping_form = forms.ShippingAdressForm(initial={'customer': user.customer, 'address': shipping_address.address, 'city': shipping_address.city, 'state': shipping_address.state, 'zipcode': shipping_address.zipcode})
+    if request.method == 'POST':
+        if 'payment_info' in request.POST:
+            payment_form = forms.PaymentMethodForm(request.POST, instance=payment_method)
+            if payment_form.is_valid():
+                payment_form.save()
+        if 'shipping_info' in request.POST:
+            shipping_form = forms.ShippingAdressForm(request.POST, instance=shipping_address)
+            if shipping_form.is_valid():
+                shipping_form.save()
 
-def register(request):
-    return render(request, 'register.html')
-
-def orders(request):
-    orders = Order.objects.all()
-    return render(request, 'orders.html', {'orders': orders})
-
-def order_details(request):
-    return render(request, 'orders_details.html')
-
-def logout(request):
-    return render(request, 'logout.html')
-
-def incident(request):
-    return render(request, 'incident.html')
-
+    context = {"user": user, "orders": orders, "payment_method": payment_method, "shipping_address": shipping_address, 'payment_form': payment_form, 'shipping_form': shipping_form}
+    return render(request, 'client_dashboard.html', context)
 

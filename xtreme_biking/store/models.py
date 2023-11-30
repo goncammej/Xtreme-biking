@@ -1,21 +1,18 @@
 from django.db import models
-from django.core.validators import MaxValueValidator
-from django.db import models
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Product(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image_url = models.CharField(max_length=100)
-    availability = models.IntegerField(default=0)
-    #cart = models.ForeignKey(Cart, on_delete=models.CASCADE) Many to one hacia carrito
+    title = models.CharField(max_length=100, null=False, blank=False)
+    description = models.TextField(null=False, blank=False)
+    price = models.FloatField(validators=[MinValueValidator(0.0)])
+    image_url = models.CharField(max_length=100, null=False, blank=False)
+    availability = models.IntegerField(null=False, validators=[MinValueValidator(0)])
 
     class Category(models.TextChoices):
         MOUNTAIN_BIKE = 'Bicleta de montaña'
         URBAN_BIKE = 'Bicicleta urbana'
         ROAD_BIKE = 'Bicicleta de carretera'
-        ACCESSORY = 'Accesorio'
+        SUSTITUTION = 'Pieza de sustitución'
     
     category = models.CharField(max_length=30, choices=Category.choices, default=Category.MOUNTAIN_BIKE)
 

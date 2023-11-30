@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %} 
+
+{% load url_replace %}
+
+{% block query %} action="{{ request.get_full_path }}" {% endblock %}
+
+{% block content %}
+
+<h1>Search Results</h1>
+
+<ul>
+  {% for product in object_list %}
+    <li>
+      {{ product.title }}, {{ product.price }}
+    </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
