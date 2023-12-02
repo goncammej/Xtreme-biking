@@ -147,7 +147,8 @@
                             <a href="{% url 'search_orders' %}" class="text-gray-900 hover:underline">Seguimiento</a>
                         </li>
                     </ul>
-                    <form class="relative" {% block query %} action="{% url 'search_results' %}" {% endblock %} method="get">
+                    {% block query %}
+                    <form class="relative"  action="{% url 'search_results' %}" method="get">
                         <label for="Search" class="sr-only"> Search </label>
                         <input
                             type="text"
@@ -178,6 +179,7 @@
                             </button>
                         </span>
                     </form>
+                    {% endblock %}
                 </div>
             </div>
         </nav>

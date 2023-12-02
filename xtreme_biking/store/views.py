@@ -49,7 +49,26 @@ def product_details(request, producto_id):
     context = {'product': product}
     return render(request, 'product_details.html', context)
 
-class SearchResultsView(ListView):
+def SearchResultsView(request):
+    context = {"request": request, "products": None}
+    query = request.GET.get("q")
+    category = request.GET.get("c")
+    if category and query:
+        context['products'] = Product.objects.filter(
+            Q(title__icontains=query) & Q(title__icontains=category)
+        )
+    elif category and not query:
+        context['products'] = Product.objects.filter(
+            Q(category__icontains=category)
+        )
+    elif query and not category:
+        context['products'] = Product.objects.filter(
+        Q(category__icontains=query) | Q(title__icontains=query)
+    )
+    return render(request, 'search_results.html', context)
+
+
+""" class SearchResultsView(ListView):
     model = Product
     template_name = 'search_results.html'
     
@@ -67,7 +86,7 @@ class SearchResultsView(ListView):
         elif query and not category:
             return Product.objects.filter(
                 Q(category__icontains=query | Q(category__icontains=query))
-            )
+            ) """
     
 def updateItem(request):
     data = json.loads(request.body)

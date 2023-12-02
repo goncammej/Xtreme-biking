@@ -7,11 +7,11 @@
 {% block content %}
 
 <ul>
-  <li><a href="">Todos los productos</a></li>
+  <li><a href="#">Todos los productos</a></li>
   <li><a href="{% url 'search_results' %}?c=montaña">Bicicletas de montaña</a></li>
-  <li><a href="">Bicicleta urbana</a></li>
-  <li><a href="">Bicicleta de carretera</a></li>
-  <li><a href="">Piezas de sustitución</a></li>
+  <li><a href="{% url 'search_results' %}?c=urbana">Bicicleta urbana</a></li>
+  <li><a href="{% url 'search_results' %}?c=carretera">Bicicleta de carretera</a></li>
+  <li><a href="{% url 'search_results' %}?c=piezas">Piezas de sustitución</a></li>
 </ul>
 
 <!-- <section>
