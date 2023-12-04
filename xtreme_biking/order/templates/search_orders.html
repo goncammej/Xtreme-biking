@@ -1,13 +1,19 @@
-<!-- templates/search_results.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
 <h1>Search Results</h1>
-<form class="relative" action="{% url 'search_orders' %}" method="get">
+<form class="relative w-fit"  action="{% url 'search_orders' %}" method="get">
   <label for="Search" class="sr-only"> Search </label>
   <input
       type="text"
       id="Search"
-      name="q"
-      placeholder="Indica el identificador de tu pedido"
-      class="rounded-md border-gray-200 py-2.5 pe-10 ps-2.5 shadow-sm w-[400px] focus:outline-none focus:ring-0 focus:border-gray-400"
+      name="r"
+      value="{{ request.GET.r }}"
+      placeholder="Introduce el identificador de tu pedido"
+      class="rounded-md border-gray-200 py-2.5 pe-10 ps-2.5 shadow-sm w-[450px] focus:outline-none focus:ring-0 focus:border-gray-400"
   />
 
   <span class="absolute inset-y-0 end-0 grid w-10 place-content-center">
@@ -31,17 +37,22 @@
       </button>
   </span>
 </form>
+
+{% if request.GET.r and order%}
 <ul>
-  {% for order in object_list %}
-    <li>
-      {{ order.transaction_id }}, {{ order.complete}}, {{ order.date_ordered}}
-      <ul>
-        {% for item in order.orderitem_set.all %}
-        <li>
-          {{ item.product.title }}, {{ item.product.price}}, {{ item.quantity }}
-        </li>
+  <li>
+    {{ order.transaction_id }}, {{ order.complete}}, {{ order.date_ordered}}
+    <ul>
+      {% for item in order.orderitem_set.all %}
+      <li>
+        {{ item.product.title }}, {{ item.product.price}}, {{ item.quantity }}
+      </li>
       {% endfor %}
-      </ul>
-    </li>
-  {% endfor %}
+    </ul>
+  </li>
 </ul>
+{% elif request.GET.r and not order %}
+<h3>No se ha encontrado ningún pedido con identificador "{{request.GET.r}}"</h3>
+{% endif %}
+
+{% endblock %}

@@ -3,14 +3,10 @@ from django.views.generic import TemplateView, ListView
 
 from .models import Order
 from django.db.models import Q
-
-class SearchOrdersView(ListView):
-    model = Order
-    template_name = "search_orders.html"
-
-    def get_queryset(self):
-        query = self.request.GET.get("q")
-        object_list = Order.objects.filter(
-            Q(transaction_id=query)
-        )
-        return object_list
+    
+def SearchOrdersView(request):
+    context = {"request": request, "order": None}
+    reference = request.GET.get("r")
+    context['order'] = Order.objects.get(transaction_id = reference)
+    
+    return render(request, 'search_orders.html', context)

@@ -27,3 +27,13 @@ def client_dashboard(request):
     context = {"user": user, "orders": orders, "payment_method": payment_method, "shipping_address": shipping_address, 'payment_form': payment_form, 'shipping_form': shipping_form}
     return render(request, 'client_dashboard.html', context)
 
+
+@login_required
+def client_addresses(request):
+    
+    return render(request, 'client_addresses.html')
+
+@login_required
+def client_orders(request):
+    
+    return render(request, 'client_orders.html')

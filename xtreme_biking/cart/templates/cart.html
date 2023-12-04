@@ -12,7 +12,7 @@
       </header>
       {% else %}
       <header class="text-center">
-        <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">Tu carrito <strong>{{order.get_cart_items}} elementos</strong></h1>
+        <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">Tu carrito: <strong>{{order.get_cart_items}} elementos</strong></h1>
       </header>
 
       <div id="cart" class="mt-8">
@@ -59,7 +59,7 @@
                   </button>
               
                   <p
-                    class="h-10 w-16 align-middle border-transparent text-center [-moz-appearance:_textfield] [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none"
+                    class="h-10 w-16 align-middle border-transparent leading-10 text-center [-moz-appearance:_textfield] [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none"
                   >
                   {{item.quantity}}
                   </p>
@@ -112,8 +112,9 @@
 
             <div class="flex justify-end">
               <a
-                href="#"
-                class="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
+                href="{% url 'checkout' %}"
+                style="background-color: #a3cb64;"
+                class="block rounded px-5 py-3 text-sm text-white"
               >
                 Pagar
               </a>

@@ -9,15 +9,14 @@ from django import forms
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView
 
+import random
+
 from order.models import Order, OrderItem
 
 from django.db.models import Q
 
 def about(request):
     return render(request, 'about.html')
-
-def product_list(request):
-    return render(request, 'product_list.html')
 
 def frontpage(request):
     data = cartData(request)
@@ -38,8 +37,13 @@ def catalogue(request):
     order = data['order']
     items = data['items']
     
-    products = Product.objects.all()
-    context = {"products": products, "cartItems": cartItems}
+    products_all = sorted(Product.objects.all()[:3], key=lambda x: random.random())
+    products_mountain = sorted(Product.objects.filter(category="Bicleta de montaña")[:3], key=lambda x: random.random())
+    products_urban = sorted(Product.objects.filter(category="Bicicleta urbana")[:3], key=lambda x: random.random())
+    products_road = sorted(Product.objects.filter(category="Bicicleta de carretera")[:3], key=lambda x: random.random())
+    products_sustitution = sorted(Product.objects.filter(category="Pieza de sustitución")[:3], key=lambda x: random.random())
+    
+    context = {"products_all": products_all, "products_mountain": products_mountain, "products_urban": products_urban, "products_road": products_road, "products_sustitution": products_sustitution, "cartItems": cartItems}
 
     return render(request, 'product_list.html', context)
 
@@ -54,13 +58,23 @@ def SearchResultsView(request):
     query = request.GET.get("q")
     category = request.GET.get("c")
     if category and query:
-        context['products'] = Product.objects.filter(
-            Q(title__icontains=query) & Q(title__icontains=category)
+        
+        if category == "todos":
+            context['products'] = Product.objects.filter(
+            Q(title__icontains=query)
         )
+        else:
+            context['products'] = Product.objects.filter(
+                Q(title__icontains=query) & Q(title__icontains=category)
+            )
     elif category and not query:
-        context['products'] = Product.objects.filter(
-            Q(category__icontains=category)
-        )
+        
+        if category == "todos":
+            context['products'] = Product.objects.all()
+        else:
+            context['products'] = Product.objects.filter(
+                Q(category__icontains=category)
+            )
     elif query and not category:
         context['products'] = Product.objects.filter(
         Q(category__icontains=query) | Q(title__icontains=query)

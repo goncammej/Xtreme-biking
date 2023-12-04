@@ -1,43 +1,28 @@
 {% extends 'base.html' %}
 
-{% load static %} 
+{% load static %}
 
 
-{% block query %} 
+{% block query %}
 
-<form class="relative"  action="{% url 'search_results' %}" method="get">
+<form class="relative" action="{% url 'search_results' %}" method="get">
   <label for="Search" class="sr-only"> Search </label>
-  <input
-      type="text"
-      id="Search"
-      name="q"
-      value="{{ request.GET.q }}"
-      placeholder="Busca por producto, categoría..."
-      class="rounded-md border-gray-200 py-2.5 pe-10 ps-2.5 shadow-sm w-[400px] focus:outline-none focus:ring-0 focus:border-gray-400"
-  />
+  <input type="text" id="Search" name="q" value="{{ request.GET.q }}" placeholder="Busca por producto, categoría..."
+    class="rounded-md border-gray-200 py-2.5 pe-10 ps-2.5 shadow-sm w-[400px] focus:outline-none focus:ring-0 focus:border-gray-400" />
   {% if request.GET.c %}
-        <input type="hidden" name="c" value="{{ request.GET.c }}">
-    {% endif %}
+  <input type="hidden" name="c" value="{{ request.GET.c }}">
+  {% endif %}
 
   <span class="absolute inset-y-0 end-0 grid w-10 place-content-center">
-      <button type="button" class="text-gray-600 hover:text-gray-700">
+    <button type="button" class="text-gray-600 hover:text-gray-700">
       <span class="sr-only">Search</span>
 
-      <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="h-4 w-4"
-      >
-          <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-          />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="h-4 w-4">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
       </svg>
-      </button>
+    </button>
   </span>
 </form>
 
@@ -45,14 +30,182 @@
 
 {% block content %}
 
-<h1>Search Results</h1>
+<section>
+  <div class="mx-auto max-w-6xl py-8">
+    {% if not request.GET.c and not request.GET.q %}
 
-<ul>
-  {% for product in products %}
-    <li>
-      {{ product.title }}, {{ product.price }}
-    </li>
-  {% endfor %}
-</ul>
+    <header class="text-center">
+      <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">No hay productos que mostrar</strong></h1>
+    </header>
+
+    {% else %}
+
+    <header>
+      {% if request.GET.c and not request.GET.q %}
+      <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">Resultados para la categoría {{request.GET.c}}</h2>
+      {% endif %}
+      {% if not request.GET.c and request.GET.q %}
+      <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">Resultados para la búsqueda "{{request.GET.q}}"</h2>
+      {% endif %}
+      {% if request.GET.c and request.GET.q %}
+      <h2 class="text-xl font-bold text-gray-900 sm:text-3xl">Resultados para la búsqueda "{{request.GET.q}}" en la
+        categoría {{request.GET.c}}</h2>
+      {% endif %}
+    </header>
+
+    <div class="mt-4 lg:mt-8 lg:grid lg:grid-cols-4 lg:items-start lg:gap-8">
+      <div class="hidden space-y-4 lg:block">
+        <div>
+          <label for="SortBy" class="block text-xs font-medium text-gray-700"> Ordenar por </label>
+
+          <select id="SortBy" class="mt-1 rounded border-gray-300 p-2.5 text-sm">
+            <option value="Title, DESC">Título, DESC</option>
+            <option value="Title, ASC">Título, ASC</option>
+            <option value="Price, DESC">Precio, DESC</option>
+            <option value="Price, ASC">Precio, ASC</option>
+          </select>
+        </div>
+
+        <div>
+          <p class="block text-xs font-medium text-gray-700">Filtros</p>
+
+          <div class="mt-1 space-y-2">
+            <details class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
+                <span class="text-sm font-medium"> Disponibilidad </span>
+
+                <span class="transition group-open:-rotate-180">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="h-4 w-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </svg>
+                </span>
+              </summary>
+
+              <div class="border-t border-gray-200 bg-white">
+                <header class="flex items-center justify-between p-4">
+                  <span class="text-sm text-gray-700"> 0 Seleccionados </span>
+
+                  <button type="button" class="text-sm text-gray-900 underline underline-offset-4">
+                    Resetear
+                  </button>
+                </header>
+
+                <ul class="space-y-1 border-t border-gray-200 p-4">
+                  <li>
+                    <label for="FilterInStock" class="inline-flex items-center gap-2">
+                      <input type="checkbox" id="FilterInStock" class="h-5 w-5 rounded border-gray-300" />
+
+                      <span class="text-sm font-medium text-gray-700"> En stock (5+) </span>
+                    </label>
+                  </li>
+                  <li>
+                    <label for="FilterOutOfStock" class="inline-flex items-center gap-2">
+                      <input type="checkbox" id="FilterOutOfStock" class="h-5 w-5 rounded border-gray-300" />
+
+                      <span class="text-sm font-medium text-gray-700"> Fuera de stock (10+) </span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <details class="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
+              <summary class="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
+                <span class="text-sm font-medium"> Precio </span>
+
+                <span class="transition group-open:-rotate-180">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="h-4 w-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </svg>
+                </span>
+              </summary>
+
+              <div class="border-t border-gray-200 bg-white">
+                <header class="flex items-center justify-between p-4">
+                  <span class="text-sm text-gray-700"> El precio más alto es $600 </span>
+
+                  <button type="button" class="text-sm text-gray-900 underline underline-offset-4">
+                    Resetear
+                  </button>
+                </header>
+
+                <div class="border-t border-gray-200 p-4">
+                  <div class="flex justify-between gap-4">
+                    <label for="FilterPriceFrom" class="flex items-center gap-2">
+                      <input type="number" id="FilterPriceFrom" placeholder="Desde"
+                        class="w-full rounded-md border-gray-200 p-1.5 shadow-sm" />
+                      <span class="text-sm text-gray-600">€</span>
+                    </label>
+
+                    <label for="FilterPriceTo" class="flex items-center gap-2">
+                      <input type="number" id="FilterPriceTo" placeholder="Hasta"
+                        class="w-full rounded-md border-gray-200 p-1.5 shadow-sm" />
+                      <span class="text-sm text-gray-600">€</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <div class="products w-full col-span-3 grid gap-4 grid-cols-3">
+        {% for product in products %}
+        <div class="group relative overflow-hidden mt-8 flex flex-col justify-between">
+          <a href="{% url 'product_details' producto_id=product.id %}">
+            <img src="{{product.image_url}}" alt=""
+              class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72" />
+
+            <div class="relative border border-gray-100 bg-white p-6 h-full flex flex-col justify-between">
+              {% if product.availability > 0 %}
+              <span class="whitespace-nowrap bg-green-400 px-3 py-1.5 text-xs font-medium text-white">
+                Disponible
+              </span>
+              {% else %}
+              <span class="whitespace-nowrap bg-red-400 px-3 py-1.5 text-xs font-medium text-white">
+                No disponible
+              </span>
+              {% endif %}
+
+              <h3 class="mt-4 text-lg font-medium text-gray-900">{{product.title}}</h3>
+
+          </a>
+          <div class="mt-4">
+            <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
+            <div class="w-full my-2">
+              <label for="Quantity" class="sr-only"> Quantity </label>
+
+              <div class="flex items-center justify-between border border-gray-200 rounded">
+                <button onClick='decreaseCount(event, this, "{{product.id}}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
+                  &minus;
+                </button>
+
+                <input type="number" id="Quantity" value="1"
+                  class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
+
+                <button onClick='increaseCount(event, this, "{{product.id}}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
+                  &plus;
+                </button>
+              </div>
+            </div>
+            <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
+              data-redirect="{% url 'cart' %}" data-quantity="1" style="background-color: #a3cb64;"
+              class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
+              Añadir al carrito
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  </div>
+</section>
 
 {% endblock %}

@@ -77,3 +77,26 @@ function addCookieItem(productId, action, redirect, quantity){
 	
 	location.href = redirect
 }
+
+function increaseCount(a, b, pid) {
+	var input = b.previousElementSibling;
+	var value = parseInt(input.value, 10); 
+	value = isNaN(value)? 0 : value;
+	value ++;
+	input.value = value;
+	updateAddToCartButtonQuantity(pid,value);
+}
+function decreaseCount(a, b, pid) {
+	var input = b.nextElementSibling;
+	var value = parseInt(input.value, 10); 
+	if (value > 1) {
+		value = isNaN(value)? 0 : value;
+		value --;
+		input.value = value;
+		updateAddToCartButtonQuantity(pid, value)
+	}
+}
+function updateAddToCartButtonQuantity(button, quantity) {
+	const addToCartButton = document.getElementById('add-cart-' + button);
+	addToCartButton.setAttribute('data-quantity', quantity);
+}

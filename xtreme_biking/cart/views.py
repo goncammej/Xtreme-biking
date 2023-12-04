@@ -1,15 +1,19 @@
+import json
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, JsonResponse
 
 from store.models import Product
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
+from django.conf import settings
+
 from store.utils import cartData
 
-# Create your views here.
+import stripe
 
+stripe.api_key = 'sk_test_51OHZkjLj1aqlpDCrIBuI2Sefe88XpHAO4FhK6iqXcu9JJj1qVFl0P1wkVBFj6KomvyygGKv7agAqhrhufG3okYfU00IpZYyFCx'
 
 def cart(request):
 
@@ -23,4 +27,36 @@ def cart(request):
     return render(request, 'cart.html', context)
 
 def checkout(request):
-    return render(request, 'checkout.html')
+    data = cartData(request)
+
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+    
+    domain = settings.BASE_URL
+    path = "cart"
+    successUrl = f'http://{domain}/{path}'
+    
+    context = {'order': order, 'successUrl': successUrl}
+    
+    return render(request, 'checkout.html', context)
+
+@csrf_exempt
+def create_payment(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            # Create a PaymentIntent with the order amount and currency
+            intent = stripe.PaymentIntent.create(
+                amount=int(float(data['total'].replace(',', '.'))*100),
+                currency='eur',
+                # In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+                automatic_payment_methods={
+                    'enabled': True,
+                },
+            )
+            return JsonResponse({
+                'clientSecret': intent['client_secret']
+            })
+        except Exception as e:
+            return JsonResponse(error=str(e)), 403

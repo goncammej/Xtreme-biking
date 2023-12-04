@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto p-6 w-full">
+
+    <nav aria-label="Breadcrumb">
+        <ol class="flex items-center gap-1 text-sm text-gray-600">
+
+            <li>
+                <a href="{% url 'client_dashboard' %}" class="block transition hover:text-gray-700"> Mi cuenta </a>
+            </li>
+
+            <li class="rtl:rotate-180">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd" />
+                </svg>
+            </li>
+
+            <li>
+                <p style="color: #a3cb64;" class="block font-bold"> Mis pedidos </a>
+            </li>
+        </ol>
+    </nav>
+
+    <h1 class="my-5 text-3xl">Mis pedidos</h1>
+
+    <div class="grid grid-cols-1 gap-8">
+        <div style="background: #a3cb64;" class="h-64 p-4 rounded-lg text-white flex flex-col justify-between">
+            <div class="flex flex-col">
+                <p>Plaza de la contratación n5</p>
+                <p>Sevilla, Sevilla 41004</p>
+                <p>España</p>
+            </div>
+            <div class="flex flex-row flex-wrap">
+                <a href="">Editar</a>
+                <a href="" class="border-l-2 border-white px-3 mx-2">Descartar</a>
+                <a href="">Establecer como predeterminado</a>
+            </div>
+        </div>
+        <div style="background: #a3cb64;" class="h-64 p-4 rounded-lg text-white flex flex-col justify-between">
+            <div class="flex flex-col">
+                <p class="font-bold">Predeterminado</p>
+                <p>Plaza de la contratación n5</p>
+                <p>Sevilla, Sevilla 41004</p>
+                <p>España</p>
+            </div>
+            <div class="flex flex-row flex-wrap">
+                <a href="">Editar</a>
+                <a href="" class="border-l-2 border-white px-3 mx-2">Descartar</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

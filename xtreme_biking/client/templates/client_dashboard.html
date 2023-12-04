@@ -15,7 +15,27 @@
         <strong>Correo electrónico: </strong>{{ user.email }}<br>
     </div>
 
-    <div class="mb-6">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
+        <a href="{% url 'client_orders' %}" style="background: #a3cb64;" class="h-44 p-4 rounded-lg text-white">
+            <h3 class="font-bold">Mis pedidos</h3>
+            <p>Rastrear, valorar o abrir incidencias</p>
+        </a>
+        <a href="{% url 'client_addresses' %}" style="background: #a3cb64;" class="h-44 p-4 rounded-lg text-white">
+            <h3 class="font-bold">Mis direcciones</h3>
+            <p>Añadir, editar o eliminar direcciones guardadas</p>
+        </a>
+        <div style="background-color: #a3cb64;" class="h-44 p-4 rounded-lg text-white">
+            <h3 class="font-bold">Mi método de pago preferido</h3>
+            <form class="relative" method="POST">
+                {% csrf_token %}
+                {{ payment_form | crispy}}
+                <button type="submit" style="color: #a3cb64;" class="w-full bg-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Cambiar método de pago</button>
+            </form>
+        </div>
+    </div>
+      
+
+<!--     <div class="mb-6">
         <strong>Método de pago: 
         <form method="POST">
             {% csrf_token %}
@@ -72,6 +92,6 @@
                 <p class="text-lg">Total: ${{ order.get_cart_total }}</p>
             </div>
         </div>
-    {% endfor %}
+    {% endfor %} -->
 </div>
 {% endblock %}
