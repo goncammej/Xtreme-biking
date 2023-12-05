@@ -17,7 +17,7 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-BASE_URL = 'localhost:8000'
+BASE_URL = 'https://test-xtreme-web.onrender.com'
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,7 +30,8 @@ SECRET_KEY = 'django-insecure-^rlg1zq*q&)5pd%_(3x9rq#l(t^atf7vq7y6(nb7u(=yw+^)-e
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://192.168.124.52:8080']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8080',
+                        'https://test-xtreme-web.onrender.com']
 
 
 # Application definition
