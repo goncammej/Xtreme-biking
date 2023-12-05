@@ -4,8 +4,9 @@
 
 {% block content %}
 
-<h1>Search Results</h1>
-<form class="relative w-fit"  action="{% url 'search_orders' %}" method="get">
+<section class="max-w-6xl mx-auto">
+<h1 class="my-3">Search Results</h1>
+<form class="relative w-fit my-3"  action="{% url 'search_orders' %}" method="get">
   <label for="Search" class="sr-only"> Search </label>
   <input
       type="text"
@@ -39,20 +40,32 @@
 </form>
 
 {% if request.GET.r and order%}
-<ul>
-  <li>
-    {{ order.transaction_id }}, {{ order.complete}}, {{ order.date_ordered}}
-    <ul>
-      {% for item in order.orderitem_set.all %}
-      <li>
-        {{ item.product.title }}, {{ item.product.price}}, {{ item.quantity }}
-      </li>
+<div style="background: #a3cb64;" class="h-64 p-4 my-3 rounded-lg text-white flex flex-col justify-between">
+  <div class="flex flex-col">
+      <p><strong>Identificador de pedido:</strong> {{order.transaction_id}}</p>
+      <p><strong>Fecha de pedido:</strong> {{order.date_ordered}}</p>
+      <p><strong>Total:</strong> {{order.total}}</p>
+  </div>
+  {% for item in order.orderitem_set.all %}
+  <hr>
+  <div class="flex flex-col">
+      <p><strong>Product</strong> {{item.title}} </p>
+      <p><strong>Cantidad:</strong> {{item.quantity}} </p>
+  </div>
+  {% endfor %}
+  <hr>
+  <div class="flex flex-col">
+      {% for shipping_address in order.shippingaddress_set.all %}
+      <p><strong>Dirección:</strong> {{ shipping_address.address }}, {{ shipping_address.city }}, {{ shipping_address.state }} {{ shipping_address.zipcode }}</p>
       {% endfor %}
-    </ul>
-  </li>
-</ul>
+  </div>
+  <div class="flex flex-row flex-wrap">
+      <a href="">Escribir valoración</a>
+      <a href="" class="border-l-2 border-white px-3 mx-2">Escribir reclamación</a>
+  </div>
+</div>
 {% elif request.GET.r and not order %}
 <h3>No se ha encontrado ningún pedido con identificador "{{request.GET.r}}"</h3>
 {% endif %}
-
+</section>
 {% endblock %}

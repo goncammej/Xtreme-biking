@@ -5,48 +5,179 @@
 {% block content %}
 
 <div class="max-w-6xl mx-auto flex flex-wrap items-start py-6">
+
+    <nav aria-label="Breadcrumb">
+        <ol class="flex items-center gap-1 text-sm text-gray-600">
+
+            <li>
+                <a href="{% url 'cart' %}" class="block transition hover:text-gray-700"> Carrito </a>
+            </li>
+
+            <li class="rtl:rotate-180">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd" />
+                </svg>
+            </li>
+
+            <li>
+                <p style="color: #a3cb64;" class="block font-bold"> Compra </a>
+            </li>
+        </ol>
+    </nav>
+
     <div class="products w-full">
         <h1 class="mb-5 text-3xl">Compra</h1>
         <form id="payment-form" class="w-full flex">
             <div class="pr-6 w-full">
                 <div class="mb-6 p-6 bg-gray-100 rounded-xl">
                     <h2 class="mb-5 uppercase text-lg">Información de contacto</h2>
+                    <div class="flex space-x-6">
+                        <div class="w-full mb-4">
+                            <label class="inline-block mb-2">Nombre</label>
+                            <input type="text" name="full_name" class="w-full p-5 rounded-xl" 
+                            {% if user.is_authenticated %} value="{{ name }}" disabled {% endif %} required>
+                        </div>
+                    </div>
                     <div class="mb-4 w-full">
                         <label class="inline-block mb-2">Correo electrónico</label>
-                        <input type="email" class="w-full p-5 rounded-xl">
+                        <input type="email" name="email" class="w-full p-5 rounded-xl" 
+                        {% if user.is_authenticated %} value="{{ email }}" disabled {% endif %} required>
                     </div>
                 </div>
                 <div class="mb-6 p-6 bg-gray-100 rounded-xl">
                     <h2 class="mb-5 uppercase text-lg">Información de envío</h2>
 
-                    <div class="flex space-x-6">
-                        <div class="w-full mb-4">
-                            <label class="inline-block mb-2">Nombre</label>
-                            <input type="text" class="w-full p-5 rounded-xl">
-                        </div>
-                    </div>
+                    {% if user.is_authenticated %}
+                    {% if addresses %}
+                    <ul class="grid w-full gap-6 grid-cols-1 mb-4">
+                        {% for address in addresses %}
+                        <li id="shipment_address_{{ address.id }}">
+                            <input type="radio" id="address_{{ address.id }}" name="address-selector"
+                                value="{{ address.id }}" class="hidden peer" 
+                                {% if address.predetermined == True %} checked required {% endif %}>
+                            <label for="address_{{ address.id }}"
+                                class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-lime-600 peer-checked:text-lime-600 hover:text-gray-600 hover:bg-gray-100">
+                                <div class="block">
+                                    <div class="w-full text-lg font-semibold">{{ address.address }}</div>
+                                    <div class="w-full">{{ address.city }}, {{address.state}} {{address.zipcode}}</div>
+                                </div>
+                                <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                                </svg>
+                            </label>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <h3 class="mb-5 uppercase text-base">No tienes direcciones guardadas. Introduce una y podrás
+                        utilizarla en futuras compras.</h3>
 
                     <div class="mb-4">
                         <label class="inline-block mb-2">Dirección</label>
-                        <input type="text" class="w-full p-5 rounded-xl">
+                        <input type="text" name="address" class="w-full p-5 rounded-xl" required>
                     </div>
 
                     <div class="flex space-x-6">
                         <div class="w-1/2 mb-4">
                             <label class="inline-block mb-2">Código postal</label>
-                            <input type="text" class="w-full p-5 rounded-xl">
+                            <input type="text" name="zipcode" class="w-full p-5 rounded-xl" required>
                         </div>
 
                         <div class="w-1/2 mb-4">
                             <label class="inline-block mb-2">Ciudad</label>
-                            <input type="text" class="w-full p-5 rounded-xl">
+                            <input type="text" name="city" class="w-full p-5 rounded-xl" required>
                         </div>
 
                         <div class="w-full mb-4">
                             <label class="inline-block mb-2">Localidad</label>
-                            <input type="text" class="w-full p-5 rounded-xl">
+                            <input type="text" name="state" class="w-full p-5 rounded-xl" required>
                         </div>
                     </div>
+                    {% endif %}
+
+                    {% else %}
+
+                    <div class="mb-4">
+                        <label class="inline-block mb-2">Dirección</label>
+                        <input type="text" name="address" class="w-full p-5 rounded-xl" required>
+                    </div>
+
+                    <div class="flex space-x-6">
+                        <div class="w-1/2 mb-4">
+                            <label class="inline-block mb-2">Código postal</label>
+                            <input type="text" name="zipcode" class="w-full p-5 rounded-xl" required>
+                        </div>
+
+                        <div class="w-1/2 mb-4">
+                            <label class="inline-block mb-2">Ciudad</label>
+                            <input type="text" name="city" class="w-full p-5 rounded-xl" required>
+                        </div>
+
+                        <div class="w-full mb-4">
+                            <label class="inline-block mb-2">Localidad</label>
+                            <input type="text" name="state" class="w-full p-5 rounded-xl" required>
+                        </div>
+                    </div>
+
+                    {% endif %}
+                </div>
+
+                <div class="mb-6 p-6 bg-gray-100 rounded-xl">
+                    <h2 class="mb-5 uppercase text-lg">Método de envío</h2>
+                    <h3 class="mb-5 text-lg font-medium">Selecciona un método de envío <br> <i class="text-sm">Envío
+                            gratuito a partir de 1000€ de compra</i></h3>
+                    <ul class="grid w-full gap-6 grid-cols-1 mb-4">
+                        <li id="free_shipment">
+                            <input type="radio" id="FREE_S" name="shipment_method" value="FREE_S" class="hidden peer"
+                                checked required>
+                            <label for="FREE_S"
+                                class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-lime-600 peer-checked:text-lime-600 hover:text-gray-600 hover:bg-gray-100">
+                                <div class="block">
+                                    <div class="w-full text-lg font-semibold">Envío gratuito</div>
+                                    <div class="w-full">Tu pedido llegará en 7-11 días - <strong>GRATIS</strong></div>
+                                </div>
+                                <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                                </svg>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="radio" id="UPS_S" name="shipment_method" value="UPS_PS" class="hidden peer">
+                            <label for="UPS_S"
+                                class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-lime-600 peer-checked:text-lime-600 hover:text-gray-600 hover:bg-gray-100">
+                                <div class="block">
+                                    <div class="w-full text-lg font-semibold">Envío express con UPS</div>
+                                    <div class="w-full">Tu pedido llegará en 5-7 días - <strong>10,00€</strong></div>
+                                </div>
+                                <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                                </svg>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="radio" id="US_S" name="shipment_method" value="US_S" class="hidden peer">
+                            <label for="US_S"
+                                class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-lime-600 peer-checked:text-lime-600 hover:text-gray-600 hover:bg-gray-100">
+                                <div class="block">
+                                    <div class="w-full text-lg font-semibold">Envío en el día con DeliverUS</div>
+                                    <div class="w-full">Tu pedido llegará en 1-2 días - <strong>30,00€</strong></div>
+                                </div>
+                                <svg class="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                                </svg>
+                            </label>
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="mb-6 p-6 bg-gray-100 rounded-xl">
@@ -54,7 +185,8 @@
                     <h3 class="mb-5 text-lg font-medium">Selecciona un método de pago</h3>
                     <ul class="grid w-full gap-6 md:grid-cols-2 mb-4">
                         <li>
-                            <input type="radio" id="COD" name="payment_method" value="COD" class="hidden peer" required checked>
+                            <input type="radio" id="COD" name="payment_method" value="COD" class="hidden peer" required
+                                checked>
                             <label for="COD"
                                 class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-lime-600 peer-checked:text-lime-600 hover:text-gray-600 hover:bg-gray-100">
                                 <div class="block">
@@ -91,16 +223,26 @@
                 </div>
 
                 <div class="summary p-6 mb-6 h-fit bg-gray-100 rounded-xl">
-                    <h2 class="uppercase text-lg mb-5">Summary</h2>
+                    <h2 class="uppercase text-lg mb-5">Resumen</h2>
+
+                    <div class="mb-6 flex justify-between">
+                        <span class="font-semibold">Subtotal</span>
+                        <span>{{order.get_cart_total|floatformat:2}}€</span>
+                    </div>
+
+                    <div class="mb-6 flex justify-between">
+                        <span class="font-semibold">Gastos de envío</span>
+                        <span id="fees_total">{{order.get_cart_total|floatformat:2}}€</span>
+                    </div>
 
                     <div class="mb-6 flex justify-between">
                         <span class="font-semibold">Total</span>
-                        <span>$99</span>
+                        <span id="checkout_total">{{order.get_cart_total|floatformat:2}}€</span>
                     </div>
 
                     <button id="submit">
                         <div class="spinner hidden" id="spinner"></div>
-                        <span id="button-text">Pay now</span>
+                        <span id="button-text">Pagar ahora</span>
                     </button>
                 </div>
             </div>
@@ -109,12 +251,72 @@
     </div>
 </div>
 
+<script src="https://js.stripe.com/v3/"></script>
+
 <script>
+
+
+
+    const stripe = Stripe("pk_test_51OHZkjLj1aqlpDCrwD711NN4Mk7g7n7GygDEQrtBUDwN2PMRWwN7cAoyM6PEFJddAkA2zLc1dPZI1YmAiuxVxsRZ00C2RMeIwb")
+
+    var total = parseFloat("{{order.get_cart_total|floatformat:2}}".replace(",", "."));;
+    var successUrl = '{{successUrl}}'
+    var shipping = '{{order.shipping}}'
+
     document.addEventListener("DOMContentLoaded", function () {
+
+        // Get the radio inputs and the total amount span
+        var freeShippingInput = document.getElementById('FREE_S');
+        var upsShippingInput = document.getElementById('UPS_S');
+        var usShippingInput = document.getElementById('US_S');
+        var totalAmountSpan = document.getElementById('checkout_total');
+        var feesSpan = document.getElementById('fees_total');
+
+        // Add event listeners to each radio input
+        freeShippingInput.addEventListener('change', updateTotalAmount);
+        upsShippingInput.addEventListener('change', updateTotalAmount);
+        usShippingInput.addEventListener('change', updateTotalAmount);
+
+        if (total < 1000) {
+            document.getElementById('free_shipment').innerHTML = ''
+            document.getElementById('UPS_S').setAttribute("required", "")
+            document.getElementById('UPS_S').setAttribute("checked", "")
+        }
+
+        updateTotalAmount();
+
+        // Function to update the total amount based on the selected shipping method
+        function updateTotalAmount() {
+            var baseAmount = parseFloat("{{order.get_cart_total|floatformat:2}}".replace(",", ".")); // Replace this with your actual base amount
+
+            // Check which radio input is selected
+            if (usShippingInput.checked) {
+                feesSpan.textContent = 30.00 + "€";
+                totalAmountSpan.textContent = baseAmount + 30.00 + '€';
+            } else if (upsShippingInput.checked) {
+                feesSpan.textContent = 10.00 + "€";
+                totalAmountSpan.textContent = baseAmount + 10.00 + '€';
+                total = parseFloat(baseAmount + 10.00);
+            } else if (freeShippingInput.checked) {
+                // Default to the base amount if no special shipping is selected
+                feesSpan.textContent = "Gratis";
+                totalAmountSpan.textContent = baseAmount + '€';
+            }
+        }
+
         // Get the radio buttons and payment element
         const codRadio = document.getElementById("COD");
         const cardRadio = document.getElementById("CARD");
         const paymentElement = document.getElementById("payment-element");
+
+        if (user != 'AnonymousUser') {
+            preferred_payment_method = "{{ preferred_method.method }}"
+            console.log(preferred_payment_method + "hahsdlfhalsdfjasljdfla;fj")
+            if (preferred_payment_method == "Pago online") {
+                codRadio.removeAttribute("checked")
+                cardRadio.setAttribute("checked", "")
+            }
+        }
 
         // Check the initial state on document load
         if (cardRadio.checked) {
@@ -140,24 +342,77 @@
             }
         });
     });
-</script>
-
-<script src="https://js.stripe.com/v3/"></script>
-
-<script>
-    const stripe = Stripe("pk_test_51OHZkjLj1aqlpDCrwD711NN4Mk7g7n7GygDEQrtBUDwN2PMRWwN7cAoyM6PEFJddAkA2zLc1dPZI1YmAiuxVxsRZ00C2RMeIwb")
-
-    var total = '{{order.get_cart_total}}'
-    var successUrl = '{{successUrl}}'
 
     initialize();
-    checkStatus();
 
     document
         .querySelector("#payment-form")
-        .addEventListener("submit", handleSubmit);
+        .addEventListener("submit", submitManager);
 
+    function submitManager(e) {
+        e.preventDefault();
 
+        console.log('Form Submitted...')
+
+        let data = {
+            'name': document.querySelector('input[name=full_name]').value,
+            'email': document.querySelector('input[name=email]').value,
+            'address': null,
+            'zipcode': null,
+            'city': null,
+            'locality': null,
+            'shipping_method': document.querySelector('input[name=shipment_method]').value,
+            'payment_method': document.querySelector('input[name=payment_method]').value,
+            'selected_address': 'null',
+        };
+
+        addresses = parseInt("{{ addresses_count }}")
+        if (user == 'AnonymousUser' || (user != 'AnonymousUser' && addresses === 0 )) {
+            data['address'] = document.querySelector('input[name=address]').value;
+            data['zipcode'] = document.querySelector('input[name=zipcode]').value;
+            data['city'] = document.querySelector('input[name=city]').value;
+            data['locality'] = document.querySelector('input[name=state]').value;
+        }
+
+        if (user != 'AnonymousUser' && addresses !== 0) {
+            var selectedAddressId = document.querySelector('input[name="address-selector"]:checked').value;
+            console.log("this is the address selected" + selectedAddressId);
+            data['selected_address'] = selectedAddressId;
+        }
+
+        console.log(data);
+
+        if (data.payment_method == "COD") {
+            handleData(data);
+        } else {
+            checkStatus(data);
+            handleSubmit();
+        }
+    }
+
+    function handleData(data) {
+        var url = "/process_order/"
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ 'data': data }),
+
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Success:', data);
+                alert('Transaction completed');
+
+                cart = {}
+                document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
+                window.location.href = "{% url 'frontpage' %}"
+
+            })
+    }
 
     // Fetches a payment intent and captures the client secret
     async function initialize() {
@@ -184,8 +439,7 @@
         paymentElement.mount("#payment-element");
     }
 
-    async function handleSubmit(e) {
-        e.preventDefault();
+    async function handleSubmit() {
         setLoading(true);
 
         const { error } = await stripe.confirmPayment({
@@ -193,7 +447,7 @@
             confirmParams: {
                 // Make sure to change this to your payment completion page
                 return_url: "http://localhost:8000/cart",
-                // receipt_email: emailAddress,
+                // receipt_email: data.email,
             },
         });
 
@@ -226,6 +480,7 @@
         switch (paymentIntent.status) {
             case "succeeded":
                 showMessage("Payment succeeded!");
+                handleData(data);
                 break;
             case "processing":
                 showMessage("Your payment is processing.");

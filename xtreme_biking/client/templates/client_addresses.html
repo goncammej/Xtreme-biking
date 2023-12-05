@@ -30,34 +30,38 @@
     <h1 class="my-5 text-3xl">Mis direcciones</h1>
 
     <div class="grid grid-cols-3 gap-8">
-        <a href="" class="border-2 border-dashed border-gray-300 h-64 p-4 rounded-lg text-center flex flex-col justify-center">
+        <a href="{% url 'create_address' %}" class="border-2 border-dashed border-gray-300 h-64 p-4 rounded-lg text-center flex flex-col justify-center">
             <h3 class="font-bold text-6xl">+</h3>
             <p class="font-bold text-2xl">Añadir dirección</p>
         </a>
-        <div style="background: #a3cb64;" class="h-64 p-4 rounded-lg text-white flex flex-col justify-between">
-            <div class="flex flex-col">
-                <p>Plaza de la contratación n5</p>
-                <p>Sevilla, Sevilla 41004</p>
-                <p>España</p>
-            </div>
-            <div class="flex flex-row flex-wrap">
-                <a href="">Editar</a>
-                <a href="" class="border-l-2 border-white px-3 mx-2">Descartar</a>
-                <a href="">Establecer como predeterminado</a>
-            </div>
-        </div>
+        {% if predetermined %}
         <div style="background: #a3cb64;" class="h-64 p-4 rounded-lg text-white flex flex-col justify-between">
             <div class="flex flex-col">
                 <p class="font-bold">Predeterminado</p>
-                <p>Plaza de la contratación n5</p>
-                <p>Sevilla, Sevilla 41004</p>
+                <p>{{ predetermined.address}}</p>
+                <p>{{ predetermined.city }}, {{ predetermined.state }} {{ predetermined.zipcode }}</p>
                 <p>España</p>
             </div>
             <div class="flex flex-row flex-wrap">
-                <a href="">Editar</a>
-                <a href="" class="border-l-2 border-white px-3 mx-2">Descartar</a>
+                <a href="{% url 'edit_address' address_id=predetermined.id %}">Editar</a>
+                <a href="{% url 'remove_address' address_id=predetermined.id %}" class="border-l-2 border-white px-3 mx-2">Descartar</a>
             </div>
         </div>
+        {% endif %}
+        {% for address in addresses%}
+        <div style="background: #a3cb64;" class="h-64 p-4 rounded-lg text-white flex flex-col justify-between">
+            <div class="flex flex-col">
+                <p>{{ address.address}}</p>
+                <p>{{ address.city }}, {{ address.state }} {{ address.zipcode }}</p>
+                <p>España</p>
+            </div>
+            <div class="flex flex-row flex-wrap">
+                <a href="{% url 'edit_address' address_id=address.id %}">Editar</a>
+                <a href="{% url 'remove_address' address_id=address.id %}" class="border-l-2 border-white px-3 mx-2">Descartar</a>
+                <a href="{% url 'predetermined_address' address_id=address.id %}">Establecer como predeterminado</a>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 
 

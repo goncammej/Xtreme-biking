@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load static %} 
+{% load static %}
 
 {% block content %}
 <section>
@@ -12,7 +12,8 @@
       </header>
       {% else %}
       <header class="text-center">
-        <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">Tu carrito: <strong>{{order.get_cart_items}} elementos</strong></h1>
+        <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">Tu carrito: <strong>{{order.get_cart_items}}
+            elementos</strong></h1>
       </header>
 
       <div id="cart" class="mt-8">
@@ -22,11 +23,7 @@
             console.log("{{ product.product.title }}")
           </script>
           <li class="flex items-center gap-4">
-            <img
-              src="{{ item.product.image_url }}"
-              alt=""
-              class="h-16 w-16 rounded object-cover"
-            />
+            <img src="{{ item.product.image_url }}" alt="" class="h-16 w-16 rounded object-cover" />
 
             <div>
               <h3 class="text-sm text-gray-900">{{ item.product.title }}</h3>
@@ -45,55 +42,37 @@
             </div>
 
             <div class="flex flex-1 items-center justify-end gap-2">
-              
+
               <div>
                 <div class="flex items-center border border-gray-200 rounded">
-                  <button
-                    type="button"
-                    data-action="remove"
-                    data-product="{{item.product.id}}"
+                  <button type="button" data-action="remove" data-product="{{item.product.id}}"
                     data-redirect="{% url 'cart' %}"
-                    class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 update-cart"
-                  >
+                    class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 update-cart">
                     &minus;
                   </button>
-              
+
                   <p
-                    class="h-10 w-16 align-middle border-transparent leading-10 text-center [-moz-appearance:_textfield] [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none"
-                  >
-                  {{item.quantity}}
+                    class="h-10 w-16 align-middle border-transparent leading-10 text-center [-moz-appearance:_textfield] [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none">
+                    {{item.quantity}}
                   </p>
-              
-                  <button
-                    type="button"
-                    data-action="add"
-                    data-product="{{item.product.id}}"
+
+                  <button type="button" data-action="add" data-product="{{item.product.id}}"
                     data-redirect="{% url 'cart' %}"
-                    class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 update-cart"
-                  >
+                    class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 update-cart">
                     &plus;
                   </button>
                 </div>
               </div>
 
-              <button type="button" data-action="delete" data-product="{{item.product.id}}" data-redirect="{% url 'cart' %}" class="text-gray-600 transition hover:text-red-600 update-cart">
+              <button type="button" data-action="delete" data-product="{{item.product.id}}"
+                data-redirect="{% url 'cart' %}" class="text-gray-600 transition hover:text-red-600 update-cart">
                 <span class="sr-only">Eliminar elemento</span>
-                <a href="#">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="h-4 w-4"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                    />
-                  </svg>
-                </a>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="h-4 w-4">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                </svg>
+
               </button>
             </div>
           </li>
@@ -111,11 +90,8 @@
             </dl>
 
             <div class="flex justify-end">
-              <a
-                href="{% url 'checkout' %}"
-                style="background-color: #a3cb64;"
-                class="block rounded px-5 py-3 text-sm text-white"
-              >
+              <a href="{% url 'checkout' %}" style="background-color: #a3cb64;"
+                class="block rounded px-5 py-3 text-sm text-white">
                 Pagar
               </a>
             </div>
