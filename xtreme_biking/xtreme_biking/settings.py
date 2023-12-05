@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,7 +87,7 @@ WSGI_APPLICATION = 'xtreme_biking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'xtremedb',
@@ -95,6 +96,10 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': 5432,
     }
+} """
+
+DATABASES = {
+    'default': dj_database_url.parse("postgres://test_xtreme_db_user:goxELhSinj4xIPSjx3YLkr5bfx9FyCku@dpg-clna6hpll56s73fekgsg-a.frankfurt-postgres.render.com/test_xtreme_db")
 }
 
 
@@ -152,4 +157,3 @@ try:
     from local_settings import *
 except ImportError:
     pass
-
