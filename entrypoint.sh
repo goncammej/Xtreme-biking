@@ -1,4 +1,4 @@
 #!/bin/sh
 cd xtreme_biking/
-cp local_settings.deploy.py local_settings.py
+cp local_settings.deploy.py xtreme_biking/settings.py
 gunicorn xtreme_biking.wsgi
