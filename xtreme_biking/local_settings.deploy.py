@@ -27,7 +27,7 @@ BASEURL = 'https://test-xtreme-web.onrender.com'
 SECRET_KEY = 'django-insecure-^rlg1zq*q&)5pd%_(3x9rq#l(t^atf7vq7y6(nb7u(=yw+^)-e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['test-xtreme-web.onrender.com']
 
