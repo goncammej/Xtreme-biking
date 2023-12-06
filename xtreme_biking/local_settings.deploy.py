@@ -27,15 +27,12 @@ BASEURL = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 SECRET_KEY = 'django-insecure-^rlg1zq*q&)5pd%_(3x9rq#l(t^atf7vq7y6(nb7u(=yw+^)-e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'RENDER' not in os.environ
+DEBUG = False
 
-ALLOWED_HOSTS = []
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+ALLOWED_HOSTS = ['https://test-xtreme-web.onrender.com']
 
-ALLOWED_ORIGINS = [
-    os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
+
+ALLOWED_ORIGINS = ['https://test-xtreme-web.onrender.com']
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'Strict'
 CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS.copy()
@@ -106,7 +103,7 @@ WSGI_APPLICATION = 'xtreme_biking.wsgi.application'
     }
 } """
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = "postgres://test_xtreme_db_user:goxELhSinj4xIPSjx3YLkr5bfx9FyCku@dpg-clna6hpll56s73fekgsg-a.frankfurt-postgres.render.com/test_xtreme_db"
 DATABASES = {
     'default': dj_database_url.parse(DATABASE_URL)
 }
