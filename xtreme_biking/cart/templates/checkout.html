@@ -429,7 +429,7 @@
                 colorPrimary: '#a3cb64',
             },
         };
-        elements = stripe.elements({ appearance, clientSecret });
+        elements = stripe.elements({ appearance, clientSecret, locale: 'es' });
 
         const paymentElementOptions = {
             layout: "tabs",
