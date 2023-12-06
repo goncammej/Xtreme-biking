@@ -33,8 +33,6 @@ ALLOWED_HOSTS = ['test-xtreme-web.onrender.com']
 
 
 ALLOWED_ORIGINS = ['https://test-xtreme-web.onrender.com']
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'Strict'
 CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS.copy()
 
 # Application definition
