@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.utils.translation import gettext_lazy as _
+
 from store.models import Product
 from client.models import Customer
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -43,6 +45,23 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderitems])
         return total
+    
+    @property
+    def has_review(self):
+        review = CustomerReviews.objects.get(order=self)
+        if review:
+            return True
+        else:
+            return False
+        
+    @property
+    def has_claim(self):
+        claim = CustomerClaims.objects.get(order=self)
+        if claim:
+            return True
+        else:
+            return False
+
 
 
 class OrderItem(models.Model):
@@ -69,3 +88,17 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return self.address
+
+class CustomerReviews(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=False)
+    review = models.TextField(_("Valoración"), null=False)
+
+    def __str__(self):
+        return self.review
+    
+class CustomerClaims(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=False)
+    claim = models.TextField(_("Reclamación"), null=False)
+
+    def __str__(self):
+        return self.claim

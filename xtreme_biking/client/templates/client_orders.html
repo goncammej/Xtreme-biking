@@ -52,8 +52,18 @@
                 {% endfor %}
             </div>
             <div class="flex flex-row flex-wrap">
-                <a href="/client/opinion">Escribir valoración</a>
-                <a href="" class="border-l-2 border-white px-3 mx-2">Escribir reclamación</a>
+                {% if order.has_review %}
+                <a href="{% url 'edit_review' order_id=order.id%}"><strong>Editar valoración</strong></a>
+                {% else %}
+                <a href="{% url 'create_review' order_id=order.id%}"><strong>Escribir valoración</strong></a>
+                {% endif %}
+
+                {% if order.has_claim %}
+                <a href="{% url 'edit_claim' order_id=order.id%}" class="border-l-2 border-white px-3 mx-2"><strong>Editar reclamación</strong></a>
+                {% else %}
+                <a href="{% url 'create_claim' order_id=order.id%}" class="border-l-2 border-white px-3 mx-2"><strong>Escribir reclamación</strong></a>
+                {% endif %}
+               
             </div>
         </div>
         {% endfor %}
