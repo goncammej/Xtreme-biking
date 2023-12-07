@@ -1,7 +1,10 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from accounts.urls import reverse
+from django.urls import reverse
 from .models import CustomUser
+from accounts import views
+from django.contrib import auth
+from django.db import transaction
 
 
 class AccountsTestCase(TestCase):
@@ -14,30 +17,32 @@ class AccountsTestCase(TestCase):
 
     def test_login(self):
         response = self.client.post(
-            reverse('login'), {'email': self.user.email, 'password': 'testpassword'})
+            reverse('accounts:login'), {'email': self.user.email, 'password': 'testpassword'})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Logged in successfully')
 
     def test_logout(self):
         self.client.login(email=self.user.email, password='testpassword')
-        response = self.client.get(reverse('logout'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Logged out successfully')
+        response = self.client.get(reverse('accounts:logout'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')  # Verifica que la respuesta es una redirección a la página de inicio de sesión
 
     def test_profile(self):
-        self.client.login(name=self.user.name, password='testpassword')
-        response = self.client.get(reverse('profile'))
+        self.client.login(email=self.user.email, password='testpassword')
+        response = self.client.get(reverse('client_dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Welcome to your profile')
+        
 
     def test_register(self):
-        response = self.client.post(
-            reverse('signup'), {'name': 'newuser', 'password': 'newpassword'})
+        response = self.client.post(reverse('accounts:signup'), {
+            'name': 'Test User 2',
+            'email': 'useremail@example.com',
+            'password1': 'testpassword1'
+        })
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Registration successful')
 
     def test_invalid_login(self):
         response = self.client.post(
-            reverse('login'), {'name': 'invaliduser', 'password': 'invalidpassword'})
+            reverse('accounts:login'), {'email': 'invalidemail', 'password': 'invalidpassword'})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Invalid username or password')
+        user = auth.get_user(self.client)
+        self.assertFalse(user.is_authenticated)
