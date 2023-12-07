@@ -4,10 +4,10 @@ from client.models import Customer, CustomerPaymentMethod, CustomerShipping
 
 
 @receiver(post_save, sender=CustomerShipping)
-def create_user(sender, instance, created, **kwargs):
+def create_address(sender, instance, created, **kwargs):
     if created:
         predetermined_shipping = CustomerShipping.objects.filter(
-            predetermined=True)
+            customer=instance.customer, predetermined=True)
         if not predetermined_shipping:
             instance.predetermined = True
             instance.save()

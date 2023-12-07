@@ -31,17 +31,18 @@
 
     <div class="grid grid-cols-1 gap-8">
         {% for order in orders %}
-        <div style="background: #a3cb64;" class="h-64 p-4 rounded-lg text-white flex flex-col justify-between">
+        <div style="background: #a3cb64;" class="h-fit p-4 rounded-lg text-white flex flex-col justify-between">
             <div class="flex flex-col">
                 <p><strong>Identificador de pedido:</strong> {{order.transaction_id}}</p>
                 <p><strong>Fecha de pedido:</strong> {{order.date_ordered}}</p>
-                <p><strong>Total:</strong> {{order.total}}</p>
+                <p><strong>Total:</strong> {{order.total}} €</p>
             </div>
             {% for item in order.orderitem_set.all %}
             <hr>
             <div class="flex flex-col">
-                <p><strong>Product</strong> {{item.title}} </p>
+                <p><strong>Producto: </strong> {{item.product.title}} </p>
                 <p><strong>Cantidad:</strong> {{item.quantity}} </p>
+                <p><strong>Estado:</strong> {{item.status}} </p>
             </div>
             {% endfor %}
             <hr>
@@ -51,7 +52,7 @@
                 {% endfor %}
             </div>
             <div class="flex flex-row flex-wrap">
-                <a href="">Escribir valoración</a>
+                <a href="/client/opinion">Escribir valoración</a>
                 <a href="" class="border-l-2 border-white px-3 mx-2">Escribir reclamación</a>
             </div>
         </div>

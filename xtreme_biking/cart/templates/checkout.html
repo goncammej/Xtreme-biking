@@ -242,7 +242,8 @@
 
                     <button id="submit">
                         <div class="spinner hidden" id="spinner"></div>
-                        <span id="button-text">Pagar ahora</span>
+                        <span style="color: #a3cb64;"
+                        class="rounded-md bg-white px-5 py-2.5 text-sm font-medium" id="button-text">Pagar ahora</span>
                     </button>
                 </div>
             </div>
@@ -361,8 +362,8 @@
             'zipcode': null,
             'city': null,
             'locality': null,
-            'shipping_method': document.querySelector('input[name=shipment_method]').value,
-            'payment_method': document.querySelector('input[name=payment_method]').value,
+            'shipping_method': document.querySelector('input[name="shipment_method"]:checked').value,
+            'payment_method': document.querySelector('input[name="payment_method"]:checked').value,
             'selected_address': 'null',
         };
 
@@ -380,13 +381,11 @@
             data['selected_address'] = selectedAddressId;
         }
 
-        console.log(data);
-
         if (data.payment_method == "COD") {
             handleData(data);
         } else {
-            checkStatus(data);
-            handleSubmit();
+            checkStatus();
+            handleSubmit(data);
         }
     }
 
@@ -404,7 +403,6 @@
             .then((response) => response.json())
             .then((data) => {
                 console.log('Success:', data);
-                alert('Transaction completed');
 
                 cart = {}
                 document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
@@ -439,16 +437,23 @@
         paymentElement.mount("#payment-element");
     }
 
-    async function handleSubmit() {
+    async function handleSubmit(data) {
         setLoading(true);
 
-        const { error } = await stripe.confirmPayment({
+       // const returnUrl = `http://localhost:8000/success?data=${encodeURIComponent(JSON.stringify(data))}`;
+
+        const { error, paymentIntent } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                // Make sure to change this to your payment completion page
-                return_url: "http://localhost:8000/cart",
                 // receipt_email: data.email,
+                return_url: "https://google.com"
             },
+            redirect: "if_required",
+        })
+        .then(function(result) {
+            if (!result.error) {
+                handleData(data)
+            }
         });
 
         // This point will only be reached if there is an immediate error when
@@ -459,7 +464,7 @@
         if (error.type === "card_error" || error.type === "validation_error") {
             showMessage(error.message);
         } else {
-            showMessage("Ocurrió un error inesperado.");
+            showMessage(error.message);
         }
 
         setLoading(false);
@@ -476,11 +481,10 @@
         }
 
         const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
-
+        console.log(paymentIntent.status)
         switch (paymentIntent.status) {
             case "succeeded":
                 showMessage("Payment succeeded!");
-                handleData(data);
                 break;
             case "processing":
                 showMessage("Your payment is processing.");

@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from store import views as store_views
+from cart import views as cart_views
 
 handler404 = 'store.views.custom_404'
 
@@ -28,8 +29,8 @@ urlpatterns = [
     path('cart/', include('cart.urls')),
     path('client/', include('client.urls')),
     path('order/', include('order.urls')),
-    path('payment/', include('payment.urls')),
     path('store/', include('store.urls')),
     path('update_item/', store_views.updateItem, name="update_item"),
-    path('process_order/', store_views.processOrder, name="process_order")
+    path('process_order/', store_views.processOrder, name="process_order"),
+    path('success', cart_views.success, name='success'),
 ]

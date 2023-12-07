@@ -5,7 +5,6 @@
 {% block content %}
 
 <section class="max-w-6xl mx-auto">
-<h1 class="my-3">Search Results</h1>
 <form class="relative w-fit my-3"  action="{% url 'search_orders' %}" method="get">
   <label for="Search" class="sr-only"> Search </label>
   <input
@@ -18,7 +17,7 @@
   />
 
   <span class="absolute inset-y-0 end-0 grid w-10 place-content-center">
-      <button type="button" class="text-gray-600 hover:text-gray-700">
+      <button type="submit" class="text-gray-600 hover:text-gray-700">
       <span class="sr-only">Search</span>
 
       <svg
@@ -40,16 +39,17 @@
 </form>
 
 {% if request.GET.r and order%}
-<div style="background: #a3cb64;" class="h-64 p-4 my-3 rounded-lg text-white flex flex-col justify-between">
+<div style="background: #a3cb64;" class="h-fit p-4 my-3 rounded-lg text-white flex flex-col justify-between">
   <div class="flex flex-col">
       <p><strong>Identificador de pedido:</strong> {{order.transaction_id}}</p>
       <p><strong>Fecha de pedido:</strong> {{order.date_ordered}}</p>
       <p><strong>Total:</strong> {{order.total}}</p>
+    <p><strong>Estado:</strong> {{order.status}}</p>
   </div>
   {% for item in order.orderitem_set.all %}
   <hr>
   <div class="flex flex-col">
-      <p><strong>Product</strong> {{item.title}} </p>
+      <p><strong>Producto: </strong> {{item.product.title}} </p>
       <p><strong>Cantidad:</strong> {{item.quantity}} </p>
   </div>
   {% endfor %}

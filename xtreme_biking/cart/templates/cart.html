@@ -45,7 +45,7 @@
 
               <div>
                 <div class="flex items-center border border-gray-200 rounded">
-                  <button type="button" data-action="remove" data-product="{{item.product.id}}"
+                  <button type="button" data-action="remove" data-product="{{item.product.id}}" data-availability="{{ item.product.availability }}"
                     data-redirect="{% url 'cart' %}"
                     class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 update-cart">
                     &minus;
@@ -57,7 +57,7 @@
                   </p>
 
                   <button type="button" data-action="add" data-product="{{item.product.id}}"
-                    data-redirect="{% url 'cart' %}"
+                    data-redirect="{% url 'cart' %}" data-availability="{{ item.product.availability }}"
                     class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 update-cart">
                     &plus;
                   </button>

@@ -13,6 +13,13 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=100, null=True)
     total = models.FloatField(validators=[MinValueValidator(0.0)], null=True)
 
+    class Status(models.TextChoices):
+        SENT = 'Enviado'
+        DELIVERED = 'Entregado'
+
+    status = models.CharField(
+        max_length=30, choices=Status.choices, default=Status.SENT)
+
     def __str__(self):
         return str(self.id)
 

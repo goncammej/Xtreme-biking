@@ -34,7 +34,7 @@ def cookieCart(request):
                 item = {
                     'id': product.id,
                     'product': {'id': product.id, 'title': product.title, 'price': product.price,
-                                'image_url': product.image_url, 'category': product.category}, 'quantity': cart[i]['quantity'], 'get_total': total,
+                                'image_url': product.image_url, 'category': product.category, 'availability': product.availability}, 'quantity': cart[i]['quantity'], 'get_total': total,
                 }
                 items.append(item)
         except:

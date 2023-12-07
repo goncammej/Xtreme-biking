@@ -31,8 +31,8 @@ class CustomerShipping(models.Model):
 
 class CustomerPaymentMethod(models.Model):
     class PaymentMethod(models.TextChoices):
-        COD = 'Contra reembolso'
-        CARD = 'Pago online'
+        COD = 'Contra reembolso', _('Contra reembolso')
+        CARD = 'Pago online', _('Pago online')
 
     customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE)

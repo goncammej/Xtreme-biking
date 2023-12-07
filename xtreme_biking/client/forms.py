@@ -31,3 +31,4 @@ class ShippingAdressForm(forms.ModelForm):
         super(ShippingAdressForm, self).__init__(*args, **kwargs)
         if user:
             self.initial['customer'] = user.customer
+

@@ -9,7 +9,6 @@ from django.http import JsonResponse
 from django import forms
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView
-from django.core.mail import send_mail
 
 import random
 
@@ -17,6 +16,7 @@ from order.models import Order, OrderItem, ShippingAddress
 from client.models import Customer, CustomerShipping, CustomerPaymentMethod
 
 from django.db.models import Q
+from django.core.mail import send_mail, EmailMessage
 
 
 def about(request):
@@ -85,8 +85,127 @@ def SearchResultsView(request):
     context = {"request": request, "products": None, "cartItems": cartItems}
     query = request.GET.get("q")
     category = request.GET.get("c")
-    if category and query:
+    maxPrice = request.GET.get("maxPrice")
+    minPrice = request.GET.get("minPrice")
 
+    if query and category and maxPrice and minPrice:
+        # Combinación 1: query, category, maxPrice y minPrice están presentes
+        if category == "todos":
+            context['products'] = Product.objects.filter(
+            Q(title__icontains=query) & Q(price__lte=maxPrice) & Q(price__gte=minPrice)
+            ) 
+        else:
+            context['products'] = Product.objects.filter(
+                Q(title__icontains=query) & Q(category__icontains=category) & Q(price__lte=maxPrice) & Q(price__gte=minPrice)
+            )
+    elif query and category and maxPrice:
+        # Combinación 2: query, category y maxPrice están presentes
+        if category == "todos":
+            context['products'] = Product.objects.filter(
+                Q(title__icontains=query) & Q(price__lte=maxPrice)
+            )
+        else:
+            context['products'] = Product.objects.filter(
+            Q(title__icontains=query) & Q(category__icontains=category) & Q(price__lte=maxPrice)
+        )
+    elif query and category and minPrice:
+        # Combinación 3: query, category y minPrice están presentes
+        if category == "todos":
+            context['products'] = Product.objects.filter(
+                Q(title__icontains=query) & Q(price__gte=minPrice)
+            )
+        else: 
+            context['products'] = Product.objects.filter(
+            Q(title__icontains=query) & Q(category__icontains=category) & Q(price__gte=minPrice)
+            )   
+    elif query and maxPrice and minPrice:
+        # Combinación 4: query, maxPrice y minPrice están presentes
+        context['products'] = Product.objects.filter(
+            Q(title__icontains=query) & Q(price__lte=maxPrice) & Q(price__gte=minPrice)
+        )
+    elif category and maxPrice and minPrice:
+        # Combinación 5: category, maxPrice y minPrice están presentes
+        if category == "todos":
+            context['products'] = Product.objects.filter(
+               Q(price__lte=maxPrice) & Q(price__gte=minPrice)
+            )
+        else:
+            context['products'] = Product.objects.filter(
+                Q(category__icontains=category) & Q(price__lte=maxPrice) & Q(price__gte=minPrice)
+            )
+    elif query and category:
+        # Combinación 6: query y category están presentes
+        if category == "todos":
+            context['products'] = Product.objects.filter(
+                Q(title__icontains=query)
+            )
+        else:
+            context['products'] = Product.objects.filter(
+                Q(title__icontains=query) & Q(category__icontains=category)
+            )
+    elif query and maxPrice:
+        # Combinación 7: query y maxPrice están presentes
+        context['products'] = Product.objects.filter(
+            Q(title__icontains=query) & Q(price__lte=maxPrice)
+        )
+    elif query and minPrice:
+        # Combinación 8: query y minPrice están presentes
+        context['products'] = Product.objects.filter(
+            Q(title__icontains=query) & Q(price__gte=minPrice)
+        )
+    elif category and maxPrice:
+        # Combinación 9: category y maxPrice están presentes
+        if category == "todos":
+            context['products'] = Product.objects.filter(
+                Q(price__lte=maxPrice)
+            )
+        else:
+            context['products'] = Product.objects.filter(
+                Q(category__icontains=category) & Q(price__lte=maxPrice)
+            )
+    elif category and minPrice:
+        # Combinación 10: category y minPrice están presentes
+        if category == "todos":
+            context['products'] = Product.objects.filter(
+                Q(price__gte=minPrice)
+            )
+        else:
+            context['products'] = Product.objects.filter(
+                Q(category__icontains=category) & Q(price__gte=minPrice)
+            )
+    elif maxPrice and minPrice:
+        # Combinación 11: maxPrice y minPrice están presentes
+        context['products'] = Product.objects.filter(
+            Q(price__lte=maxPrice) & Q(price__gte=minPrice)
+        )
+    elif query:
+        # Combinación 12: solo query está presente
+        context['products'] = Product.objects.filter(
+            Q(title__icontains=query)
+        )
+    elif category:
+        # Combinación 13: solo category está presente
+        if category == "todos":
+            context['products'] = Product.objects.all()
+        else:
+            context['products'] = Product.objects.filter(
+            Q(category__icontains=category)
+            )
+    elif maxPrice:
+        # Combinación 14: solo maxPrice está presente
+        context['products'] = Product.objects.filter(
+            Q(price__lte=maxPrice)
+        )
+    elif minPrice:
+        # Combinación 15: solo minPrice está presente
+        context['products'] = Product.objects.filter(
+            Q(price__gte=minPrice)
+        )
+    else:
+        # Combinación 16: ninguno de los elementos está presente
+        context['products'] = Product.objects.all()
+    
+    """ if category and query:
         if category == "todos":
             context['products'] = Product.objects.filter(
                 Q(title__icontains=query)
@@ -96,7 +215,6 @@ def SearchResultsView(request):
                 Q(title__icontains=query) & Q(title__icontains=category)
             )
     elif category and not query:
-
         if category == "todos":
             context['products'] = Product.objects.all()
         else:
@@ -106,7 +224,7 @@ def SearchResultsView(request):
     elif query and not category:
         context['products'] = Product.objects.filter(
             Q(category__icontains=query) | Q(title__icontains=query)
-        )
+        ) """
     return render(request, 'search_results.html', context)
 
 
@@ -200,14 +318,18 @@ def processOrder(request):
             state=data['locality'],
             zipcode=data['zipcode'],
         )
+        productos = ""
+        items = OrderItem.objects.filter(order=order)
+        for item in items:
+            productos += item.product.title + " x" + str(item.quantity) + "\n"
 
-    """ send_mail(
-    "Gracias por comprar en Xtreme Biking",
-    f"El identificador de tu pedido es {order.transaction_id}. Puedes consultar el estado de tu pedido a través del siguiente enlace ",
-    "from@example.com",
-    ["to@example.com"],
-    fail_silently=False,
-    ) """
+        direccion = data['address'] + ", " + data['city'] + \
+            ", " + data['locality'] + ", " + data['zipcode']
+        email = EmailMessage("Gracias por comprar en Xtreme Biking",
+
+            f"El identificador de tu pedido es {order.transaction_id}\n Puedes consultar el estado de tu pedido a través del apartado de seguimiento de la web. Los productos que ha comprado han sido: \n{productos}Su total ha sido {order.total} €. Su pedido llegará a la dirección {direccion}",
+            "", [customer.email])
+        email.send()
 
     return JsonResponse('Payment submitted..', safe=False)
 

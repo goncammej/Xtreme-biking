@@ -78,8 +78,7 @@
         <nav class="flex-shrink-0">
             <div class="flex flex-wrap justify-between items-center mx-auto max-w-6xl p-4">
                 <a href="{% url 'frontpage' %}" class="flex items-center space-x-3 rtl:space-x-reverse">
-                    <img src="{% static 'img/xtreme-logo.png' %}" class="h-8" alt="xtreme-logo" />
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap italic">BIKING</span>
+                    <img src="{% static 'img/xtreme-logo.png' %}" class="h-16" alt="xtreme-logo" />
                 </a>
                 {% if user.is_authenticated %}
                 <div class="flex items-center space-x-6 rtl:space-x-reverse">
@@ -159,7 +158,7 @@
                         />
 
                         <span class="absolute inset-y-0 end-0 grid w-10 place-content-center">
-                            <button type="button" class="text-gray-600 hover:text-gray-700">
+                            <button type="submit" class="text-gray-600 hover:text-gray-700">
                             <span class="sr-only">Search</span>
 
                             <svg

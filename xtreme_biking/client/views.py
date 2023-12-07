@@ -153,11 +153,12 @@ def client_orders(request):
     data = cartData(request)
 
     cartItems = data['cartItems']
-    order = data['order']
-    items = data['items']
 
     orders = Order.objects.filter(
         customer=request.user.customer, complete=True)
+
+    for order in orders:
+        order.total = round(float(order.total), 2)
 
     context = {"orders": orders, "cartItems": cartItems}
 

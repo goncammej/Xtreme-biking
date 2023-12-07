@@ -1,4 +1,4 @@
-{% extends 'base_plain.html' %}
+{% extends 'base.html' %}
 
 {% load static %} 
 
@@ -9,7 +9,7 @@
 
 <section class="flex-grow">
   <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto">
-      <a href="{% url 'frontpage' %}" class="py-4 w-1/5 h-1/5">
+      <a href="{% url 'frontpage' %}" class="my-10 w-40 h-40">
           <img src="{% static 'img/xtreme-logo.png' %}" alt="logo">
       </a>
       <div class="w-full bg-gray-100 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
