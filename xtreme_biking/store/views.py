@@ -327,7 +327,7 @@ def processOrder(request):
             ", " + data['locality'] + ", " + data['zipcode']
         email = EmailMessage("Gracias por comprar en Xtreme Biking",
 
-            f"El identificador de tu pedido es {order.transaction_id}\n Puedes consultar el estado de tu pedido a través del apartado de seguimiento de la web. Los productos que ha comprado han sido: \n{productos}Su total ha sido {order.total} €. Su pedido llegará a la dirección {direccion}",
+            f"El identificador de tu pedido es {order.transaction_id}\n Puedes consultar el estado de tu pedido a través del apartado de seguimiento de la web. Los productos que ha comprado han sido: \n{productos}Su total ha sido {round(float(order.total), 2)} €. Su pedido llegará a la dirección {direccion}",
             "", [customer.email])
         email.send()
 

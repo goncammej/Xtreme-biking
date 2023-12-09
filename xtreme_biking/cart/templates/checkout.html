@@ -398,18 +398,29 @@
                 'X-CSRFToken': csrftoken,
             },
             body: JSON.stringify({ 'data': data }),
-
         })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('Success:', data);
-
-                cart = {}
-                document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
-
-                window.location.href = "{% url 'frontpage' %}"
-
-            })
+        .then(response => {
+            console.log('Server Response:', response);
+            if (!response.ok) {
+                console.error('HTTP Error:', response.status, response.statusText);
+                throw new Error('Network response was not ok');
+            }
+        
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error during fetch or JSON parsing:', error);
+        })
+        .then(data => {
+            console.log('Success:', data);
+    
+            cart = {}
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+            window.location.href = "{% url 'frontpage' %}"
+        })
+        .catch(error => {
+            console.error('Error during fetch or JSON parsing:', error);
+        });
     }
 
     // Fetches a payment intent and captures the client secret

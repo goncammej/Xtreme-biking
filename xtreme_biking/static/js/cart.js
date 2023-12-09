@@ -86,7 +86,10 @@ function increaseCount(a, b, pid, availability) {
 	
 	value = isNaN(value) ? 0 : value;
 	value++;
-	input.value = value--;
+	if (value > availability) {
+		value = availability;
+	}
+	input.value = value;
 	updateAddToCartButtonQuantity(pid, value);
 }
 function decreaseCount(a, b, pid, availability) {

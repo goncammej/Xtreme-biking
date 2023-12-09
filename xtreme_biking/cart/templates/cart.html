@@ -55,12 +55,13 @@
                     class="h-10 w-16 align-middle border-transparent leading-10 text-center [-moz-appearance:_textfield] [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none">
                     {{item.quantity}}
                   </p>
-
-                  <button type="button" data-action="add" data-product="{{item.product.id}}"
-                    data-redirect="{% url 'cart' %}" data-availability="{{ item.product.availability }}"
-                    class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 update-cart">
-                    &plus;
-                  </button>
+                  {%if item.quantity < item.product.availability%}
+                    <button type="button" data-action="add" data-product="{{item.product.id}}"
+                      data-redirect="{% url 'cart' %}" data-availability="{{ item.product.availability }}"
+                      class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 update-cart">
+                      &plus;
+                    </button>
+                  {% endif %}
                 </div>
               </div>
 

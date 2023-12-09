@@ -35,7 +35,8 @@
             <div class="flex flex-col">
                 <p><strong>Identificador de pedido:</strong> {{order.transaction_id}}</p>
                 <p><strong>Fecha de pedido:</strong> {{order.date_ordered}}</p>
-                <p><strong>Total:</strong> {{order.total}} €</p>
+                <p><strong>Total:</strong> {{order.total}}€</p>
+                <p><strong>Estado:</strong> {{order.status}}</p>
             </div>
             {% for item in order.orderitem_set.all %}
             <hr>
