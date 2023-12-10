@@ -106,7 +106,7 @@ def create_claim(request, order_id):
                 claim_instance.save()
                 return redirect('client_orders')
     if request.method == 'GET':
-        context = {"user": user, 'form': claim_form, 'cartItems': cartItems}
+        context = {'user': user, 'form': claim_form, 'cartItems': cartItems}
         return render(request, 'customer_claim_form.html', context)
     
 @login_required
@@ -132,5 +132,5 @@ def edit_claim(request, order_id):
                 return redirect('client_orders')
     if request.method == 'GET':
         context = {"user": user, "review_instance": claim_instance,
-                   'form': claim_form, 'cartItems': cartItems}
-        return render(request, 'customer_review_form.html', context)
+                   'form': claim_form, 'cartItems': cartItems, 'status': claim_instance.status}
+        return render(request, 'customer_claim_form.html', context)

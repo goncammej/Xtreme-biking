@@ -99,6 +99,12 @@ class CustomerReviews(models.Model):
 class CustomerClaims(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=False)
     claim = models.TextField(_("Reclamación"), null=False)
+    class StatusClaim(models.TextChoices):
+        OPEN = 'Abierto'
+        CLOSED = 'Cerrado'
+
+    status = models.CharField(
+        max_length=30, choices=StatusClaim.choices, default=StatusClaim.OPEN)
 
     def __str__(self):
         return self.claim

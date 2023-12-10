@@ -43,8 +43,8 @@
   <div class="flex flex-col">
       <p><strong>Identificador de pedido:</strong> {{order.transaction_id}}</p>
       <p><strong>Fecha de pedido:</strong> {{order.date_ordered}}</p>
-      <p><strong>Total:</strong> {{order.total}}</p>
-    <p><strong>Estado:</strong> {{order.status}}</p>
+      <p><strong>Total:</strong> {{order.total}}€</p>
+      <p><strong>Estado:</strong> {{order.status}}</p>
   </div>
   {% for item in order.orderitem_set.all %}
   <hr>
@@ -59,10 +59,7 @@
       <p><strong>Dirección:</strong> {{ shipping_address.address }}, {{ shipping_address.city }}, {{ shipping_address.state }} {{ shipping_address.zipcode }}</p>
       {% endfor %}
   </div>
-  <div class="flex flex-row flex-wrap">
-      <a href="">Escribir valoración</a>
-      <a href="" class="border-l-2 border-white px-3 mx-2">Escribir reclamación</a>
-  </div>
+</div>
 </div>
 {% elif request.GET.r and not order %}
 <h3>No se ha encontrado ningún pedido con identificador "{{request.GET.r}}"</h3>

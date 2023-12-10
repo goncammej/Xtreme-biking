@@ -34,32 +34,34 @@
             <h3 class="mt-4 text-lg font-medium text-gray-900">{{product.title}}</h3>
 
         </a>
-        <div class="mt-4">
-          <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
-          <div class="w-full my-2">
-            <label for="Quantity" class="sr-only"> Quantity </label>
+        {% if product.availability > 0 %}
+          <div class="mt-4">
+            <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
+            <div class="w-full my-2">
+              <label for="Quantity" class="sr-only"> Quantity </label>
 
-            <div class="flex items-center justify-between border border-gray-200 rounded">
-              <button onClick='decreaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
-                class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
-                &minus;
-              </button>
+              <div class="flex items-center justify-between border border-gray-200 rounded">
+                <button onClick='decreaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
+                  &minus;
+                </button>
 
-              <input type="number" id="Quantity" value="1"
-                class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
+                <input type="number" id="Quantity" value="1"
+                  class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
 
-              <button onClick='increaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
-                class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
-                &plus;
-              </button>
+                <button onClick='increaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
+                  &plus;
+                </button>
+              </div>
             </div>
+            <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
+              data-redirect="{% url 'cart' %}" data-quantity="1" data-availability="{{ product.availability }}" style="background-color: #a3cb64;"
+              class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
+              Añadir al carrito
+            </button>
           </div>
-          <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
-            data-redirect="{% url 'cart' %}" data-quantity="1" data-availability="{{ product.availability }}" style="background-color: #a3cb64;"
-            class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
-            Añadir al carrito
-          </button>
-        </div>
+        {% endif %}
       </div>
     </div>
     {% endfor %}
@@ -97,32 +99,34 @@
             <h3 class="mt-4 text-lg font-medium text-gray-900">{{product.title}}</h3>
 
         </a>
-        <div class="mt-4">
-          <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
-          <div class="w-full my-2">
-            <label for="Quantity" class="sr-only"> Quantity </label>
+        {% if product.availability > 0 %}
+          <div class="mt-4">
+            <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
+            <div class="w-full my-2">
+              <label for="Quantity" class="sr-only"> Quantity </label>
 
-            <div class="flex items-center justify-between border border-gray-200 rounded">
-              <button onClick='decreaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
-                class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
-                &minus;
-              </button>
+              <div class="flex items-center justify-between border border-gray-200 rounded">
+                <button onClick='decreaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
+                  &minus;
+                </button>
 
-              <input type="number" id="Quantity" value="1"
-                class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
+                <input type="number" id="Quantity" value="1"
+                  class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
 
-              <button onClick='increaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
-                class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
-                &plus;
-              </button>
+                <button onClick='increaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
+                  &plus;
+                </button>
+              </div>
             </div>
+            <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
+              data-redirect="{% url 'cart' %}" data-quantity="1" data-availability="{{ product.availability }}" style="background-color: #a3cb64;"
+              class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
+              Añadir al carrito
+            </button>
           </div>
-          <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
-            data-redirect="{% url 'cart' %}" data-quantity="1" data-availability="{{ product.availability }}" style="background-color: #a3cb64;"
-            class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
-            Añadir al carrito
-          </button>
-        </div>
+        {% endif %}
       </div>
     </div>
     {% endfor %}
@@ -160,32 +164,34 @@
             <h3 class="mt-4 text-lg font-medium text-gray-900">{{product.title}}</h3>
 
         </a>
-        <div class="mt-4">
-          <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
-          <div class="w-full my-2">
-            <label for="Quantity" class="sr-only"> Quantity </label>
+        {% if product.availability > 0 %}
+          <div class="mt-4">
+            <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
+            <div class="w-full my-2">
+              <label for="Quantity" class="sr-only"> Quantity </label>
 
-            <div class="flex items-center justify-between border border-gray-200 rounded">
-              <button onClick='decreaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
-                class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
-                &minus;
-              </button>
+              <div class="flex items-center justify-between border border-gray-200 rounded">
+                <button onClick='decreaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
+                  &minus;
+                </button>
 
-              <input type="number" id="Quantity" value="1"
-                class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
+                <input type="number" id="Quantity" value="1"
+                  class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
 
-              <button onClick='increaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
-                class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
-                &plus;
-              </button>
+                <button onClick='increaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
+                  &plus;
+                </button>
+              </div>
             </div>
+            <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
+              data-redirect="{% url 'cart' %}" data-quantity="1" data-availability="{{ product.availability }}" style="background-color: #a3cb64;"
+              class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
+              Añadir al carrito
+            </button>
           </div>
-          <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
-            data-redirect="{% url 'cart' %}" data-quantity="1" data-availability="{{ product.availability }}" style="background-color: #a3cb64;"
-            class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
-            Añadir al carrito
-          </button>
-        </div>
+        {% endif %}
       </div>
     </div>
     {% endfor %}
@@ -224,32 +230,34 @@
             <h3 class="mt-4 text-lg font-medium text-gray-900">{{product.title}}</h3>
 
         </a>
-        <div class="mt-4">
-          <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
-          <div class="w-full my-2">
-            <label for="Quantity" class="sr-only"> Quantity </label>
+        {% if product.availability > 0 %}
+          <div class="mt-4">
+            <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
+            <div class="w-full my-2">
+              <label for="Quantity" class="sr-only"> Quantity </label>
 
-            <div class="flex items-center justify-between border border-gray-200 rounded">
-              <button onClick='decreaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
-                class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
-                &minus;
-              </button>
+              <div class="flex items-center justify-between border border-gray-200 rounded">
+                <button onClick='decreaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
+                  &minus;
+                </button>
 
-              <input type="number" id="Quantity" value="1"
-                class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
+                <input type="number" id="Quantity" value="1"
+                  class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
 
-              <button onClick='increaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
-                class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
-                &plus;
-              </button>
+                <button onClick='increaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
+                  &plus;
+                </button>
+              </div>
             </div>
+            <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
+              data-redirect="{% url 'cart' %}" data-quantity="1" data-availability="{{ product.availability }}" style="background-color: #a3cb64;"
+              class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
+              Añadir al carrito
+            </button>
           </div>
-          <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
-            data-redirect="{% url 'cart' %}" data-quantity="1" data-availability="{{ product.availability }}" style="background-color: #a3cb64;"
-            class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
-            Añadir al carrito
-          </button>
-        </div>
+        {% endif %}
       </div>
     </div>
     {% endfor %}
@@ -288,32 +296,34 @@
             <h3 class="mt-4 text-lg font-medium text-gray-900">{{product.title}}</h3>
               
         </a>
-        <div class="mt-4">
-          <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
-          <div class="w-full my-2">
-            <label for="Quantity" class="sr-only"> Quantity </label>
+        {% if product.availability > 0 %}
+          <div class="mt-4">
+            <p class="mt-1.5 text-sm text-gray-700">{{product.price}}Є</p>
+            <div class="w-full my-2">
+              <label for="Quantity" class="sr-only"> Quantity </label>
 
-            <div class="flex items-center justify-between border border-gray-200 rounded">
-              <button onClick='decreaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
-                class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
-                &minus;
-              </button>
+              <div class="flex items-center justify-between border border-gray-200 rounded">
+                <button onClick='decreaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 down">
+                  &minus;
+                </button>
 
-              <input type="number" id="Quantity" value="1"
-                class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
+                <input type="number" id="Quantity" value="1"
+                  class="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none" />
 
-              <button onClick='increaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
-                class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
-                &plus;
-              </button>
+                <button onClick='increaseCount(event, this, "{{product.id}}", "{{ product.availability }}")' type="button"
+                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75 up">
+                  &plus;
+                </button>
+              </div>
             </div>
+            <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
+              data-redirect="{% url 'cart' %}" data-quantity="1" data-availability="{{ product.availability }}" style="background-color: #a3cb64;"
+              class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
+              Añadir al carrito
+            </button>
           </div>
-          <button id="add-cart-{{product.id}}" data-action="add-quantity" data-product="{{product.id}}"
-            data-redirect="{% url 'cart' %}" data-quantity="1" data-availability="{{ product.availability }}" style="background-color: #a3cb64;"
-            class="block rounded w-full  p-4 text-sm font-medium transition hover:scale-105 text-white update-cart">
-            Añadir al carrito
-          </button>
-        </div>
+        {% endif %}
       </div>
     </div>
     {% endfor %}

@@ -70,7 +70,11 @@ function addCookieItem(productId, action, redirect, quantity, availability) {
 			cart[productId] = { 'quantity': quantity }
 
 		} else {
-			cart[productId]['quantity'] += quantity
+			if (quantity + cart[productId].quantity <= availability) {
+				cart[productId]['quantity'] += quantity
+			} else {
+				cart[productId]['quantity'] = availability
+			}
 		}
 	}
 
@@ -86,7 +90,10 @@ function increaseCount(a, b, pid, availability) {
 	
 	value = isNaN(value) ? 0 : value;
 	value++;
-	input.value = value--;
+	if (value > availability) {
+		value = availability;
+	}
+	input.value = value;
 	updateAddToCartButtonQuantity(pid, value);
 }
 function decreaseCount(a, b, pid, availability) {
