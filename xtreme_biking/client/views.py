@@ -48,8 +48,8 @@ def client_addresses(request):
     user = request.user
 
     try:
-        predetermined_address = CustomerShipping.objects.get(
-            customer=user.customer, predetermined=True)
+        predetermined_address = CustomerShipping.objects.filter(
+            customer=user.customer, predetermined=True).first()
         addresses = CustomerShipping.objects.filter(
             customer=user.customer).exclude(id=predetermined_address.id)
     except:
@@ -117,8 +117,8 @@ def predetermined_address(request, address_id):
     user = request.user
     shipping_address = get_object_or_404(
         CustomerShipping, customer=user.customer, id=address_id)
-    previous_address = CustomerShipping.objects.get(
-        customer=user.customer, predetermined=True)
+    previous_address = CustomerShipping.objects.filter(
+        customer=user.customer, predetermined=True).first()
     previous_address.predetermined = False
     previous_address.save()
 
