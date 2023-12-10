@@ -244,9 +244,6 @@ def updateItem(request):
     productId = data['productId']
     action = data['action']
     quantity = data['quantity']
-    print('Action:', action)
-    print('Product:', productId)
-    print('Quantity:', quantity)
 
     customer = request.user.customer
     product = Product.objects.get(id=productId)
@@ -263,8 +260,11 @@ def updateItem(request):
     elif action == 'delete':
         orderItem.quantity = 0
     elif action == 'add-quantity':
-        orderItem.quantity = (orderItem.quantity + quantity)
-
+        if quantity + orderItem.quantity <= product.availability:
+            orderItem.quantity = (orderItem.quantity + quantity)
+        else:
+            orderItem.quantity = product.availability
+            
     orderItem.save()
 
     if orderItem.quantity <= 0:
@@ -276,7 +276,6 @@ def updateItem(request):
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()
     data = json.loads(request.body)["data"]
-
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(
@@ -290,6 +289,7 @@ def processOrder(request):
                 zipcode=data['zipcode'],
                 predetermined=True
             )
+        
     else:
         customer, order = guestOrder(request, data)
 
@@ -317,7 +317,6 @@ def processOrder(request):
     if data['selected_address'] != 'null':
         selected_address = CustomerShipping.objects.get(
             id=int(data['selected_address']))
-        print(selected_address)
         ShippingAddress.objects.create(
             customer=customer,
             order=order,
@@ -335,23 +334,26 @@ def processOrder(request):
             state=data['locality'],
             zipcode=data['zipcode'],
         )
-        productos = ""
+        send_email_confirmation(order,customer,data)
         
-        for item in items:
-
-            productos += item.product.title + " x" + str(item.quantity) + "\n"
-
-        direccion = data['address'] + ", " + data['city'] + \
-            ", " + data['locality'] + ", " + data['zipcode']
-        email = EmailMessage("Gracias por comprar en Xtreme Biking",
-
-            f"El identificador de tu pedido es {order.transaction_id}\n Puedes consultar el estado de tu pedido a través del apartado de seguimiento de la web. Los productos que ha comprado han sido: \n{productos}Su total ha sido {round(float(order.total), 2)} €. Su pedido llegará a la dirección {direccion}",
-            "", [customer.email])
-        email.send()
 
     return JsonResponse('Payment submitted..', safe=False)
 
+def send_email_confirmation(order, customer,data):
+    items = OrderItem.objects.filter(order=order)
 
+    productos = ""
+            
+    for item in items:
+        productos += item.product.title + " x" + str(item.quantity) + "\n"
+
+    direccion = data['address'] + ", " + data['city'] + \
+                ", " + data['locality'] + ", " + data['zipcode']
+    email = EmailMessage("Gracias por comprar en Xtreme Biking",
+            f"El identificador de tu pedido es {order.transaction_id}\n Puedes consultar el estado de tu pedido a través del apartado de seguimiento de la web. Los productos que ha comprado han sido: \n{productos}Su total ha sido {round(float(order.total), 2)} €. Su pedido llegará a la dirección {direccion}",
+            "", [customer.email])
+    email.send()
+    
 # custom 404 view
 def custom_404(request, exception):
     return render(request, '404.html', status=404)

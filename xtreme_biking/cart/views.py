@@ -32,7 +32,6 @@ def cart(request):
     items = data['items']
 
     context = {'items': items, 'order': order, 'cartItems': cartItems}
-    print(context)
     return render(request, 'cart.html', context)
 
 
@@ -71,7 +70,6 @@ def create_payment(request):
         try:
             data = json.loads(request.body)
             total = int(float(data['total']) * 100)
-            print(total)
             # Create a PaymentIntent with the order amount and currency
             intent = stripe.PaymentIntent.create(
                 amount=total,
@@ -96,8 +94,6 @@ def success(request):
             # Parse the JSON data
             transaction_id = datetime.datetime.now().timestamp()
             data = json.loads(data_param)
-
-            print(data)
 
             if request.user.is_authenticated:
                 customer = request.user.customer
@@ -131,7 +127,6 @@ def success(request):
             if data['selected_address'] != 'null':
                 selected_address = CustomerShipping.objects.get(
                     id=int(data['selected_address']))
-                print(selected_address)
                 ShippingAddress.objects.create(
                     customer=customer,
                     order=order,
@@ -149,15 +144,6 @@ def success(request):
                     state=data['locality'],
                     zipcode=data['zipcode'],
                 )
-
-            """ send_mail(
-            "Gracias por comprar en Xtreme Biking",
-            f"El identificador de tu pedido es {order.transaction_id}. Puedes consultar el estado de tu pedido a través del siguiente enlace ",
-            "from@example.com",
-            ["to@example.com"],
-            fail_silently=False,
-            ) """
-
             return JsonResponse('Payment submitted..', safe=False)
 
         except json.JSONDecodeError as e:

@@ -20,11 +20,5 @@ class Product(models.Model):
         return self.title
 
     
-class Rating(models.Model):
-    bike = models.ForeignKey(Product, on_delete=models.CASCADE)
-    rating = models.IntegerField(default=0, validators=[MaxValueValidator(5)])
-    comment = models.TextField(max_length=500)
-    date = models.DateField(auto_now_add=True)
-    title = models.CharField(max_length=100, default='')
-    email = models.EmailField()
+
 

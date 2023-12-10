@@ -70,7 +70,11 @@ function addCookieItem(productId, action, redirect, quantity, availability) {
 			cart[productId] = { 'quantity': quantity }
 
 		} else {
-			cart[productId]['quantity'] += quantity
+			if (quantity + cart[productId].quantity <= availability) {
+				cart[productId]['quantity'] += quantity
+			} else {
+				cart[productId]['quantity'] = availability
+			}
 		}
 	}
 
