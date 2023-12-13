@@ -13,10 +13,10 @@ WORKDIR /app
 RUN git clone https://github.com/goncammej/Xtreme-biking.git .
 RUN pip install -r requirements.txt
 
-WORKDIR /app/decide
+WORKDIR /app/xtreme-biking
 
 # local settings.py
-ADD docker-settings.py /app/decide/local_settings.py
+ADD docker-settings.py /app/xtreme-biking/local_settings.py
 
 RUN ./manage.py collectstatic
 
